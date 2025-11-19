@@ -1,0 +1,26 @@
+﻿using HrMangmentSystem_Domain.Common;
+using HrMangmentSystem_Domain.Entities.Employees;
+
+namespace HrMangmentSystem_Domain.Entities.Recruitment
+{
+    public class JobPosition : BaseEntity
+    {
+  
+        public string Title { get; set; }  = null!;
+        public string? Description { get; set; } 
+        public string Requirements { get; set; }  = null!;
+        public DateTime PostedDate { get; set; }
+        public DateTime? ClosingDate { get; set; }
+        public bool IsActive { get; set; } 
+
+        public string DepartmentId { get; set; } = null!;
+        public Department Department { get; set; } = null!;
+
+
+        public string CreatedByEmployeeId { get; set; } = null!;
+        public Employee CreatedByEmployee { get; set; } = null!;
+
+        public ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+
+    }
+}
