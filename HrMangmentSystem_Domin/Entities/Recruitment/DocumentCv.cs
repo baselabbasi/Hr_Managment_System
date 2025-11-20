@@ -3,7 +3,7 @@
 namespace HrMangmentSystem_Domain.Entities.Recruitment
 {
 
-    public class DocumentCv : BaseEntity<int>
+    public class DocumentCv : TenantEntity<int>
     {
         public string FileName { get; set; } = null!;
         public string FilePath { get; set; } = null!;
@@ -16,7 +16,7 @@ namespace HrMangmentSystem_Domain.Entities.Recruitment
         public string? CandidatePhone { get; set; }
    
 
-          public ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+       //   public ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
     }
 
 

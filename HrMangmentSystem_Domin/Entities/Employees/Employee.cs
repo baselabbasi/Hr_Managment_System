@@ -4,7 +4,7 @@ using HrMangmentSystem_Domain.Enum.Employee;
 
 namespace HrMangmentSystem_Domain.Entities.Employees
 {
-    public class Employee : BaseEntity<Guid>
+    public class Employee : SoftDeletable<Guid>
     {
         public Guid? ManagerId { get; set; }
         public Employee? Manager { get; set; }

@@ -4,7 +4,7 @@ using HrMangmentSystem_Domain.Enum.Request;
 
 namespace HrMangmentSystem_Domain.Entities.Requests
 {
-    public class RequestHistory : BaseEntity<int>
+    public class RequestHistory : TenantEntity<int>
     {
         public int GenericRequestId { get; set; }
         public GenericRequest GenericRequest { get; set; } = null!;

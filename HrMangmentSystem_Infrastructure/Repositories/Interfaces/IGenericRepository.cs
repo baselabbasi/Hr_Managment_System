@@ -1,0 +1,16 @@
+﻿using HrMangmentSystem_Domain.Common;
+using System.Linq.Expressions;
+
+namespace HrMangmentSystem_Infrastructure.Repositories.Interfaces
+{
+    public interface IGenericRepository<TEntity , TId> where TEntity : SoftDeletable<TId>
+    {
+        Task<TEntity?> GetByIdAsync(TId id);
+        Task<List<TEntity>> GetAllAsync();
+        Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task AddAsync(TEntity entity);
+        void Update(TEntity entity);
+        Task SoftDeleteAsync(TId id , Guid? deletedByEmployeeId);
+        Task<int> SaveChangesAsync();
+    }
+}

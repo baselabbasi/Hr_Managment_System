@@ -2,6 +2,7 @@
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
+using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -36,6 +37,8 @@ namespace HrMangmentSystem_Infrastructure.Models
 
         public DbSet<RequestHistory> RequestHistories { get; set; }
 
+        public DbSet<Tenant> Tenants { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -60,6 +63,11 @@ namespace HrMangmentSystem_Infrastructure.Models
 
                    entity.HasIndex(e => e.Email).IsUnique(true);
 
+                   entity.HasOne(e => e.Tenant)
+                         .WithMany()
+                         .HasForeignKey(e => e.TenantId)
+                         .OnDelete(DeleteBehavior.Restrict);
+
                });
 
             modelBuilder.Entity<Department>(entity =>
@@ -70,6 +78,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(d => d.DepartmentManagerId)
                       .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(d => d.Tenant)
+                        .WithMany()
+                        .HasForeignKey(d => d.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<JobPosition>(entity =>
@@ -85,6 +98,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(jp => jp.CreatedByEmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(jp => jp.Tenant)
+                      .WithMany()
+                      .HasForeignKey(jp => jp.TenantId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<JobApplication>(entity =>
             {
@@ -93,6 +111,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasOne(ja => ja.JobPosition)
                       .WithMany(jp => jp.JobApplications)
                       .HasForeignKey(ja => ja.JobPositionId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(ja => ja.Tenant)
+                      .WithMany()
+                      .HasForeignKey(ja => ja.TenantId)
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(ja => ja.DocumentCv)
@@ -105,6 +128,11 @@ namespace HrMangmentSystem_Infrastructure.Models
             {
                 entity.HasKey(dc => dc.Id);
 
+                entity.HasOne(dc => dc.Tenant)
+                      .WithMany()
+                      .HasForeignKey(dc => dc.TenantId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
             });
             modelBuilder.Entity<DocumentEmployeeInfo>(entity =>
             {
@@ -114,6 +142,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(dei => dei.EmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(dei => dei.Tenant)
+                        .WithMany()
+                        .HasForeignKey(dei => dei.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<GenericRequest>(entity =>
             {
@@ -122,6 +155,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(gr => gr.RequestedByEmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(gr => gr.Tenant)
+                        .WithMany()
+                        .HasForeignKey(gr => gr.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<LeaveRequest>(entity =>
             {
@@ -129,6 +167,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasOne(lr => lr.GenericRequest)
                       .WithOne()
                       .HasForeignKey<LeaveRequest>(lr => lr.Id)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(lr => lr.Tenant)
+                      .WithMany()
+                      .HasForeignKey(lr => lr.TenantId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<EmployeeDataChange>(entity =>
@@ -138,14 +181,36 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithOne()
                       .HasForeignKey<EmployeeDataChange>(edc => edc.Id)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(edc => edc.Tenant)
+                        .WithMany()
+                        .HasForeignKey(edc => edc.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<RequestHistory>(entity =>
             {
                 entity.HasKey(h => h.Id);
+
+                entity.HasOne(h => h.GenericRequest)
+                      .WithMany()
+                      .HasForeignKey(h => h.GenericRequestId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
                 entity.HasOne(h => h.PerformedByEmployee)
                       .WithMany()
                       .HasForeignKey(h => h.PerformedByEmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(h => h.Tenant)
+                        .WithMany()
+                        .HasForeignKey(h => h.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
+            });
+
+           modelBuilder.Entity<Tenant>(entity =>
+            {
+                entity.HasKey(t => t.Id);
+                entity.HasIndex(t => t.Name).IsUnique(true);
             });
 
             modelBuilder.Entity<EmployeeRole>()

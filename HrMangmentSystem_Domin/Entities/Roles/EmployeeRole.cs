@@ -4,11 +4,11 @@ namespace HrMangmentSystem_Domain.Entities.Roles
 {
     public class EmployeeRole
     {
-        public string EmployeeId { get; set; } = null!;
+        public Guid EmployeeId { get; set; } 
         public Employee Employee { get; set; } = null!;
 
 
-        public string RoleId { get; set; } = null!;
+        public int RoleId { get; set; } 
         public Role Role { get; set; } = null!;
     }
 }
