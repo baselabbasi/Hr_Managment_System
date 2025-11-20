@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HrMangmentSystem_Domain.Common
 {
-    public abstract class SoftDeletable
+    public  class  SoftDeletable<T>  : BaseEntity<T>
     {
         public bool IsDeleted { get; set; } 
 
-        public DateTime DeletedAt  { get; set; } = DateTime.UtcNow;
+        public DateTime DeletedAt  { get; set; } 
 
         public string? DeletedByEmployeeId { get; set; }
     }

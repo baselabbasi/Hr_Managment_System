@@ -4,7 +4,7 @@ using HrMangmentSystem_Domain.Enum.Request;
 
 namespace HrMangmentSystem_Domain.Entities.Requests
 {
-    public class LeaveRequest : BaseEntity
+    public class LeaveRequest : SoftDeletable<int>
     {
         public LeaveType LeaveType { get; set; }
 

@@ -1,6 +1,4 @@
-﻿using HrMangmentSystem_Domain.Entities.Documents;
-using HrMangmentSystem_Domain.Entities.Employees;
-using HrMangmentSystem_Domain.Entities.History;
+﻿using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
@@ -36,7 +34,7 @@ namespace HrMangmentSystem_Infrastructure.Models
 
         public DbSet<EmployeeDataChange> EmployeeDataChanges { get; set; }
 
-        public DbSet<History> Histories { get; set; }
+        public DbSet<RequestHistory> RequestHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -141,7 +139,7 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .HasForeignKey<EmployeeDataChange>(edc => edc.Id)
                       .OnDelete(DeleteBehavior.Restrict);
             });
-            modelBuilder.Entity<History>(entity =>
+            modelBuilder.Entity<RequestHistory>(entity =>
             {
                 entity.HasKey(h => h.Id);
                 entity.HasOne(h => h.PerformedByEmployee)

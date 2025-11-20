@@ -3,7 +3,7 @@ using HrMangmentSystem_Domain.Entities.Employees;
 
 namespace HrMangmentSystem_Domain.Entities.Recruitment
 {
-    public class JobPosition : BaseEntity
+    public class JobPosition : SoftDeletable<int>
     {
   
         public string Title { get; set; }  = null!;

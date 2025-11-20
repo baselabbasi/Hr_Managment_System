@@ -2,7 +2,7 @@
 
 namespace HrMangmentSystem_Domain.Entities.Roles
 {
-    public class Role : BaseEntity 
+    public class Role : BaseEntity<int>
     {
         public string Name { get; set; } = null!;
 

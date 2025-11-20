@@ -4,7 +4,7 @@ using HrMangmentSystem_Domain.Common;
 
 namespace HrMangmentSystem_Domain.Entities.Requests
 {
-    public class EmployeeDataChange : BaseEntity
+    public class EmployeeDataChange : SoftDeletable<int>
     {
         public string RequsetedDataJson { get; set; } = null!;
 

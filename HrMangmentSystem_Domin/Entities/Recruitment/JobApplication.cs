@@ -1,11 +1,10 @@
 ﻿using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Entities.Documents;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Enum.Recruitment;
 
 namespace HrMangmentSystem_Domain.Entities.Recruitment
 {
-    public class JobApplication : BaseEntity
+    public class JobApplication : SoftDeletable<int>
     {
         public string JobPositionId { get; set; } = null!;
         public JobPosition JobPosition { get; set; } = null!;

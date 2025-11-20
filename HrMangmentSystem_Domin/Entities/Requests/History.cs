@@ -1,19 +1,13 @@
 ﻿using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Enum.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HrMangmentSystem_Domain.Entities.History
+namespace HrMangmentSystem_Domain.Entities.Requests
 {
-    public class History : BaseEntity
+    public class RequestHistory : BaseEntity<int>
     {
-       public string EntityType { get; set; } = null!;
-
-       public string EntityId { get; set; }  = null!;
+        public int GenericRequestId { get; set; }
+        public GenericRequest GenericRequest { get; set; } = null!;
 
         public string Action { get; set; } = null!;
 
@@ -28,5 +22,7 @@ namespace HrMangmentSystem_Domain.Entities.History
 
 
         public DateTime PerformedAt { get; set; } = DateTime.UtcNow;
+
+        //edit history
     }
 }

@@ -4,12 +4,15 @@ using HrMangmentSystem_Domain.Enum.Employee;
 
 namespace HrMangmentSystem_Domain.Entities.Employees
 {
-    public class Employee : BaseEntity
+    public class Employee : BaseEntity<Guid>
     {
-        public string? ManagerId { get; set; }
+        public Guid? ManagerId { get; set; }
         public Employee? Manager { get; set; }
 
         public string DepartmentId { get; set; } = null!;
+
+        public Department Department { get; set; } = null!;
+
 
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -31,8 +34,6 @@ namespace HrMangmentSystem_Domain.Entities.Employees
 
         public EmployeeStatus EmploymentStatusType { get; set; }
 
-        public Department Department { get; set; } =  null!;
-      
         public ICollection<Employee> Subordinates { get; set; } = new List<Employee>(); //employees managed by this employee
 
         public ICollection<EmployeeRole> EmployeeRoles { get; set; } = new List<EmployeeRole>();

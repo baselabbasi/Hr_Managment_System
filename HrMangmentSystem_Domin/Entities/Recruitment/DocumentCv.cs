@@ -1,10 +1,9 @@
 ﻿using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Entities.Recruitment;
 
-namespace HrMangmentSystem_Domain.Entities.Documents
+namespace HrMangmentSystem_Domain.Entities.Recruitment
 {
 
-    public class DocumentCv : BaseEntity
+    public class DocumentCv : BaseEntity<int>
     {
         public string FileName { get; set; } = null!;
         public string FilePath { get; set; } = null!;
@@ -15,8 +14,11 @@ namespace HrMangmentSystem_Domain.Entities.Documents
         public string CandidateName { get; set; } = null!;
         public string CandidateEmail { get; set; } = null!;
         public string? CandidatePhone { get; set; }
+        public bool IsDeleted { get ; set ; }
+        public DateTime DeletedAt { get ; set; }
+        public string? DeletedByEmployeeId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-       //  public ICollection<JobApplication> JobApplications { get; set; } = new();
+        //  public ICollection<JobApplication> JobApplications { get; set; } = new();
     }
 
 

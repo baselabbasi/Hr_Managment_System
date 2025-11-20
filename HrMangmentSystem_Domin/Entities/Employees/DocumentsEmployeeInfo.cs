@@ -1,12 +1,11 @@
 ﻿using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Enum.Employee;
 
-namespace HrMangmentSystem_Domain.Entities.Documents
+namespace HrMangmentSystem_Domain.Entities.Employees
 {
-    public class DocumentEmployeeInfo : BaseEntity
+    public class DocumentEmployeeInfo : SoftDeletable<Guid>
     {
-        public string EmployeeId { get; set; } = null!;
+        public Guid EmployeeId { get; set; } 
         public Employee Employee { get; set; } = null!;
 
 

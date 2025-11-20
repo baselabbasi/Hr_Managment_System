@@ -4,7 +4,7 @@ using HrMangmentSystem_Domain.Common;
 
 namespace HrMangmentSystem_Domain.Entities.Requests
 {
-    public class GenericRequest : BaseEntity
+    public class GenericRequest : SoftDeletable<int>
     {
         public RequestType RequestType { get; set; }
         public RequestStatus RequestStatus { get; set; }
