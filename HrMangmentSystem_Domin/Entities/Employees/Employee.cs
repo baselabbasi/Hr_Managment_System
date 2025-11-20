@@ -9,8 +9,7 @@ namespace HrMangmentSystem_Domain.Entities.Employees
         public Guid? ManagerId { get; set; }
         public Employee? Manager { get; set; }
 
-        public string DepartmentId { get; set; } = null!;
-
+        public int DepartmentId { get; set; } 
         public Department Department { get; set; } = null!;
 
 

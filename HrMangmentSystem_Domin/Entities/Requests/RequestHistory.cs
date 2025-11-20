@@ -17,7 +17,7 @@ namespace HrMangmentSystem_Domain.Entities.Requests
 
         public string? Comment { get; set; }
 
-        public string PerformedByEmployeeId { get; set; } = null!;
+        public Guid PerformedByEmployeeId { get; set; } 
         public Employee PerformedByEmployee { get; set; } = null!;
 
 

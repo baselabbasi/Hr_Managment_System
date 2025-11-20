@@ -6,10 +6,10 @@ namespace HrMangmentSystem_Domain.Entities.Recruitment
 {
     public class JobApplication : SoftDeletable<int>
     {
-        public string JobPositionId { get; set; } = null!;
+        public int JobPositionId { get; set; } 
         public JobPosition JobPosition { get; set; } = null!;
 
-        public string DocumentCvId { get; set; } = null!;
+        public int DocumentCvId { get; set; } 
         public DocumentCv DocumentCv { get; set; } = null!;
 
         public JobApplicationStatus Status { get; set; } = JobApplicationStatus.New;

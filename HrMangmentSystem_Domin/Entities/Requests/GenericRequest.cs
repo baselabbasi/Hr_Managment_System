@@ -10,11 +10,11 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public RequestStatus RequestStatus { get; set; }
 
 
-        public string RequestedByEmployeeId { get; set; } = null!; // Employee who made the request
+        public   Guid  RequestedByEmployeeId { get; set; }  // Employee who made the request
         public Employee RequestedByEmployee { get; set; } = null!;
 
 
-        public string? TargetEmployeeId { get; set; } // For requests that target a specific employee
+        public Guid? TargetEmployeeId { get; set; } // For requests that target a specific employee
         public Employee? TargetEmployee { get; set; } // For requests that target a specific employee
 
 

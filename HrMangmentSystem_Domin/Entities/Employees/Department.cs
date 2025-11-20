@@ -4,7 +4,7 @@ namespace HrMangmentSystem_Domain.Entities.Employees
 {
     public class Department : SoftDeletable<int>
     {
-        public string? ParentDepartmentId { get; set; } 
+        public int? ParentDepartmentId { get; set; } 
         public string Code { get; set; } = null!;
 
         public string DeptName { get; set; } = null!;
@@ -14,7 +14,7 @@ namespace HrMangmentSystem_Domain.Entities.Employees
         public string Location { get; set; } = null!;
 
         
-        public string? DepartmentManagerId { get; set; }
+        public Guid? DepartmentManagerId { get; set; }
         public Employee? DepartmentManager { get; set; }
 
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();
