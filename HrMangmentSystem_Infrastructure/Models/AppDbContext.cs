@@ -4,7 +4,6 @@ using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HrMangmentSystem_Infrastructure.Models
 {

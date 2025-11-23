@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
 {
-    public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> where TEntity : SoftDeletable<TId>
+    public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> where TEntity : TenantEntity<TId>
     {
         private readonly AppDbContext _appDbContext;
         private readonly DbSet<TEntity> _dbSet;
@@ -28,22 +28,33 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
             
         }
 
-        public Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-           var db = _dbSet.Where(e => !e.IsDeleted).Where(predicate).ToListAsync();
-            return db;
-        }
-
-        public async Task<List<TEntity>> GetAllAsync()
-        {
-           var db = await _dbSet.Where(e => !e.IsDeleted).ToListAsync();
-            return db;
-        }
-
-        public async Task<TEntity?> GetByIdAsync(TId id)
+        public virtual async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
         {
             var db = await _dbSet
-                .Where(e => !e.IsDeleted)
+                 .FirstOrDefaultAsync(e => EqualityComparer<TId>.Default.Equals(e.Id, id));
+
+            if (db == null)
+                return;
+
+
+            _dbSet.Remove(db);
+        }
+
+        public virtual Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+           var db = _dbSet.Where(predicate).ToListAsync();
+            return db;
+        }
+
+        public virtual async Task<List<TEntity>> GetAllAsync()
+        {
+           var db = await _dbSet.ToListAsync();
+            return db;
+        }
+
+        public virtual async Task<TEntity?> GetByIdAsync(TId id)
+        {
+            var db = await _dbSet
                 .FirstOrDefaultAsync(e => EqualityComparer<TId>.Default.Equals(e.Id, id));
             return db;
         }
@@ -53,22 +64,7 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
             return await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task SoftDeleteAsync(TId id, Guid? deletedByEmployeeId)
-        {
-           var entity = await _dbSet
-                .FirstOrDefaultAsync(e=> !e.IsDeleted && EqualityComparer<TId>.Default.Equals(e.Id, id));
-
-            if (entity == null)
-                return;
-                
-            entity.IsDeleted = true;
-            entity.DeletedAt = DateTime.UtcNow;
-            entity.DeletedByEmployeeId = deletedByEmployeeId;
-            
-            _dbSet.Update(entity);
-           
        
-        }
 
         public void Update(TEntity entity)
         {

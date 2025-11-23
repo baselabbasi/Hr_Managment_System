@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HrMangmentSystem_Application\HrMangmentSystem_Application.csproj" />
     <ProjectReference Include="..\HrMangmentSystem_Domin\HrMangmentSystem_Domain.csproj" />
   </ItemGroup>
 
