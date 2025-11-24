@@ -3,8 +3,11 @@ using HrMangmentSystem_Infrastructure.Models;
 using HrMangmentSystem_Infrastructure.Repositories.Implementations;
 using HrMangmentSystem_Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace HrManagmentSystem_API.Extension_Method
+
+namespace HrMangmentSystem_Application.Extension_Method
 {
     public static class ConfigureDatabasesExtension
     {

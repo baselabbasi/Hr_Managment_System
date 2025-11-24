@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HrMangmentSystem_Application.DTOs
+namespace HrMangmentSystem_Application.DTOs.Employee
 {
     public class CreateEmployeeDto
     {

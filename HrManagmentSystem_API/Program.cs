@@ -1,4 +1,5 @@
-using HrManagmentSystem_API.Extension_Method;
+
+using HrMangmentSystem_Application.Extension_Method;
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 

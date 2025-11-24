@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HrMangmentSystem_Application.Common;
-using HrMangmentSystem_Application.DTOs;
+using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Infrastructure.Repositories.Interfaces;
@@ -26,36 +26,36 @@ namespace HrMangmentSystem_Application.Services
 
         }
 
-        public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto dto)
+        public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
         {
             try
             {
                
 
-                if (string.IsNullOrWhiteSpace(dto.FirstName) || string.IsNullOrWhiteSpace(dto.LastName) || string.IsNullOrWhiteSpace(dto.Email))
+                if (string.IsNullOrWhiteSpace(createEmployeeDto.FirstName) || string.IsNullOrWhiteSpace(createEmployeeDto.LastName) || string.IsNullOrWhiteSpace(createEmployeeDto.Email))
                 {
                     _logger.LogWarning("Create Employee: Missing basic fields");
                     return  ApiResponse<EmployeeDto?>.Fail("Missing basic fields" );
                 }
 
-                if (dto.DateOfBirth >= DateTime.UtcNow.Date)
+                if (createEmployeeDto.DateOfBirth >= DateTime.UtcNow.Date)
                 {
                     _logger.LogWarning("Create Employee: Invalid Date of Birth");
 
                     return ApiResponse<EmployeeDto?>.Fail("Invalid Date of Birth");
                 }
-                if (dto.EmploymentStartDate > DateTime.UtcNow.AddDays(30))
+                if (createEmployeeDto.EmploymentStartDate > DateTime.UtcNow.AddDays(30))
                 {
                     _logger.LogWarning("Create Employee: Invalid Employment Start Date");
                     return ApiResponse<EmployeeDto?>.Fail("Invalid Employment Start Date");
                 }
-                var ageAtStart = dto.EmploymentStartDate.Date.Year - dto.DateOfBirth.Date.Year;
+                var ageAtStart = createEmployeeDto.EmploymentStartDate.Date.Year - createEmployeeDto.DateOfBirth.Date.Year;
                 if ( ageAtStart < 18)
                 {
                     _logger.LogWarning("Create Employee: Employee must be at least 18 years old");
                     return ApiResponse<EmployeeDto?>.Fail("Employee must be at least 18 years old" );
                 }
-                if (string.IsNullOrWhiteSpace(dto.Position))
+                if (string.IsNullOrWhiteSpace(createEmployeeDto.Position))
                 {
                     _logger.LogWarning("Create Employee: Position is required");
                     return ApiResponse<EmployeeDto?>.Fail("Position is required" );
@@ -63,22 +63,22 @@ namespace HrMangmentSystem_Application.Services
 
 
 
-                var DepartmentId = await _departmentRepository.GetByIdAsync(dto.DepartmentId);
+                var DepartmentId = await _departmentRepository.GetByIdAsync(createEmployeeDto.DepartmentId);
                 if (DepartmentId is null)
                 {
-                    _logger.LogWarning($"Create Employee: Department Id {dto.DepartmentId} not found");
-                    return ApiResponse<EmployeeDto?>.Fail($"Department Id {dto.DepartmentId} not found" );
+                    _logger.LogWarning($"Create Employee: Department Id {createEmployeeDto.DepartmentId} not found");
+                    return ApiResponse<EmployeeDto?>.Fail($"Department Id {createEmployeeDto.DepartmentId} not found" );
                 }
 
-                var existingEmployee = await _employeeRepository.FindAsync(e => e.Email == dto.Email);
+                var existingEmployee = await _employeeRepository.FindAsync(e => e.Email == createEmployeeDto.Email);
                 if (existingEmployee.Any())
                 {
-                    _logger.LogWarning($"Create Employee: Employee with email {dto.Email} already exists");
-                    return ApiResponse<EmployeeDto?>.Fail($"Employee with email {dto.Email} already exists" );
+                    _logger.LogWarning($"Create Employee: Employee with email {createEmployeeDto.Email} already exists");
+                    return ApiResponse<EmployeeDto?>.Fail($"Employee with email {createEmployeeDto.Email} already exists" );
                 }
 
 
-                var employee = _mapper.Map<Employee>(dto);
+                var employee = _mapper.Map<Employee>(createEmployeeDto);
                 employee.Password = "Test@123"; // Default password to Test
                
 
@@ -105,7 +105,7 @@ namespace HrMangmentSystem_Application.Services
                 if (employee is null)
                 {
                     _logger.LogWarning($"Delete Employee: Employee Id {employeeId} not found");
-                    return ApiResponse<bool>.Fail("Employee not found");
+                    return ApiResponse<bool>.Fail($"Employee Id {employeeId} not found");
                 }
 
                 await _employeeRepository.DeleteAsync(employeeId, deletedByEmployeeId);
@@ -126,6 +126,8 @@ namespace HrMangmentSystem_Application.Services
             { 
                 var employees = await _employeeRepository.GetAllAsync();
                  var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+
+                _logger.LogInformation("Retrieved all employees successfully");
                 return ApiResponse<List<EmployeeDto>>.Ok(employeeDtos);
             }
             catch (Exception ex)
@@ -159,48 +161,49 @@ namespace HrMangmentSystem_Application.Services
     
 
 
-        public async Task<ApiResponse<bool>> UpdateEmployeeAsync(UpdateEmployeeDto dto)
+        public async Task<ApiResponse<EmployeeDto>> UpdateEmployeeAsync(UpdateEmployeeDto updateDepartmentDto)
         {
             try
             {
-                var employee = await _employeeRepository.GetByIdAsync(dto.Id);
+                var employee = await _employeeRepository.GetByIdAsync(updateDepartmentDto.Id);
                 if (employee is null)
                 {
-                    _logger.LogWarning($"Update Employee: Employee Id {dto.Id} not found");
-                    return ApiResponse<bool>.Fail($"Employee Id : {dto.Id} not found");
+                    _logger.LogWarning($"Update Employee: Employee Id {updateDepartmentDto.Id} not found");
+                    return ApiResponse<EmployeeDto>.Fail($"Employee Id : {updateDepartmentDto.Id} not found");
                 }
-                if (dto.DepartmentId.HasValue)
+                if (updateDepartmentDto.DepartmentId.HasValue)
                 {
-                    var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId.Value);
+                    var department = await _departmentRepository.GetByIdAsync(updateDepartmentDto.DepartmentId.Value);
                     if (department is null)
                     {
-                        _logger.LogWarning($"Update Employee: Department Id {dto.DepartmentId} not found");
-                        return ApiResponse<bool>.Fail($"Department Id {dto.DepartmentId} not found");
+                        _logger.LogWarning($"Update Employee: Department Id {updateDepartmentDto.DepartmentId} not found");
+                        return ApiResponse<EmployeeDto>.Fail($"Department Id {updateDepartmentDto.DepartmentId} not found");
                     }
-                    var departmentId = dto.DepartmentId.Value;
+                    var departmentId = updateDepartmentDto.DepartmentId.Value;
                 }
-                if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
-                    employee.PhoneNumber = dto.PhoneNumber;
+               
 
-                if (dto.DepartmentId.HasValue)
-                    employee.DepartmentId = dto.DepartmentId.Value;
+                if (updateDepartmentDto.DepartmentId.HasValue)
+                    employee.DepartmentId = updateDepartmentDto.DepartmentId.Value;
 
-                if (!string.IsNullOrWhiteSpace(dto.Position))
-                    employee.Position = dto.Position;
+                if (!string.IsNullOrWhiteSpace(updateDepartmentDto.Position))
+                    employee.Position = updateDepartmentDto.Position;
 
-                if (!string.IsNullOrWhiteSpace(dto.Address))
-                    employee.Address = dto.Address;
+                if (!string.IsNullOrWhiteSpace(updateDepartmentDto.Address))
+                    employee.Address = updateDepartmentDto.Address;
 
 
                 _employeeRepository.Update(employee);
                 await _employeeRepository.SaveChangesAsync();
 
-                return ApiResponse<bool>.Ok(true, $"Employee Id {dto.Id} updated successfully");
+                var employeeDto = _mapper.Map<EmployeeDto>(employee);
+
+                return ApiResponse<EmployeeDto>.Ok(employeeDto, $"Employee Id {updateDepartmentDto.Id} updated successfully");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while updating employee");
-                return ApiResponse<bool>.Fail("An error occurred while updating the employee");
+                return ApiResponse<EmployeeDto>.Fail("An error occurred while updating the employee");
             }
 
         }

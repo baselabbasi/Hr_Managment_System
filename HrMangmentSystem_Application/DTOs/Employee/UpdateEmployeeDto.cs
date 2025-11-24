@@ -1,9 +1,12 @@
-﻿namespace HrMangmentSystem_Application.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HrMangmentSystem_Application.DTOs.Employee
 {
     public class UpdateEmployeeDto
     {
         public Guid Id { get; set; }
 
+        [Phone]
         public string? PhoneNumber { get; set; }
         public int? DepartmentId { get; set; }
         public string? Position { get; set; }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.DTOs;
+using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Domain.Entities.Employees;
 
 namespace HrMangmentSystem_Application.Mapper
@@ -9,7 +9,7 @@ namespace HrMangmentSystem_Application.Mapper
         public EmployeeProfile()
         {
             // Entity to DTO
-            CreateMap<Employee, EmployeeDto>();
+            CreateMap<Employee, EmployeeDto>().ReverseMap();
 
             // DTO to Entity
             CreateMap<CreateEmployeeDto, Employee>();

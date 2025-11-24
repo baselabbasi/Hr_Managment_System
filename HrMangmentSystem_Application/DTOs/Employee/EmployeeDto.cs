@@ -1,4 +1,4 @@
-﻿namespace HrMangmentSystem_Application.DTOs
+﻿namespace HrMangmentSystem_Application.DTOs.Employee
 {
     public class EmployeeDto
     {

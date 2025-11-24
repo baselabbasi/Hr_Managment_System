@@ -1,5 +1,5 @@
 ﻿using HrMangmentSystem_Application.Common;
-using HrMangmentSystem_Application.DTOs;
+using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ namespace HrManagmentSystem_API.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetAllEmployees()
+        public async Task<ActionResult<ApiResponse<List<EmployeeDto>>>> GetAllEmployees()
         {
             var result = await _employeeService.GetAllEmployeesAsync();
             return Ok(result);
@@ -30,7 +30,7 @@ namespace HrManagmentSystem_API.Controllers
         public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeById(Guid id)
         {
             var result = await _employeeService.GetEmployeeByIdAsync(id);
-            if (result is null || !result.Success)
+            if (result.Data is null || !result.Success)
             {
                 return NotFound(result);
             }
@@ -39,18 +39,20 @@ namespace HrManagmentSystem_API.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> CreateEmployee([FromBody] CreateEmployeeDto dto)
+        public async Task<ActionResult<ApiResponse<EmployeeDto>>> CreateEmployee([FromBody] CreateEmployeeDto createEmployeeDto) 
         {
             if (!ModelState.IsValid)
-                return BadRequest(ApiResponse<EmployeeDto>.Fail("Invalid data",
-                    error: ModelState.ToDictionary(
-                        k => k.Key,
-                        v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
-                        )));
+            {
+                var error = ModelState.ToDictionary(
+                         k => k.Key,
+                         v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                         );
+                return BadRequest(ApiResponse<EmployeeDto>.Fail("Invalid data", error: error));
+            }
 
-            var result = await _employeeService.CreateEmployeeAsync(dto);
+            var result = await _employeeService.CreateEmployeeAsync(createEmployeeDto);
 
-            if (!result.Success)
+            if (!result.Success || result.Data is null)
             {
                 return BadRequest(result);
             }
@@ -60,15 +62,15 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpPut("{id:guid}")] // update : api/employees/{id}
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> UpdateEmployee(Guid id, [FromBody] UpdateEmployeeDto dto)
+        public async Task<ActionResult<ApiResponse<EmployeeDto>>> UpdateEmployee(Guid id, [FromBody] UpdateEmployeeDto updateEmployeeDto)
         {
-            if (id != dto.Id)
+            if (id != updateEmployeeDto.Id)
             {
                 return BadRequest(ApiResponse<bool>.Fail("ID mismatch"));
             }
-            var result = await _employeeService.UpdateEmployeeAsync(dto);
+            var result = await _employeeService.UpdateEmployeeAsync(updateEmployeeDto);
 
-            if (!result.Success)
+            if (!result.Success || result.Data is null)
             {
                 if(result.Message?.Contains("not found" , StringComparison.OrdinalIgnoreCase) == true)
                     return NotFound(result);
@@ -81,13 +83,14 @@ namespace HrManagmentSystem_API.Controllers
      
         // DELETE: api/Employees/{id}
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> DeleteEmployee(Guid id, [FromQuery] Guid? deletedByEmployeeId)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee(Guid id, [FromQuery] Guid? deletedByEmployeeId)
         {
-            if(deletedByEmployeeId == Guid.Empty)
+            if(deletedByEmployeeId == Guid.Empty || !deletedByEmployeeId.HasValue)
             {
                 return BadRequest(ApiResponse<bool>.Fail("DeletedByEmployeeId is required"));
             }
-            var result = await _employeeService.DeleteEmployeeAsync(id, deletedByEmployeeId);
+
+            var result = await _employeeService.DeleteEmployeeAsync(id, deletedByEmployeeId.Value);
             
             if (!result.Success)
             {

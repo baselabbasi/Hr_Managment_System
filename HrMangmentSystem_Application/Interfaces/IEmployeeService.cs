@@ -1,5 +1,5 @@
 ﻿using HrMangmentSystem_Application.Common;
-using HrMangmentSystem_Application.DTOs;
+using HrMangmentSystem_Application.DTOs.Employee;
 
 namespace HrMangmentSystem_Application.Interfaces
 {
@@ -8,7 +8,7 @@ namespace HrMangmentSystem_Application.Interfaces
         Task<ApiResponse<EmployeeDto>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto);
         Task<ApiResponse<EmployeeDto?>> GetEmployeeByIdAsync(Guid employeeId);
         Task<ApiResponse<List<EmployeeDto>>> GetAllEmployeesAsync();
-        Task<ApiResponse<bool>> UpdateEmployeeAsync(UpdateEmployeeDto updateEmployeeDto);
+        Task<ApiResponse<EmployeeDto>> UpdateEmployeeAsync(UpdateEmployeeDto updateEmployeeDto);
         Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId, Guid? deletedByEmployeeId);
     }
 }
