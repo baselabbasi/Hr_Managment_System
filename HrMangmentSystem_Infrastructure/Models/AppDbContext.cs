@@ -2,6 +2,7 @@
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
+using HrMangmentSystem_Domain.Enum.Employee;
 using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +44,62 @@ namespace HrMangmentSystem_Infrastructure.Models
             base.OnModelCreating(modelBuilder);
 
             // Configure relationships and constraints 
+
+
+            var tenantId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+            var employeeId = Guid.Parse("22222222-2222-2222-2222-222222222222");
+
+            modelBuilder.Entity<Tenant>().HasData(
+                new Tenant
+                {
+                    Id = tenantId,
+                    Name = "Demo Tenant",
+                    Code = "DEMO",
+                    Description = "Seeder Tenant",
+                    IsActive = true,
+                    ContactEmail = "admin@demo.com",
+                    ContactPhone = "+962790000000",
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000000")
+                }
+            );
+
+            modelBuilder.Entity<Department>().HasData(
+                new Department
+                {
+                    Id = 1,
+                    TenantId = tenantId,
+                    Code = "IT",
+                    DeptName = "IT Department",
+                    Description = "Tech Dept",
+                    Location = "HQ",
+                    DepartmentManagerId = null,
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty
+                }
+            );
+
+            modelBuilder.Entity<Employee>().HasData(
+                new Employee
+                {
+                    Id = employeeId,
+                    TenantId = tenantId,
+                    FirstName = "Test",
+                    LastName = "Employee",
+                    Email = "test@demo.com",
+                    PhoneNumber = "0790000000",
+                    Position = "Developer",
+                    Address = "Amman",
+                    DepartmentId = 1,
+                    DateOfBirth = new DateTime(1995, 1, 1),
+                    EmploymentStartDate = new DateTime(2024, 1, 1),
+                    Password = "Test@123",
+                    Gender = (Gender)1,
+                    IsDeleted = false,
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty
+                }
+            );
 
             modelBuilder.Entity<Employee>(entity =>
                {

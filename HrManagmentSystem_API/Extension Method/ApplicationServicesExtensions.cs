@@ -1,5 +1,5 @@
-﻿using HrMangmentSystem_Application.Employees.Interfaces;
-using HrMangmentSystem_Application.Employees.Services;
+﻿using HrMangmentSystem_Application.Interfaces;
+using HrMangmentSystem_Application.Services;
 
 namespace HrManagmentSystem_API.Extension_Method
 {

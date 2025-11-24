@@ -19,7 +19,7 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
         public override async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
         {
             var entity = await _dbSet
-                 .FirstOrDefaultAsync(e => !e.IsDeleted && EqualityComparer<TId>.Default.Equals(e.Id, id));
+                 .FirstOrDefaultAsync(e => !e.IsDeleted && e.Id!.Equals(id));
 
             if (entity == null)
                 return;
@@ -40,7 +40,7 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
         public override async Task<TEntity?> GetByIdAsync(TId id)
         {
             var db = await _dbSet
-                .FirstOrDefaultAsync(e => !e.IsDeleted && EqualityComparer<TId>.Default.Equals(e.Id, id));
+                .FirstOrDefaultAsync(e => !e.IsDeleted &&  e.Id!.Equals(id));
             return db;
 
         }

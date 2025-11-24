@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.Employees.DTOs;
+using HrMangmentSystem_Application.DTOs;
 using HrMangmentSystem_Domain.Entities.Employees;
 
 namespace HrMangmentSystem_Application.Mapper
