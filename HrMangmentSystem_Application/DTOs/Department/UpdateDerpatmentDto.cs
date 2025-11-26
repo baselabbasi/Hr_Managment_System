@@ -1,7 +1,4 @@
-﻿using HrMangmentSystem_Domain.Common;
-using System.ComponentModel.DataAnnotations;
-
-namespace HrMangmentSystem_Application.DTOs.Department
+﻿namespace HrMangmentSystem_Application.DTOs.Department
 {
     public class UpdateDepartmentDto
     {

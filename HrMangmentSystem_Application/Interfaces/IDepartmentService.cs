@@ -1,4 +1,4 @@
-﻿using HrMangmentSystem_Application.Common;
+﻿using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 
 namespace HrMangmentSystem_Application.Interfaces
@@ -13,7 +13,7 @@ namespace HrMangmentSystem_Application.Interfaces
 
         Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
 
-        Task<ApiResponse<bool>> DeleteDepartmentAsync(int departmentId , Guid? deletedByEmployeeId);
+        Task<ApiResponse<bool>> DeleteDepartmentAsync(int departmentId , Guid deletedByEmployeeId);
 
 
 

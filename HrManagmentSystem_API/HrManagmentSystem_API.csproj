@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HrMangmentSystem_Application\HrMangmentSystem_Application.csproj" />
     <ProjectReference Include="..\HrMangmentSystem_Infrastructure\HrMangmentSystem_Infrastructure.csproj" />
+    <ProjectReference Include="..\HrMangmentSystem_Shared\HrMangmentSystem_Shared.csproj" />
   </ItemGroup>
 
 </Project>

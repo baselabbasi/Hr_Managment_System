@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Department_HasChildren" xml:space="preserve">
+    <value>Cannot delete department because it has child departments.</value>
+  </data>
+  <data name="Department_HasEmployees" xml:space="preserve">
+    <value>Cannot delete department because employees are assigned to it.</value>
+  </data>
+  <data name="Department_CannotBeOwnParent" xml:space="preserve">
+    <value>Department cannot be parent of itself.</value>
+  </data>
+  <data name="Department_CodeExists" xml:space="preserve">
+    <value>Department code is already in use.</value>
+  </data>
+  <data name="Department_CodeRequired" xml:space="preserve">
+    <value>DeptName and Code are required.</value>
+  </data>
+  <data name="Department_Created" xml:space="preserve">
+    <value>Department created successfully.</value>
+  </data>
+  <data name="Department_Deleted" xml:space="preserve">
+    <value>Department deleted successfully.</value>
+  </data>
+  <data name="Department_ManagerAssigned" xml:space="preserve">
+    <value>Cannot delete department because it has a manager assigned.</value>
+  </data>
+  <data name="Department_NotFound" xml:space="preserve">
+    <value>Department not found.</value>
+  </data>
+  <data name="Department_ParentNotFound" xml:space="preserve">
+    <value>Parent department not found.</value>
+  </data>
+  <data name="Department_Updated" xml:space="preserve">
+    <value>Department updated successfully.</value>
+  </data>
+  <data name="Generic_IdMismatch" xml:space="preserve">
+    <value>ID mismatch.</value>
+  </data>
+  <data name="Generic_InvalidData" xml:space="preserve">
+    <value>Invalid request data.</value>
+  </data>
+  <data name="Generic_NotFound" xml:space="preserve">
+    <value>Resource not found.</value>
+  </data>
+  <data name="Generic_OperationFailed" xml:space="preserve">
+    <value>Operation failed.</value>
+  </data>
+  <data name="Generic_OperationSucceeded" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="Generic_UnexpectedError" xml:space="preserve">
+    <value>An unexpected error occurred.</value>
+  </data>
+  <data name="Employee_NotFound" xml:space="preserve">
+    <value>Employee not found.</value>
+  </data>
+  <data name="Employee_Created" xml:space="preserve">
+    <value>Employee created successfully.</value>
+  </data>
+  <data name="Employee_Updated" xml:space="preserve">
+    <value>Employee updated successfully.</value>
+  </data>
+  <data name="Employee_Deleted" xml:space="preserve">
+    <value>Employee deleted successfully.</value>
+  </data>
+  <data name="Employee_EmailExists" xml:space="preserve">
+    <value>Employee with this email already exists.</value>
+  </data>
+  <data name="Employee_BasicFieldsRequired" xml:space="preserve">
+    <value>First name, last name and email are required.</value>
+  </data>
+  <data name="Employee_InvalidDateOfBirth" xml:space="preserve">
+    <value>Invalid date of birth.</value>
+  </data>
+  <data name="Employee_InvalidEmploymentDate" xml:space="preserve">
+    <value>Invalid employment start date.</value>
+  </data>
+  <data name="Employee_MustBeAdult" xml:space="preserve">
+    <value>Employee must be at least 18 years old.</value>
+  </data>
+  <data name="Employee_PositionRequired" xml:space="preserve">
+    <value>Position is required.</value>
+  </data>
+  <data name="Employee_DepartmentNotFound" xml:space="preserve">
+    <value>Department for this employee was not found.</value>
+  </data>
+  <data name="Employee_HasSubordinates" xml:space="preserve">
+    <value>Cannot delete employee because they have subordinates.</value>
+  </data>
+  <data name="Employee_IsDepartmentManager" xml:space="preserve">
+    <value>Cannot delete employee because they are assigned as manager.</value>
+  </data>
+  <data name="Delete_DeletedByRequired" xml:space="preserve">
+    <value>DeletedByEmployeeId is required.</value>
+  </data>
+  <data name="Delete_Forbidden" xml:space="preserve">
+    <value>You cannot delete this resource.</value>
+  </data>
+  <data name="Employee_ListLoaded" xml:space="preserve">
+    <value>Employees loaded successfully.</value>
+  </data>
+  <data name="Department_ListLoaded" xml:space="preserve">
+    <value>Departments loaded successfully.</value>
+  </data>
+  <data name="Pagination_InvalidPageNumber" xml:space="preserve">
+    <value>Invalid page number.</value>
+  </data>
+  <data name="Pagination_InvalidPageSize" xml:space="preserve">
+    <value>Invalid page size.</value>
+  </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>Invalid email or password.</value>
+  </data>
+  <data name="Auth_LoginSuccess" xml:space="preserve">
+    <value>Login successful.</value>
+  </data>
+  <data name="Auth_Unauthorized" xml:space="preserve">
+    <value>You are not authorized.</value>
+  </data>
+</root>

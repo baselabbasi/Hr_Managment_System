@@ -1,4 +1,4 @@
-﻿namespace HrMangmentSystem_Application.Common
+﻿namespace HrMangmentSystem_Application.Common.Responses
 {
     public class ApiResponse<T>
     {

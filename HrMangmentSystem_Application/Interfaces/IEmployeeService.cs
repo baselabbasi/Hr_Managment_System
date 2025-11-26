@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Application.Common;
+﻿using HrMangmentSystem_Application.Common.PagedRequest;
+using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Employee;
 
 namespace HrMangmentSystem_Application.Interfaces
@@ -9,6 +10,8 @@ namespace HrMangmentSystem_Application.Interfaces
         Task<ApiResponse<EmployeeDto?>> GetEmployeeByIdAsync(Guid employeeId);
         Task<ApiResponse<List<EmployeeDto>>> GetAllEmployeesAsync();
         Task<ApiResponse<EmployeeDto>> UpdateEmployeeAsync(UpdateEmployeeDto updateEmployeeDto);
-        Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId, Guid? deletedByEmployeeId);
+        Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId, Guid deletedByEmployeeId);
+
+        Task<ApiResponse<PagedResult<EmployeeDto>>> GetEmployeesPagedAsync(PagedRequest request);
     }
 }

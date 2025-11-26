@@ -1,4 +1,4 @@
-﻿using HrMangmentSystem_Application.Common;
+﻿using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 using HrMangmentSystem_Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -80,7 +80,7 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpDelete("{id:int}")] // delete : api/departments/{id}
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteDepartment(int id, [FromQuery] Guid? deletedByEmployeeId)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteDepartment(int id, [FromQuery] Guid deletedByEmployeeId)
         {
             var result = await _departmentService.DeleteDepartmentAsync(id, deletedByEmployeeId);
             if (!result.Success)

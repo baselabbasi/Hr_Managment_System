@@ -1,8 +1,4 @@
-
-using HrMangmentSystem_Application.Extension_Method;
-using HrMangmentSystem_Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
-
+using HrMangmentSystem_API.Extension_Method;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationService();
 builder.Services.AddAutoMapperProfiles();
 builder.Services.AddConfigureDatabases(builder.Configuration);
+builder.Services.AddLocaizationResource(); 
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDbContext>(
-    options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "");
+
 
 
 
@@ -29,6 +26,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseAddLocalization(); 
 
 app.UseHttpsRedirection();
 

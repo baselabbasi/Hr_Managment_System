@@ -1,7 +1,7 @@
-﻿using HrMangmentSystem_Application.Common;
+﻿using HrMangmentSystem_Application.Common.PagedRequest;
+using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrManagmentSystem_API.Controllers
@@ -12,19 +12,29 @@ namespace HrManagmentSystem_API.Controllers
     {
         private readonly IEmployeeService _employeeService;
 
+
         public EmployeesController( IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
 
         // GET: api/Employees
+        //[HttpGet]
+        //public async Task<ActionResult<ApiResponse<List<EmployeeDto>>>> GetAllEmployees()
+        //{
+        //    var result = await _employeeService.GetAllEmployeesAsync();
+
+        //    return  Ok(result);
+        //}
+
+        
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<EmployeeDto>>>> GetAllEmployees()
+        public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetAllEmployees([FromQuery] PagedRequest request)
         {
-            var result = await _employeeService.GetAllEmployeesAsync();
+            var result = await _employeeService.GetEmployeesPagedAsync(request);
+
             return Ok(result);
         }
-
         // GET: api/Employees/{id}
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeById(Guid id)

@@ -1,7 +1,4 @@
-﻿using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Entities.Employees;
-
-namespace HrMangmentSystem_Application.DTOs.Department
+﻿namespace HrMangmentSystem_Application.DTOs.Department
 {
     public class DepartmentDto
     {

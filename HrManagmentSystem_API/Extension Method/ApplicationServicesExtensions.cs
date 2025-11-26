@@ -2,7 +2,7 @@
 using HrMangmentSystem_Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HrMangmentSystem_Application.Extension_Method
+namespace HrMangmentSystem_API.Extension_Method
 {
     public static class ApplicationServiceExtensions
     {

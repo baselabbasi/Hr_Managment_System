@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace HrMangmentSystem_Application.Extension_Method
+namespace HrMangmentSystem_API.Extension_Method
 {
     public static class AutoMapperExtensions
     {

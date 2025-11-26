@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HrMangmentSystem_Domin\HrMangmentSystem_Domain.csproj" />
+    <ProjectReference Include="..\HrMangmentSystem_Shared\HrMangmentSystem_Shared.csproj" />
   </ItemGroup>
 
 </Project>
