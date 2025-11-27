@@ -4,7 +4,7 @@ using HrMangmentSystem_Application.DTOs.Employee;
 
 namespace HrMangmentSystem_Application.Interfaces
 {
-    public interface IEmployeeService
+    public interface IEmployeeService 
     {
         Task<ApiResponse<EmployeeDto>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto);
         Task<ApiResponse<EmployeeDto?>> GetEmployeeByIdAsync(Guid employeeId);

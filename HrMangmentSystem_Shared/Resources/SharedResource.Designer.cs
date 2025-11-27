@@ -340,6 +340,24 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee is already has role.
+        /// </summary>
+        internal static string EmployeeRole_AlreadyAssigned {
+            get {
+                return ResourceManager.GetString("EmployeeRole_AlreadyAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee role defualt assigned to employee.
+        /// </summary>
+        internal static string EmployeeRole_Assigned {
+            get {
+                return ResourceManager.GetString("EmployeeRole_Assigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID mismatch..
         /// </summary>
         internal static string Generic_IdMismatch {
@@ -408,6 +426,15 @@ namespace HrMangmentSystem_Shared.Resources {
         internal static string Pagination_InvalidPageSize {
             get {
                 return ResourceManager.GetString("Pagination_InvalidPageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default role is employee not found.
+        /// </summary>
+        internal static string Role_DefaultNotFound {
+            get {
+                return ResourceManager.GetString("Role_DefaultNotFound", resourceCulture);
             }
         }
     }

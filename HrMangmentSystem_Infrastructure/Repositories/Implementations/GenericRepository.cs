@@ -22,6 +22,14 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
             await _dbSet.AddAsync(entity);
             
         }
+        public virtual IQueryable<TEntity> Query(bool asNoTracking = true)
+        {
+            var query = _dbSet.AsQueryable();
+            if (asNoTracking)
+                query = query.AsNoTracking();
+
+            return query;
+        }
 
         public virtual async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
         {

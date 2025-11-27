@@ -1,8 +1,9 @@
-﻿using HrMangmentSystem_Domain.Entities.Employees;
+﻿using HrMangmentSystem_Domain.Common;
+using HrMangmentSystem_Domain.Entities.Employees;
 
 namespace HrMangmentSystem_Domain.Entities.Roles
 {
-    public class EmployeeRole
+    public class EmployeeRole : TenantEntity<int>
     {
         public Guid EmployeeId { get; set; } 
         public Employee Employee { get; set; } = null!;

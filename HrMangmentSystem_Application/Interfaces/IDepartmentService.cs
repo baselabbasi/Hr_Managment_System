@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Application.Common.Responses;
+﻿using HrMangmentSystem_Application.Common.PagedRequest;
+using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 
 namespace HrMangmentSystem_Application.Interfaces
@@ -10,6 +11,8 @@ namespace HrMangmentSystem_Application.Interfaces
         Task<ApiResponse<DepartmentDto?>> GetDepartmentByIdAsync(int departmentId);
 
         Task<ApiResponse<List<DepartmentDto>>> GetAllDepartmentsAsync();
+
+        Task<ApiResponse<PagedResult<DepartmentDto>>> GetDepartmentPagedAsync(PagedRequest request);
 
         Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
 

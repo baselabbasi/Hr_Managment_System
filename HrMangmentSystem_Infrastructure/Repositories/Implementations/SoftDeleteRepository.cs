@@ -34,6 +34,7 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
         public override async Task<List<TEntity>> GetAllAsync()
         {
             var db = await _dbSet.Where(e => !e.IsDeleted).ToListAsync();
+
             return db;
         }
 
@@ -41,16 +42,21 @@ namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
         {
             var db = await _dbSet
                 .FirstOrDefaultAsync(e => !e.IsDeleted &&  e.Id!.Equals(id));
-            return db;
+          return db;
 
         }
         public override async Task<List<TEntity>> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
             var db = await _dbSet.Where(e => !e.IsDeleted).Where(predicate).ToListAsync();
-            return db;
+           
+           return db;
 
         }
-    
+        public override IQueryable<TEntity> Query(bool asNoTracking = true)
+        {
+            return base.Query(asNoTracking).Where(e => !e.IsDeleted) ;
+        }
+
 
 
 

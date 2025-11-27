@@ -13,6 +13,7 @@ namespace HrMangmentSystem_API.Extension_Method
 
             services.AddScoped<IDepartmentService, DepartmentService>();
 
+        
 
             return services;
         }

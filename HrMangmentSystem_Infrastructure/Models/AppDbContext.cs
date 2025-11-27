@@ -1,10 +1,12 @@
-﻿using HrMangmentSystem_Domain.Entities.Employees;
+﻿using HrMangmentSystem_Domain.Constants;
+using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Domain.Enum.Employee;
 using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace HrMangmentSystem_Infrastructure.Models
 {
@@ -101,6 +103,54 @@ namespace HrMangmentSystem_Infrastructure.Models
                 }
             );
 
+            modelBuilder.Entity<Role>().HasData(
+                new Role
+                {
+                    Id = 1,
+                    Name = RoleNames.SystemAdmin,
+                    Description = "System administrator",
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty,
+                    TenantId = tenantId
+                },
+                 new Role
+                 {
+                     Id = 2,
+                     Name = RoleNames.HrAdmin,
+                     Description = "Hr Manager",
+                     CreatedAt = new DateTime(2024, 1, 1),
+                     CreatedBy = Guid.Empty,
+                     TenantId = tenantId
+
+                 },
+                new Role
+                {
+                    Id = 3,
+                    Name = RoleNames.Manager,
+                    Description = "Manager",
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty,
+                    TenantId = tenantId
+                },
+                new Role
+                {
+                    Id = 4,
+                    Name = RoleNames.Employee,
+                    Description = "Regular employee",
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty,
+                    TenantId = tenantId
+                },
+                new Role
+                {
+                    Id = 5,
+                    Name = RoleNames.Recruiter,
+                    Description = "Recruitment role",
+                    CreatedAt = new DateTime(2024, 1, 1),
+                    CreatedBy = Guid.Empty,
+                    TenantId = tenantId
+                }
+            );
             modelBuilder.Entity<Employee>(entity =>
                {
                    entity.HasKey(e => e.Id);
@@ -263,23 +313,27 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .OnDelete(DeleteBehavior.Restrict);
             });
 
-           modelBuilder.Entity<Tenant>(entity =>
-            {
-                entity.HasKey(t => t.Id);
-                entity.HasIndex(t => t.Name).IsUnique(true);
-            });
+            modelBuilder.Entity<Tenant>(entity =>
+             {
+                 entity.HasKey(t => t.Id);
+                 entity.HasIndex(t => t.Name).IsUnique(true);
+             });
 
-            modelBuilder.Entity<EmployeeRole>()
-                .HasKey(er => new { er.EmployeeId, er.RoleId });
+            modelBuilder.Entity<EmployeeRole>(entity => {
+                entity.HasKey(er => er.Id);
 
-            modelBuilder.Entity<EmployeeRole>()
-                .HasOne(er => er.Employee)
+                entity.HasIndex(er => new { er.EmployeeId, er.RoleId }).IsUnique();
+
+                entity.HasOne(er => er.Employee)
                 .WithMany(e => e.EmployeeRoles)
                 .HasForeignKey(er => er.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
-
+                entity.HasOne(er => er.Role)
+                .WithMany(r => r.EmployeeRoles)
+                .HasForeignKey(er => er.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
         }
-
     }
 }

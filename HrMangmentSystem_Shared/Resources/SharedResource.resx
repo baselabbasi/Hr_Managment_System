@@ -234,4 +234,13 @@
   <data name="Auth_Unauthorized" xml:space="preserve">
     <value>You are not authorized.</value>
   </data>
+  <data name="Role_DefaultNotFound" xml:space="preserve">
+    <value>Default role is employee not found</value>
+  </data>
+  <data name="EmployeeRole_AlreadyAssigned" xml:space="preserve">
+    <value>Employee is already has role</value>
+  </data>
+  <data name="EmployeeRole_Assigned" xml:space="preserve">
+    <value>Employee role defualt assigned to employee</value>
+  </data>
 </root>

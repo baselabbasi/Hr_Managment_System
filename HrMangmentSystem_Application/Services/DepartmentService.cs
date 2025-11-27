@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using HrManagmentSystem_Shared.Common.Resources;
+using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
+using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -161,6 +164,86 @@ namespace HrMangmentSystem_Application.Services
             }
          }
 
+        public async Task<ApiResponse<PagedResult<DepartmentDto>>> GetDepartmentPagedAsync(PagedRequest request)
+        {
+            try
+            {
+                if (request.PageNumber <= 0)
+                    request.PageNumber = 1;
+
+                if (request.PageSize <= 0)
+                    request.PageSize = 10;
+
+                var query = _departmentRepository.Query();
+
+                if (!string.IsNullOrWhiteSpace(request.Term))
+                {
+                    var term = request.Term.Trim().ToLower();
+
+                    query = query.Where(d =>
+                        (!string.IsNullOrEmpty(d.DeptName) && d.DeptName.ToLower().Contains(term)) ||
+                        (!string.IsNullOrEmpty(d.Code) && d.Code.ToLower().Contains(term)) ||
+                        (!string.IsNullOrEmpty(d.Location) && d.Location.ToLower().Contains(term)));
+                }
+                if (!string.IsNullOrWhiteSpace(request.SortBy))
+                {
+                    var sort = request.SortBy.Trim().ToLower();
+
+                    query = sort switch
+                    {
+                        "deptname" => request.Desc
+                        ? query.OrderByDescending(d => d.DeptName)
+                        : query.OrderBy(d => d.DeptName),
+
+                        "code" => request.Desc
+                        ? query.OrderByDescending(d => d.Code)
+                        : query.OrderBy(d => d.Code),
+
+                        "location" => request.Desc
+                        ? query.OrderByDescending(d => d.Location)
+                        : query.OrderBy(d => d.Location),
+
+                        _ => request.Desc
+                        ? query.OrderByDescending(d => d.DeptName)
+                        : query.OrderBy(d => d.DeptName)
+                    };
+
+                }
+                else
+                {
+                    query = query.OrderBy(d => d.DeptName);
+                }
+
+                var totalCount = await query.CountAsync();
+
+                var items = await query
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync();
+
+                var dtoItems = _mapper.Map<List<DepartmentDto>>(items);
+
+                var pagedResult = new PagedResult<DepartmentDto>
+                {
+                    Items = dtoItems,
+                    TotalCount = totalCount,
+                    Page = request.PageNumber,
+                    PageSize = request.PageSize
+
+                };
+
+                _logger.LogInformation($"Retrieved department page {request.PageNumber} with page size {request.PageSize}");
+
+
+                return ApiResponse<PagedResult<DepartmentDto>>.Ok(pagedResult, _localizer["Department_ListLoaded"]);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving department with pagination ");
+                return ApiResponse<PagedResult<DepartmentDto>>.Fail(_localizer["Generic.UnexpectedError"]);
+            }
+
+         }
         public async Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto)
         {
             try

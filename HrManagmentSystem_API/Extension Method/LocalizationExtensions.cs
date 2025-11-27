@@ -1,6 +1,5 @@
 ﻿using HrManagmentSystem_Shared.Common.Resources;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 
@@ -29,7 +28,7 @@ namespace HrMangmentSystem_API.Extension_Method
 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture("en"),
+                DefaultRequestCulture = new RequestCulture("ar"),
                 SupportedCultures = supportedCulture,
                 SupportedUICultures = supportedCulture,
                 

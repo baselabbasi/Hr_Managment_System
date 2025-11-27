@@ -234,4 +234,13 @@
   <data name="Auth_Unauthorized" xml:space="preserve">
     <value>غير مصرح لك بتنفيذ هذه العملية.</value>
   </data>
+  <data name="Role_DefaultNotFound" xml:space="preserve">
+    <value>المسؤولية الافتراضية للموظف غير موجودة.</value>
+  </data>
+  <data name="EmployeeRole_AlreadyAssigned" xml:space="preserve">
+    <value>الموظف لديه دور/ مسؤولية  بالأصل</value>
+  </data>
+  <data name="EmployeeRole_Assigned" xml:space="preserve">
+    <value>تم اسناد الدور/المسؤولية الى الموظف المعني</value>
+  </data>
 </root>

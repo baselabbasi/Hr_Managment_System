@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Application.Common.Responses;
+﻿using HrMangmentSystem_Application.Common.PagedRequest;
+using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 using HrMangmentSystem_Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,18 @@ namespace HrManagmentSystem_API.Controllers
             _departmentService = departmentService;
         }
 
-
+        /*
         [HttpGet] // get all : api/departments
         public async Task<ActionResult<ApiResponse<DepartmentDto>>> GetAllDepartments()
         {
             var result = await _departmentService.GetAllDepartmentsAsync();
+            return Ok(result);
+        }*/
+
+        [HttpGet] // get all : api/departments
+        public async Task<ActionResult<ApiResponse<DepartmentDto>>> GetAllDepartments([FromQuery] PagedRequest request)
+        {
+            var result = await _departmentService.GetDepartmentPagedAsync(request);
             return Ok(result);
         }
 
