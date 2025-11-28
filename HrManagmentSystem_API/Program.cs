@@ -1,3 +1,4 @@
+using HrManagmentSystem_API.Middleware;
 using HrMangmentSystem_API.Extension_Method;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,10 +27,14 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseAuthentication();
 
-app.UseAddLocalization(); 
+app.UseAddLocalization();
+
+app.UseMiddleware<CurrentTenantMiddleware>(); //after Authentication : because httpContext.User fill from JWT 
 
 app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 

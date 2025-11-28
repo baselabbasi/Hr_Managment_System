@@ -358,6 +358,24 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmployeeRole_NotFound {
+            get {
+                return ResourceManager.GetString("EmployeeRole_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string EmployeeRole_Updated {
+            get {
+                return ResourceManager.GetString("EmployeeRole_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID mismatch..
         /// </summary>
         internal static string Generic_IdMismatch {
@@ -430,11 +448,20 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default role is employee not found.
+        ///   Looks up a localized string similar to Role_NameRequired.
         /// </summary>
-        internal static string Role_DefaultNotFound {
+        internal static string Role_NameRequired {
             get {
-                return ResourceManager.GetString("Role_DefaultNotFound", resourceCulture);
+                return ResourceManager.GetString("Role_NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role employee not found.
+        /// </summary>
+        internal static string Role_NotFound {
+            get {
+                return ResourceManager.GetString("Role_NotFound", resourceCulture);
             }
         }
     }

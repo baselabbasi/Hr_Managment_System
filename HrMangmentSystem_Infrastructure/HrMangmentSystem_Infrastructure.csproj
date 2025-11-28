@@ -17,9 +17,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HrMangmentSystem_Application\HrMangmentSystem_Application.csproj" />
     <ProjectReference Include="..\HrMangmentSystem_Domin\HrMangmentSystem_Domain.csproj" />
     <ProjectReference Include="..\HrMangmentSystem_Shared\HrMangmentSystem_Shared.csproj" />
   </ItemGroup>

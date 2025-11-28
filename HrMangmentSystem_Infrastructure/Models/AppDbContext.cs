@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Domain.Constants;
+﻿using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
@@ -12,9 +13,10 @@ namespace HrMangmentSystem_Infrastructure.Models
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private readonly ICurrentTenant _currentTenant;
+        public AppDbContext(DbContextOptions<AppDbContext> options ,ICurrentTenant currentTenant) : base(options)
         {
-
+            _currentTenant = currentTenant;
         }
         public DbSet<Employee> Employees { get; set; }
 
@@ -95,7 +97,7 @@ namespace HrMangmentSystem_Infrastructure.Models
                     DepartmentId = 1,
                     DateOfBirth = new DateTime(1995, 1, 1),
                     EmploymentStartDate = new DateTime(2024, 1, 1),
-                    Password = "Test@123",
+                    PasswordHash = "Test@123",
                     Gender = (Gender)1,
                     IsDeleted = false,
                     CreatedAt = new DateTime(2024, 1, 1),
@@ -174,6 +176,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                          .HasForeignKey(e => e.TenantId)
                          .OnDelete(DeleteBehavior.Restrict);
 
+                   entity.HasQueryFilter(e =>
+                       !_currentTenant.IsSet ||
+                         e.TenantId == _currentTenant.TenantId);
+
                });
 
             modelBuilder.Entity<Department>(entity =>
@@ -189,6 +195,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .WithMany()
                         .HasForeignKey(d => d.TenantId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(d =>
+                      !_currentTenant.IsSet ||
+                    d.TenantId == _currentTenant.TenantId);
             });
 
             modelBuilder.Entity<JobPosition>(entity =>
@@ -209,6 +219,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(jp => jp.TenantId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(jp =>
+                      !_currentTenant.IsSet ||
+                    jp.TenantId == _currentTenant.TenantId);
             });
             modelBuilder.Entity<JobApplication>(entity =>
             {
@@ -228,6 +242,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(ja => ja.DocumentCvId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(ja =>
+                      !_currentTenant.IsSet ||
+                    ja.TenantId == _currentTenant.TenantId);
             });
 
             modelBuilder.Entity<DocumentCv>(entity =>
@@ -238,6 +256,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(dc => dc.TenantId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(dc =>
+                      !_currentTenant.IsSet ||
+                    dc.TenantId == _currentTenant.TenantId);
 
             });
             modelBuilder.Entity<DocumentEmployeeInfo>(entity =>
@@ -253,6 +275,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .WithMany()
                         .HasForeignKey(dei => dei.TenantId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(dei =>
+                     !_currentTenant.IsSet ||
+                    dei.TenantId == _currentTenant.TenantId);
+
             });
             modelBuilder.Entity<GenericRequest>(entity =>
             {
@@ -266,6 +293,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .WithMany()
                         .HasForeignKey(gr => gr.TenantId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(gr =>
+                      !_currentTenant.IsSet ||
+                    gr.TenantId == _currentTenant.TenantId);
             });
             modelBuilder.Entity<LeaveRequest>(entity =>
             {
@@ -279,6 +310,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .WithMany()
                       .HasForeignKey(lr => lr.TenantId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(lr =>
+                      !_currentTenant.IsSet ||
+                    lr.TenantId == _currentTenant.TenantId);
             });
             modelBuilder.Entity<EmployeeDataChange>(entity =>
             {
@@ -292,6 +327,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .WithMany()
                         .HasForeignKey(edc => edc.TenantId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(edc =>
+                      !_currentTenant.IsSet ||
+                    edc.TenantId == _currentTenant.TenantId);
             });
             modelBuilder.Entity<RequestHistory>(entity =>
             {
@@ -311,12 +350,16 @@ namespace HrMangmentSystem_Infrastructure.Models
                         .WithMany()
                         .HasForeignKey(h => h.TenantId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(h =>
+                      !_currentTenant.IsSet ||
+                    h.TenantId == _currentTenant.TenantId);
             });
 
             modelBuilder.Entity<Tenant>(entity =>
              {
                  entity.HasKey(t => t.Id);
-                 entity.HasIndex(t => t.Name).IsUnique(true);
+                 entity.HasIndex(t => t.Code).IsUnique(true);
              });
 
             modelBuilder.Entity<EmployeeRole>(entity => {
@@ -333,7 +376,28 @@ namespace HrMangmentSystem_Infrastructure.Models
                 .WithMany(r => r.EmployeeRoles)
                 .HasForeignKey(er => er.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
-        });
+
+
+                entity.HasQueryFilter(er =>
+                      !_currentTenant.IsSet ||
+                    er.TenantId == _currentTenant.TenantId);
+            });
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasKey(r => r.Id);
+
+                entity.Property(r => r.Name).IsRequired();
+
+                entity.HasMany(r => r.EmployeeRoles)
+                .WithOne(er => er.Role)
+                .HasForeignKey(er => er.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+                entity.HasQueryFilter(r =>
+                      !_currentTenant.IsSet ||
+                    r.TenantId == _currentTenant.TenantId);
+            });
         }
     }
 }

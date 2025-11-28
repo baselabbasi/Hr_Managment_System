@@ -5,7 +5,7 @@
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
 
-        public Guid TenantId { get; set; }
+        public string TenantCode { get; set; } = null!;
 
 
     }
@@ -24,5 +24,8 @@
         public Guid TenantId { get; set; }
 
         public List<string> Roles { get; set; } = new();
+        
+        public bool MustChangePassword { get; set; }
+
     }
 }

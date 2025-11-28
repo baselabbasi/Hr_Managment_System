@@ -4,6 +4,7 @@ using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrMangmentSystem_Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251127145217_Edit Tenant Code I]is unique")]
+    partial class EditTenantCodeIisunique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,16 +223,10 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastPasswordChangeAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid?>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("MustChangePassword")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -280,8 +277,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                             Gender = 1,
                             IsDeleted = false,
                             LastName = "Employee",
-                            MustChangePassword = false,
-                            PasswordHash = "Test@123",
+                            Password = "Test@123",
                             PhoneNumber = "0790000000",
                             Position = "Developer",
                             TenantId = new Guid("11111111-1111-1111-1111-111111111111")

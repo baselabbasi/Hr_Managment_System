@@ -1,10 +1,10 @@
 ﻿using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Infrastructure.Models;
-using HrMangmentSystem_Infrastructure.Repositories.Interfaces;
+using HrMangmentSystem_Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
+namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
 {
     public class GenericRepository<TEntity, TId> : IGenericRepository<TEntity, TId> where TEntity : TenantEntity<TId>
     {

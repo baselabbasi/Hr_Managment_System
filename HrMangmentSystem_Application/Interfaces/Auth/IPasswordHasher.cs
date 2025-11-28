@@ -1,4 +1,4 @@
-﻿namespace HrMangmentSystem_Application.Interfaces
+﻿namespace HrMangmentSystem_Application.Interfaces.Auth
 {
     public interface IPasswordHasher
     {

@@ -3,11 +3,9 @@ using HrManagmentSystem_Shared.Common.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Employee;
-using HrMangmentSystem_Application.Interfaces;
-using HrMangmentSystem_Domain.Constants;
+using HrMangmentSystem_Application.Interfaces.Repositories;
+using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Employees;
-using HrMangmentSystem_Domain.Entities.Roles;
-using HrMangmentSystem_Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -17,29 +15,26 @@ namespace HrMangmentSystem_Application.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IGenericRepository<Employee, Guid> _employeeRepository;
-        private readonly IMapper _mapper;
         private readonly IGenericRepository<Department, int> _departmentRepository;
+        private readonly IEmployeeRoleService _employeeRoleService;
+        private readonly IMapper _mapper;
         private readonly ILogger<EmployeeService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IGenericRepository<EmployeeRole, int> _employeeRoleRepository;
-        private readonly IGenericRepository<Role, int> _roleRepository;
-
+    
         public EmployeeService(IGenericRepository<Employee, Guid> employeeRepository,
-            IMapper mapper,
             IGenericRepository<Department, int> deparmentRepository,
             ILogger<EmployeeService> logger,
+               IMapper mapper,
            IStringLocalizer<SharedResource> localizer,
-           IGenericRepository<EmployeeRole, int> employeeRoleRepository,
-           IGenericRepository<Role , int> roleRepository
+          IEmployeeRoleService employeeRoleService
             )
         {
             _employeeRepository = employeeRepository;
-            _mapper = mapper;
             _departmentRepository = deparmentRepository;
-            _roleRepository = roleRepository;
-            _employeeRoleRepository = employeeRoleRepository;
             _logger = logger;
+            _mapper = mapper;
             _localizer = localizer;
+            _employeeRoleService = employeeRoleService;
         }
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
@@ -95,14 +90,16 @@ namespace HrMangmentSystem_Application.Services
 
 
                 var employee = _mapper.Map<Employee>(createEmployeeDto);
-                employee.Password = "Test@123"; // Default password to Test
+                employee.PasswordHash = "Test@123"; // Default password to Test
 
-
+              //  var tempPassword = GenerateRandomPassword(12);
 
                 await _employeeRepository.AddAsync(employee);
+
                 await _employeeRepository.SaveChangesAsync();
 
-                await AssignDefaultRoleToEmployeeAsync(employee.Id);
+                await _employeeRoleService.AssignDefaultRoleToEmployeeAsync(employee.Id);
+                  
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);
 
@@ -202,7 +199,7 @@ namespace HrMangmentSystem_Application.Services
             }
         }
 
-        public async Task<ApiResponse<PagedResult<EmployeeDto>>> GetEmployeesPagedAsync(PagedRequest request)
+        public async Task<ApiResponse<PagedResult<EmployeeDto>>> GetEmployeesPagedAsync(PagedRequest request) 
         {
             try
             {
@@ -335,46 +332,7 @@ namespace HrMangmentSystem_Application.Services
         }
 
 
-        private async Task<ApiResponse<bool>> AssignDefaultRoleToEmployeeAsync(Guid employeeId)
-        {
-            var employee = await _employeeRepository.GetByIdAsync(employeeId);
-            if (employee == null)
-            {
-                _logger.LogWarning($"AssignDefaultRole: Employee {employeeId} not found");
-                return ApiResponse<bool>.Fail(_localizer["Employee_NotFound"]);
-            }
-
-            var defaultRoleList = await _roleRepository.FindAsync(r => r.Name == RoleNames.Employee);
-            var defaultRole = defaultRoleList.FirstOrDefault();
-
-            if (defaultRole == null)
-            {
-                _logger.LogError($"AssignDefaultRole: Default role {RoleNames.Employee} not found");
-                return ApiResponse<bool>.Fail(_localizer["Role_DefaultNotFound"]);
-            }
-
-            var existing = await _employeeRoleRepository.FindAsync(
-           er => er.EmployeeId == employeeId && er.RoleId == defaultRole.Id);
-
-            if (existing.Any())
-            {
-                _logger.LogInformation($"AssignDefaultRole: Employee {employeeId} already has role {RoleNames.Employee}");
-                return ApiResponse<bool>.Ok(true,_localizer["Role_DefaultNotFound"]);
-            }
-
-            var employeeRole = new EmployeeRole
-            {
-                EmployeeId = employeeId,
-                RoleId = defaultRole.Id
-              
-            };
-
-            await _employeeRoleRepository.AddAsync(employeeRole);
-            await _employeeRoleRepository.SaveChangesAsync();
-
-            _logger.LogInformation($"AssignDefaultRole: Role {RoleNames.Employee} assigned to Employee {employeeId}");
-            return ApiResponse<bool>.Ok(true, _localizer["EmployeeRole_Assigned"]);
-        }
+       
     }
 
  }

@@ -23,7 +23,10 @@ namespace HrMangmentSystem_Domain.Entities.Employees
 
         public Gender Gender { get; set; }
 
-        public string Password { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
+        public bool MustChangePassword { get; set; }
+        public DateTime? LastPasswordChangeAt { get; set; }
+
         public string Position { get; set; } = null!;
         public string Address { get; set; } = null!;
 

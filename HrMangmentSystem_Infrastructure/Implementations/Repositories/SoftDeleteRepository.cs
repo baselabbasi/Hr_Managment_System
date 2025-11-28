@@ -2,7 +2,7 @@
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HrMangmentSystem_Infrastructure.Repositories.Implementations
+namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
 {
     public class SoftDeleteRepository<TEntity, TId> : GenericRepository<TEntity, TId> where TEntity : SoftDeletable<TId>
     {

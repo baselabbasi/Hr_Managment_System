@@ -1,7 +1,7 @@
 ﻿using HrMangmentSystem_Domain.Common;
 using System.Linq.Expressions;
 
-namespace HrMangmentSystem_Infrastructure.Repositories.Interfaces
+namespace HrMangmentSystem_Application.Interfaces.Repositories
 {
     public interface IGenericRepository<TEntity , TId> where TEntity : TenantEntity<TId>
     {

@@ -1,6 +1,8 @@
-﻿using HrMangmentSystem_Application.Interfaces;
+﻿using HrMangmentSystem_Application.Interfaces.Auth;
+using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Application.Services;
-using Microsoft.Extensions.DependencyInjection;
+using HrMangmentSystem_Infrastructure.Implementations.Security;
 
 namespace HrMangmentSystem_API.Extension_Method
 {
@@ -13,7 +15,13 @@ namespace HrMangmentSystem_API.Extension_Method
 
             services.AddScoped<IDepartmentService, DepartmentService>();
 
-        
+            services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
+            
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            services.AddScoped<ICurrentTenant, CurrentTenant>();
+          
+
 
             return services;
         }

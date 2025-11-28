@@ -2,7 +2,7 @@
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 
-namespace HrMangmentSystem_Application.Interfaces
+namespace HrMangmentSystem_Application.Interfaces.Services
 {
     public interface IDepartmentService
     {
