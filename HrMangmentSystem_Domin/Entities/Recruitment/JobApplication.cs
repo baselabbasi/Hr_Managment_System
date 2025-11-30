@@ -15,7 +15,7 @@ namespace HrMangmentSystem_Domain.Entities.Recruitment
         public JobApplicationStatus Status { get; set; } = JobApplicationStatus.New;
 
 
-        public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AppliedAt { get; set; } = DateTime.Now;
 
         public Employee? ReviewedByEmployeeId { get; set; }
 

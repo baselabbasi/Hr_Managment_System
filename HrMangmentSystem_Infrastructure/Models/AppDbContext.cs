@@ -1,4 +1,5 @@
 ﻿using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
@@ -7,16 +8,17 @@ using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Domain.Enum.Employee;
 using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace HrMangmentSystem_Infrastructure.Models
 {
     public class AppDbContext : DbContext
     {
         private readonly ICurrentTenant _currentTenant;
-        public AppDbContext(DbContextOptions<AppDbContext> options ,ICurrentTenant currentTenant) : base(options)
+        private readonly ICurrentUser _currentUser;
+        public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentTenant currentTenant, ICurrentUser currentUser) : base(options)
         {
             _currentTenant = currentTenant;
+            _currentUser = currentUser;
         }
         public DbSet<Employee> Employees { get; set; }
 
@@ -42,6 +44,23 @@ namespace HrMangmentSystem_Infrastructure.Models
         public DbSet<RequestHistory> RequestHistories { get; set; }
 
         public DbSet<Tenant> Tenants { get; set; }
+
+        public override int SaveChanges()
+        {
+            ApplyTenantRules();
+            ApplyAuditInfo();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            
+            ApplyTenantRules();
+            ApplyAuditInfo();
+            return base.SaveChangesAsync();
+        }
+
+    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -362,7 +381,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                  entity.HasIndex(t => t.Code).IsUnique(true);
              });
 
-            modelBuilder.Entity<EmployeeRole>(entity => {
+            modelBuilder.Entity<EmployeeRole>(entity =>
+            {
                 entity.HasKey(er => er.Id);
 
                 entity.HasIndex(er => new { er.EmployeeId, er.RoleId }).IsUnique();
@@ -398,6 +418,98 @@ namespace HrMangmentSystem_Infrastructure.Models
                       !_currentTenant.IsSet ||
                     r.TenantId == _currentTenant.TenantId);
             });
+
+        }
+
+        private void ApplyAuditInfo()
+        {
+            var entries = ChangeTracker
+                 .Entries<IAuditableEntity>()
+                 .Where(e =>
+                 e.State == EntityState.Modified ||
+                 e.State == EntityState.Added)
+                 .ToList();
+
+            var now = DateTime.Now;
+            var currentUserId = _currentUser.EmployeeId ?? Guid.Empty;
+
+            foreach (var entry in entries)
+            {
+                var entity = entry.Entity;
+
+                if (entry.State == EntityState.Added)
+                {
+                    if (entity.CreatedAt == default)
+                        entity.CreatedAt = now;
+
+                    entity.CreatedBy = currentUserId;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entity.UpdatedBy = currentUserId;
+                    entity.UpdatedAt = now;
+
+
+                    //don't allow anyone modified the createdAt & createdBy
+                    entry.Property(nameof(IAuditableEntity.CreatedAt)).IsModified = false;
+                    entry.Property(nameof(IAuditableEntity.CreatedBy)).IsModified = false;
+                }
+
+            }
+        }
+
+        private void ApplyTenantRules()
+        {
+            var entries = ChangeTracker.Entries<ITenantEntity>()
+                .Where(e =>
+                e.State == EntityState.Added ||
+                e.State == EntityState.Modified ||
+                e.State == EntityState.Deleted)
+                .ToList();
+
+            if (!entries.Any())
+                return;
+
+            if (!_currentTenant.IsSet || _currentTenant.TenantId == Guid.Empty)
+            {
+                throw new InvalidOperationException("Tenant must be set before saving tenant entites");
+            }
+
+            Guid tenantId = _currentTenant.TenantId;
+
+            foreach (var entry in entries)
+            {
+                var entity = entry.Entity;
+
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entity.TenantId = tenantId;
+                        break;
+
+                    case EntityState.Modified:
+                        var originalTenantId = entry.OriginalValues.GetValue<Guid>(nameof(ITenantEntity.TenantId));
+                        if (originalTenantId != tenantId)
+                        {
+                            throw new InvalidOperationException($"Cross-tenant update detected. Entity tenant = {originalTenantId}, current tenant = {tenantId}");
+
+                        }
+                        entry.Property(nameof(ITenantEntity.TenantId)).IsModified = false;
+                        break;
+
+                    case EntityState.Deleted:
+                        var deletedTenantId =
+                            entry.OriginalValues.GetValue<Guid>(nameof(ITenantEntity.TenantId));
+
+                        if (deletedTenantId != tenantId)
+                        {
+                            throw new InvalidOperationException(
+                                $"Cross-tenant delete detected. Entity tenant = {deletedTenantId}, current tenant = {tenantId}");
+                        }
+                        break;
+                }
+            }
+
         }
     }
 }

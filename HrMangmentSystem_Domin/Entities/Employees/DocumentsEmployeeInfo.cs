@@ -20,7 +20,7 @@ namespace HrMangmentSystem_Domain.Entities.Employees
         public long FileSize { get; set; }
 
 
-        public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UploadedAt { get; set; } = DateTime.Now;
 
         public DateTime? ExpiryDate { get; set; } 
 

@@ -1,0 +1,14 @@
+﻿namespace HrMangmentSystem_Application.DTOs.Job
+{
+    public class CreateJobPositionDto
+    {
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; } 
+
+        public string Requirements { get; set; } = null!;
+
+       
+        public DateTime PostedDate { get; set; }
+        public int DepartmentId { get; set; }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Domain.Common;
+﻿using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +9,16 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
     {
         private readonly DbSet<TEntity> _dbSet;
         private readonly AppDbContext _appDbContext;
+        private readonly ICurrentUser _currentUser;
 
-        public SoftDeleteRepository(AppDbContext appDbContext) : base(appDbContext) 
+        public SoftDeleteRepository(AppDbContext appDbContext, ICurrentUser currentUser) : base(appDbContext)
         {
             _appDbContext = appDbContext;
             _dbSet = _appDbContext.Set<TEntity>();
+            _currentUser = currentUser;
         }
 
-      
+
         public override async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
         {
             var entity = await _dbSet
@@ -25,8 +28,11 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
                 return;
 
             entity.IsDeleted = true;
-            entity.DeletedAt = DateTime.UtcNow;
-            entity.DeletedByEmployeeId = deletedByEmployeeId;
+            entity.DeletedAt = DateTime.Now;
+
+            var emplyeeIdDeleted = deletedByEmployeeId ?? _currentUser.EmployeeId ?? Guid.Empty;
+
+            entity.DeletedByEmployeeId = emplyeeIdDeleted;
 
             _dbSet.Update(entity);
         }

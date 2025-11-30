@@ -7,6 +7,7 @@ using HrMangmentSystem_Infrastructure.Implementations.Security;
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace HrMangmentSystem_API.Extension_Method
 {
@@ -31,6 +32,13 @@ namespace HrMangmentSystem_API.Extension_Method
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
+
+            services.AddControllers()
+               .AddJsonOptions(options =>
+               {
+                   options.JsonSerializerOptions.Converters.Add(
+                       new JsonStringEnumConverter());
+               });
 
             return services;
         }

@@ -18,7 +18,7 @@ namespace HrMangmentSystem_Application.Services
     {
         private readonly IGenericRepository<Employee, Guid> _employeeRepository;
         private readonly ITenantRepository _tenantRepository;
-        private readonly IGenericRepository<EmployeeRole , int> _employeeRoleRepository;
+        private readonly IGenericRepository<EmployeeRole, int> _employeeRoleRepository;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly ILogger<AuthenticationService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
@@ -77,7 +77,7 @@ namespace HrMangmentSystem_Application.Services
 
                 employee.PasswordHash = _passwordHasher.HashPassword(employee, changePasswordDto.NewPassword);
                 employee.MustChangePassword = false;
-                employee.LastPasswordChangeAt = DateTime.UtcNow;
+                employee.LastPasswordChangeAt = DateTime.Now;
 
                 _employeeRepository.Update(employee);
                 await _employeeRepository.SaveChangesAsync();
@@ -117,8 +117,8 @@ namespace HrMangmentSystem_Application.Services
                 var employees = await _employeeRepository.FindAsync(e =>
                 e.Email == loginRequestDto.Email &&
                 e.TenantId == tenant.Id);
-                                                                      // Why not use FirstOrDefault First ? becuse work by
-                                                                      // Repo (don't have method FirstOrDefault) Not Like DBSet
+                // Why not use FirstOrDefault First ? becuse work by
+                // Repo (don't have method FirstOrDefault) Not Like DBSet
                 var employee = employees.FirstOrDefault();
                 if (employee is null)
                 {
@@ -144,8 +144,8 @@ namespace HrMangmentSystem_Application.Services
 
                     return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvaildCredentials"]);
                 }
-
-                var (token , expiresAt) = _jwtTokenGenerator.GenerateToken(employee,tenant , roleNames);
+                //tuple value (deconstruction)
+                var (token, expiresAt) = _jwtTokenGenerator.GenerateToken(employee, tenant, roleNames);
 
                 var responseDto = new LoginResponseDto
                 {
@@ -157,7 +157,7 @@ namespace HrMangmentSystem_Application.Services
                     TenantId = tenant.Id,
                     Roles = roleNames,
                 };
-                
+
 
                 _logger.LogInformation($"Login succeeded for {employee.Email} in tenant {tenant.Id}");
 
@@ -166,7 +166,7 @@ namespace HrMangmentSystem_Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Unexpected error occurred during login for email {loginRequestDto.Email}");
-                return ApiResponse<LoginResponseDto>.Fail(_localizer["Generic.UnexpectedError"]);
+                return ApiResponse<LoginResponseDto>.Fail(_localizer["Generic_UnexpectedError"]);
 
             }
         }
@@ -181,53 +181,53 @@ namespace HrMangmentSystem_Application.Services
 
 
 
-        private List<string> ValidatePassword(string? password, string? email = null, int minLength = 8)
+        private static List<string> ValidatePassword(string? password, string? email = null, int minLength = 12)
+        {
+
+            var errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(password))
             {
-                
-                var errors = new List<string>();
-
-                if (string.IsNullOrWhiteSpace(password))
-                {
-                    errors.Add("Auth_Password_Required");
-                    return errors;
-                }
-
-                if (password.Length < minLength)
-                    errors.Add("Auth_Password_TooShort");
-
-                if (!password.Any(char.IsUpper))
-                    errors.Add("Auth_Password_MissingUpper");
-
-                if (!password.Any(char.IsLower))
-                    errors.Add("Auth_Password_MissingLower");
-
-                if (!password.Any(char.IsDigit))
-                    errors.Add("Auth_Password_MissingDigit");
-
-                if (!password.Any(c => _passwordSpecialChars.Contains(c)))
-                    errors.Add("Auth_Password_MissingSpecial");
-
-                if (password.Any(char.IsWhiteSpace))
-                    errors.Add("Auth_Password_HasWhitespace");
-
-
-                if (!string.IsNullOrWhiteSpace(email))
-                {
-                    var local = email.Split('@')[0];
-                    if (!string.IsNullOrWhiteSpace(local) &&
-                        password.IndexOf(local, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        errors.Add("Auth_Password_ContainsEmailPart");
-                    }
-                }
-
-                if (_weakPasswords.Contains(password))
-                    errors.Add("Auth_Password_IsCommon");
-
+                errors.Add("Auth_Password_Required");
                 return errors;
             }
 
-        
+            if (password.Length < minLength)
+                errors.Add("Auth_Password_TooShort");
+
+            if (!password.Any(char.IsUpper))
+                errors.Add("Auth_Password_MissingUpper");
+
+            if (!password.Any(char.IsLower))
+                errors.Add("Auth_Password_MissingLower");
+
+            if (!password.Any(char.IsDigit))
+                errors.Add("Auth_Password_MissingDigit");
+
+            if (!password.Any(c => _passwordSpecialChars.Contains(c)))
+                errors.Add("Auth_Password_MissingSpecial");
+
+            if (password.Any(char.IsWhiteSpace))
+                errors.Add("Auth_Password_HasWhitespace");
+
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                var local = email.Split('@')[0];
+                if (!string.IsNullOrWhiteSpace(local) &&
+                    password.IndexOf(local, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    errors.Add("Auth_Password_ContainsEmailPart");
+                }
+            }
+
+            if (_weakPasswords.Contains(password))
+                errors.Add("Auth_Password_IsCommon");
+
+            return errors;
+        }
+
+
 
     }
 }

@@ -240,53 +240,49 @@
   <data name="EmployeeRole_Assigned" xml:space="preserve">
     <value>تم اسناد الدور/المسؤولية الى الموظف المعني</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Role_NameRequired" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="EmployeeRole_NotFound" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="EmployeeRole_Updated" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="Auth_InvalidCredentials" xml:space="preserve">
     <value>البريد الإلكتروني أو كلمة المرور غير صحيحة.</value>
   </data>
-  <data name="Auth_InvalidCurrentPassword" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="EmployeeRole_Updated" xml:space="preserve">
+    <value>تم تحديث صلاحيات الموظف بنجاح.</value>
   </data>
-  <data name="Auth_Password_IsCommon" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_InvalidCurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة.</value>
   </data>
-  <data name="Auth_Password_ContainsEmailPart" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_NewPasswordMustBeDifferent" xml:space="preserve">
+    <value>يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور الحالية.</value>
   </data>
-  <data name="Auth_Password_HasWhitespace" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_PasswordChanged" xml:space="preserve">
+    <value>تم تغيير كلمة المرور بنجاح.</value>
   </data>
-  <data name="Auth_Password_MissingSpecial" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_ContainsEmailPart" xml:space="preserve">
+    <value>يجب ألا تحتوي كلمة المرور على جزء من بريدك الإلكتروني.</value>
   </data>
-  <data name="Auth_Password_MissingDigit" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_HasWhitespace" xml:space="preserve">
+    <value>يجب ألا تحتوي كلمة المرور على فراغات.</value>
   </data>
-  <data name="Auth_Password_MissingLower" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_IsCommon" xml:space="preserve">
+    <value>كلمة المرور شائعة جدًا، يرجى اختيار كلمة مرور أقوى.</value>
   </data>
-  <data name="Auth_Password_MissingUpper" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_MissingLower" xml:space="preserve">
+    <value>يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.</value>
   </data>
-  <data name="Auth_Password_TooShort" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_MissingDigit" xml:space="preserve">
+    <value>يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.</value>
   </data>
-  <data name="Auth_Password_Required" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_MissingUpper" xml:space="preserve">
+    <value>يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.</value>
   </data>
-  <data name="Auth_PasswordChanged" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_Required" xml:space="preserve">
+    <value>كلمة المرور مطلوبة.</value>
   </data>
-  <data name="Auth_NewPasswordMustBeDifferent" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Auth_Password_MissingSpecial" xml:space="preserve">
+    <value>يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل.</value>
+  </data>
+  <data name="Auth_Password_TooShort" xml:space="preserve">
+    <value>يجب أن تتكوّن كلمة المرور من 8 أحرف على الأقل.</value>
+  </data>
+  <data name="EmployeeRole_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على صلاحية الموظف.</value>
   </data>
 </root>

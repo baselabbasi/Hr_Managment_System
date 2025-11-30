@@ -2,10 +2,12 @@
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrManagmentSystem_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
@@ -93,14 +95,11 @@ namespace HrManagmentSystem_API.Controllers
      
         // DELETE: api/Employees/{id}
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee(Guid id, [FromQuery] Guid? deletedByEmployeeId)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee(Guid employeeId)
         {
-            if(deletedByEmployeeId == Guid.Empty || !deletedByEmployeeId.HasValue)
-            {
-                return BadRequest(ApiResponse<bool>.Fail("DeletedByEmployeeId is required"));
-            }
+           
 
-            var result = await _employeeService.DeleteEmployeeAsync(id, deletedByEmployeeId.Value);
+            var result = await _employeeService.DeleteEmployeeAsync(employeeId);
             
             if (!result.Success)
             {

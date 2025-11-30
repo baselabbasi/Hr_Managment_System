@@ -240,52 +240,49 @@
   <data name="EmployeeRole_Assigned" xml:space="preserve">
     <value>Employee role defualt assigned to employee</value>
   </data>
-  <data name="Role_NameRequired" xml:space="preserve">
-    <value>Role_NameRequired</value>
-  </data>
-  <data name="EmployeeRole_NotFound" xml:space="preserve">
-    <value />
-  </data>
-  <data name="EmployeeRole_Updated" xml:space="preserve">
-    <value />
-  </data>
   <data name="Auth_InvalidCredentials" xml:space="preserve">
     <value>Invalid email or password.</value>
   </data>
+  <data name="EmployeeRole_Updated" xml:space="preserve">
+    <value>Employee roles updated successfully.</value>
+  </data>
   <data name="Auth_InvalidCurrentPassword" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_IsCommon" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_ContainsEmailPart" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_HasWhitespace" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_MissingSpecial" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_MissingDigit" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_MissingLower" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_MissingUpper" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_TooShort" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_Password_Required" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Auth_PasswordChanged" xml:space="preserve">
-    <value />
+    <value>Current password is incorrect.</value>
   </data>
   <data name="Auth_NewPasswordMustBeDifferent" xml:space="preserve">
-    <value />
+    <value>New password must be different from the current password.</value>
+  </data>
+  <data name="Auth_PasswordChanged" xml:space="preserve">
+    <value>Password changed successfully.</value>
+  </data>
+  <data name="Auth_Password_ContainsEmailPart" xml:space="preserve">
+    <value>Password must not contain parts of your email address.</value>
+  </data>
+  <data name="Auth_Password_HasWhitespace" xml:space="preserve">
+    <value>Password must not contain spaces.</value>
+  </data>
+  <data name="Auth_Password_IsCommon" xml:space="preserve">
+    <value>Password is too common. Please choose a stronger one.</value>
+  </data>
+  <data name="Auth_Password_MissingLower" xml:space="preserve">
+    <value>Password must contain at least one lowercase letter.</value>
+  </data>
+  <data name="Auth_Password_MissingDigit" xml:space="preserve">
+    <value>Password must contain at least one digit.</value>
+  </data>
+  <data name="Auth_Password_MissingUpper" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter.</value>
+  </data>
+  <data name="Auth_Password_Required" xml:space="preserve">
+    <value>Password is required.</value>
+  </data>
+  <data name="Auth_Password_MissingSpecial" xml:space="preserve">
+    <value>Password must contain at least one special character.</value>
+  </data>
+  <data name="Auth_Password_TooShort" xml:space="preserve">
+    <value>Password must be at least 8 characters long.</value>
+  </data>
+  <data name="EmployeeRole_NotFound" xml:space="preserve">
+    <value>Employee role not found.</value>
   </data>
 </root>

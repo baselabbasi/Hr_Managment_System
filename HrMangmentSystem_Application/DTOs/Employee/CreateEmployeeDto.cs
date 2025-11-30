@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HrMangmentSystem_Domain.Enum.Employee;
+using System.ComponentModel.DataAnnotations;
 
 namespace HrMangmentSystem_Application.DTOs.Employee
 {
@@ -18,11 +19,13 @@ namespace HrMangmentSystem_Application.DTOs.Employee
         public int DepartmentId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Position { get; set; } = null!;
+        public Gender Gender { get; set; }
+        public EmployeeStatus Status { get; set; }
 
         public DateTime EmploymentStartDate { get; set; }
         public string Address { get; set; } = null!;
 
-        [Required]
-        public Guid TenantId { get; set; }
+      
+
     }
 }

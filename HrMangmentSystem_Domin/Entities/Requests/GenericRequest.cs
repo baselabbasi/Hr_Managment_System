@@ -18,7 +18,7 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public Employee? TargetEmployee { get; set; } // For requests that target a specific employee
 
 
-        public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
+        public DateTime RequestedAt { get; set; } = DateTime.Now;
         public DateTime? LastUpdatedAt { get; set; }
 
         public string? Title { get; set; }

@@ -14,12 +14,15 @@ namespace HrMangmentSystem_Application.Common.Security
         private const string Digits = "0123456789";
         private const string Specials = "!@#$%^&*_-+=?";
 
-        public static string Generate(int length = 12)
+        public static string Generate(int length)
         {
+                if (length < 8)
+                     length = 8;
+
             var allChars = Lower + Upper + Digits + Specials;
             var password = new char[length];
 
-            for (int i = 1; i <= length; i++)
+            for (int i = 0; i < length; i++)
             {
                 password[i] = GetRandomChar(allChars);   
             }
@@ -31,7 +34,7 @@ namespace HrMangmentSystem_Application.Common.Security
 
         private static void letterMixing(char[] password)
         {
-            for (int i = 1; i <= password.Length; i++)
+            for (int i = 0; i < password.Length; i++)
             {
                 int j = RandomNumberGenerator.GetInt32(i + 1);
                 (password[i], password[j]) = (password[j], password[i]);    

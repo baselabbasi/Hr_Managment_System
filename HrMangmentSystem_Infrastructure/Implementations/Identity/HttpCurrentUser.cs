@@ -1,0 +1,50 @@
+﻿using HrMangmentSystem_Application.Interfaces.Repository;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+namespace HrMangmentSystem_Infrastructure.Implementations.Identity
+{
+    public class HttpCurrentUser : ICurrentUser
+    {   
+        //JWT Fill Http.Context.User 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public HttpCurrentUser(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
+        public bool IsAuthenticated => User?.Identity?.IsAuthenticated == true;
+
+        public Guid? EmployeeId
+        {
+            get
+            {
+                var id = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                return Guid.TryParse(id, out var guid) ? guid : null;
+            }
+        }
+
+ 
+
+        public string? Email => User?.FindFirst(ClaimTypes.Email)?.Value;
+
+        public Guid? TenantId
+        {
+            get
+            {
+                var tenantId = User?.FindFirst("tenantId")?.Value;
+                return Guid.TryParse(tenantId, out var guid) ? guid : null;
+         
+            }
+        }
+
+
+        public IReadOnlyList<string> Roles =>
+            User?
+            .FindAll(ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToList()
+            ?? new List<string>();
+    }
+}

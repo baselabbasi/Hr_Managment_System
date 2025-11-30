@@ -22,7 +22,7 @@ namespace HrMangmentSystem_Shared.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SharedResource {
+    public class SharedResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace HrMangmentSystem_Shared.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HrMangmentSystem_Shared.Resources.SharedResource", typeof(SharedResource).Assembly);
@@ -51,7 +51,7 @@ namespace HrMangmentSystem_Shared.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,16 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid email or password..
         /// </summary>
-        internal static string Auth_InvalidCredentials {
+        public static string Auth_InvalidCredentials {
             get {
                 return ResourceManager.GetString("Auth_InvalidCredentials", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Current password is incorrect..
         /// </summary>
-        internal static string Auth_InvalidCurrentPassword {
+        public static string Auth_InvalidCurrentPassword {
             get {
                 return ResourceManager.GetString("Auth_InvalidCurrentPassword", resourceCulture);
             }
@@ -81,106 +81,106 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Login successful..
         /// </summary>
-        internal static string Auth_LoginSuccess {
+        public static string Auth_LoginSuccess {
             get {
                 return ResourceManager.GetString("Auth_LoginSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New password must be different from the current password..
         /// </summary>
-        internal static string Auth_NewPasswordMustBeDifferent {
+        public static string Auth_NewPasswordMustBeDifferent {
             get {
                 return ResourceManager.GetString("Auth_NewPasswordMustBeDifferent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must not contain parts of your email address..
         /// </summary>
-        internal static string Auth_Password_ContainsEmailPart {
+        public static string Auth_Password_ContainsEmailPart {
             get {
                 return ResourceManager.GetString("Auth_Password_ContainsEmailPart", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must not contain spaces..
         /// </summary>
-        internal static string Auth_Password_HasWhitespace {
+        public static string Auth_Password_HasWhitespace {
             get {
                 return ResourceManager.GetString("Auth_Password_HasWhitespace", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password is too common. Please choose a stronger one..
         /// </summary>
-        internal static string Auth_Password_IsCommon {
+        public static string Auth_Password_IsCommon {
             get {
                 return ResourceManager.GetString("Auth_Password_IsCommon", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must contain at least one digit..
         /// </summary>
-        internal static string Auth_Password_MissingDigit {
+        public static string Auth_Password_MissingDigit {
             get {
                 return ResourceManager.GetString("Auth_Password_MissingDigit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must contain at least one lowercase letter..
         /// </summary>
-        internal static string Auth_Password_MissingLower {
+        public static string Auth_Password_MissingLower {
             get {
                 return ResourceManager.GetString("Auth_Password_MissingLower", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must contain at least one special character..
         /// </summary>
-        internal static string Auth_Password_MissingSpecial {
+        public static string Auth_Password_MissingSpecial {
             get {
                 return ResourceManager.GetString("Auth_Password_MissingSpecial", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must contain at least one uppercase letter..
         /// </summary>
-        internal static string Auth_Password_MissingUpper {
+        public static string Auth_Password_MissingUpper {
             get {
                 return ResourceManager.GetString("Auth_Password_MissingUpper", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password is required..
         /// </summary>
-        internal static string Auth_Password_Required {
+        public static string Auth_Password_Required {
             get {
                 return ResourceManager.GetString("Auth_Password_Required", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password must be at least 8 characters long..
         /// </summary>
-        internal static string Auth_Password_TooShort {
+        public static string Auth_Password_TooShort {
             get {
                 return ResourceManager.GetString("Auth_Password_TooShort", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Password changed successfully..
         /// </summary>
-        internal static string Auth_PasswordChanged {
+        public static string Auth_PasswordChanged {
             get {
                 return ResourceManager.GetString("Auth_PasswordChanged", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are not authorized..
         /// </summary>
-        internal static string Auth_Unauthorized {
+        public static string Auth_Unauthorized {
             get {
                 return ResourceManager.GetString("Auth_Unauthorized", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to DeletedByEmployeeId is required..
         /// </summary>
-        internal static string Delete_DeletedByRequired {
+        public static string Delete_DeletedByRequired {
             get {
                 return ResourceManager.GetString("Delete_DeletedByRequired", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You cannot delete this resource..
         /// </summary>
-        internal static string Delete_Forbidden {
+        public static string Delete_Forbidden {
             get {
                 return ResourceManager.GetString("Delete_Forbidden", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department cannot be parent of itself..
         /// </summary>
-        internal static string Department_CannotBeOwnParent {
+        public static string Department_CannotBeOwnParent {
             get {
                 return ResourceManager.GetString("Department_CannotBeOwnParent", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department code is already in use..
         /// </summary>
-        internal static string Department_CodeExists {
+        public static string Department_CodeExists {
             get {
                 return ResourceManager.GetString("Department_CodeExists", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to DeptName and Code are required..
         /// </summary>
-        internal static string Department_CodeRequired {
+        public static string Department_CodeRequired {
             get {
                 return ResourceManager.GetString("Department_CodeRequired", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department created successfully..
         /// </summary>
-        internal static string Department_Created {
+        public static string Department_Created {
             get {
                 return ResourceManager.GetString("Department_Created", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department deleted successfully..
         /// </summary>
-        internal static string Department_Deleted {
+        public static string Department_Deleted {
             get {
                 return ResourceManager.GetString("Department_Deleted", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete department because it has child departments..
         /// </summary>
-        internal static string Department_HasChildren {
+        public static string Department_HasChildren {
             get {
                 return ResourceManager.GetString("Department_HasChildren", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete department because employees are assigned to it..
         /// </summary>
-        internal static string Department_HasEmployees {
+        public static string Department_HasEmployees {
             get {
                 return ResourceManager.GetString("Department_HasEmployees", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Departments loaded successfully..
         /// </summary>
-        internal static string Department_ListLoaded {
+        public static string Department_ListLoaded {
             get {
                 return ResourceManager.GetString("Department_ListLoaded", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete department because it has a manager assigned..
         /// </summary>
-        internal static string Department_ManagerAssigned {
+        public static string Department_ManagerAssigned {
             get {
                 return ResourceManager.GetString("Department_ManagerAssigned", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department not found..
         /// </summary>
-        internal static string Department_NotFound {
+        public static string Department_NotFound {
             get {
                 return ResourceManager.GetString("Department_NotFound", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Parent department not found..
         /// </summary>
-        internal static string Department_ParentNotFound {
+        public static string Department_ParentNotFound {
             get {
                 return ResourceManager.GetString("Department_ParentNotFound", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department updated successfully..
         /// </summary>
-        internal static string Department_Updated {
+        public static string Department_Updated {
             get {
                 return ResourceManager.GetString("Department_Updated", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to First name, last name and email are required..
         /// </summary>
-        internal static string Employee_BasicFieldsRequired {
+        public static string Employee_BasicFieldsRequired {
             get {
                 return ResourceManager.GetString("Employee_BasicFieldsRequired", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee created successfully..
         /// </summary>
-        internal static string Employee_Created {
+        public static string Employee_Created {
             get {
                 return ResourceManager.GetString("Employee_Created", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee deleted successfully..
         /// </summary>
-        internal static string Employee_Deleted {
+        public static string Employee_Deleted {
             get {
                 return ResourceManager.GetString("Employee_Deleted", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Department for this employee was not found..
         /// </summary>
-        internal static string Employee_DepartmentNotFound {
+        public static string Employee_DepartmentNotFound {
             get {
                 return ResourceManager.GetString("Employee_DepartmentNotFound", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee with this email already exists..
         /// </summary>
-        internal static string Employee_EmailExists {
+        public static string Employee_EmailExists {
             get {
                 return ResourceManager.GetString("Employee_EmailExists", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete employee because they have subordinates..
         /// </summary>
-        internal static string Employee_HasSubordinates {
+        public static string Employee_HasSubordinates {
             get {
                 return ResourceManager.GetString("Employee_HasSubordinates", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid date of birth..
         /// </summary>
-        internal static string Employee_InvalidDateOfBirth {
+        public static string Employee_InvalidDateOfBirth {
             get {
                 return ResourceManager.GetString("Employee_InvalidDateOfBirth", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid employment start date..
         /// </summary>
-        internal static string Employee_InvalidEmploymentDate {
+        public static string Employee_InvalidEmploymentDate {
             get {
                 return ResourceManager.GetString("Employee_InvalidEmploymentDate", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete employee because they are assigned as manager..
         /// </summary>
-        internal static string Employee_IsDepartmentManager {
+        public static string Employee_IsDepartmentManager {
             get {
                 return ResourceManager.GetString("Employee_IsDepartmentManager", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employees loaded successfully..
         /// </summary>
-        internal static string Employee_ListLoaded {
+        public static string Employee_ListLoaded {
             get {
                 return ResourceManager.GetString("Employee_ListLoaded", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee must be at least 18 years old..
         /// </summary>
-        internal static string Employee_MustBeAdult {
+        public static string Employee_MustBeAdult {
             get {
                 return ResourceManager.GetString("Employee_MustBeAdult", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee not found..
         /// </summary>
-        internal static string Employee_NotFound {
+        public static string Employee_NotFound {
             get {
                 return ResourceManager.GetString("Employee_NotFound", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Position is required..
         /// </summary>
-        internal static string Employee_PositionRequired {
+        public static string Employee_PositionRequired {
             get {
                 return ResourceManager.GetString("Employee_PositionRequired", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee updated successfully..
         /// </summary>
-        internal static string Employee_Updated {
+        public static string Employee_Updated {
             get {
                 return ResourceManager.GetString("Employee_Updated", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee is already has role.
         /// </summary>
-        internal static string EmployeeRole_AlreadyAssigned {
+        public static string EmployeeRole_AlreadyAssigned {
             get {
                 return ResourceManager.GetString("EmployeeRole_AlreadyAssigned", resourceCulture);
             }
@@ -459,25 +459,25 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Employee role defualt assigned to employee.
         /// </summary>
-        internal static string EmployeeRole_Assigned {
+        public static string EmployeeRole_Assigned {
             get {
                 return ResourceManager.GetString("EmployeeRole_Assigned", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Employee role not found..
         /// </summary>
-        internal static string EmployeeRole_NotFound {
+        public static string EmployeeRole_NotFound {
             get {
                 return ResourceManager.GetString("EmployeeRole_NotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Employee roles updated successfully..
         /// </summary>
-        internal static string EmployeeRole_Updated {
+        public static string EmployeeRole_Updated {
             get {
                 return ResourceManager.GetString("EmployeeRole_Updated", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to ID mismatch..
         /// </summary>
-        internal static string Generic_IdMismatch {
+        public static string Generic_IdMismatch {
             get {
                 return ResourceManager.GetString("Generic_IdMismatch", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid request data..
         /// </summary>
-        internal static string Generic_InvalidData {
+        public static string Generic_InvalidData {
             get {
                 return ResourceManager.GetString("Generic_InvalidData", resourceCulture);
             }
@@ -504,7 +504,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Resource not found..
         /// </summary>
-        internal static string Generic_NotFound {
+        public static string Generic_NotFound {
             get {
                 return ResourceManager.GetString("Generic_NotFound", resourceCulture);
             }
@@ -513,7 +513,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Operation failed..
         /// </summary>
-        internal static string Generic_OperationFailed {
+        public static string Generic_OperationFailed {
             get {
                 return ResourceManager.GetString("Generic_OperationFailed", resourceCulture);
             }
@@ -522,7 +522,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Operation completed successfully..
         /// </summary>
-        internal static string Generic_OperationSucceeded {
+        public static string Generic_OperationSucceeded {
             get {
                 return ResourceManager.GetString("Generic_OperationSucceeded", resourceCulture);
             }
@@ -531,7 +531,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An unexpected error occurred..
         /// </summary>
-        internal static string Generic_UnexpectedError {
+        public static string Generic_UnexpectedError {
             get {
                 return ResourceManager.GetString("Generic_UnexpectedError", resourceCulture);
             }
@@ -540,7 +540,7 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid page number..
         /// </summary>
-        internal static string Pagination_InvalidPageNumber {
+        public static string Pagination_InvalidPageNumber {
             get {
                 return ResourceManager.GetString("Pagination_InvalidPageNumber", resourceCulture);
             }
@@ -549,25 +549,16 @@ namespace HrMangmentSystem_Shared.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid page size..
         /// </summary>
-        internal static string Pagination_InvalidPageSize {
+        public static string Pagination_InvalidPageSize {
             get {
                 return ResourceManager.GetString("Pagination_InvalidPageSize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Role_NameRequired.
-        /// </summary>
-        internal static string Role_NameRequired {
-            get {
-                return ResourceManager.GetString("Role_NameRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Role employee not found.
         /// </summary>
-        internal static string Role_NotFound {
+        public static string Role_NotFound {
             get {
                 return ResourceManager.GetString("Role_NotFound", resourceCulture);
             }

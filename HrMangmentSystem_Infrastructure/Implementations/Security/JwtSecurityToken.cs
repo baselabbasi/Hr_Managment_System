@@ -43,7 +43,7 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Security
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var expiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes);
+            var expiresAt = DateTime.Now.AddMinutes(expiryMinutes);
 
             var token = new JwtSecurityToken(
                   issuer: issuer,

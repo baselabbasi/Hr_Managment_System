@@ -31,7 +31,7 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
             return query;
         }
 
-        public virtual async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
+        public virtual async Task DeleteAsync(TId id , Guid? deletedByEmployeeId)
         {
             var db = await _dbSet
                  .FirstOrDefaultAsync(e => e.Id!.Equals(id));

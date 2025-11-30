@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HrMangmentSystem_Domain.Common
+﻿namespace HrMangmentSystem_Domain.Common
 {
     public  class  SoftDeletable<T>  : TenantEntity<T> 
     {

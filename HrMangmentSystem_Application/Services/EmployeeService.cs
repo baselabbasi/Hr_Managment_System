@@ -5,8 +5,10 @@ using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Common.Security;
 using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces.Repositories;
+using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Employees;
+using HrMangmentSystem_Domain.Enum.Employee;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -23,6 +25,7 @@ namespace HrMangmentSystem_Application.Services
         private readonly ILogger<EmployeeService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IPasswordHasher<Employee> _passwordHasher;
+        private readonly ICurrentUser _currentUser;
 
         public EmployeeService(IGenericRepository<Employee, Guid> employeeRepository,
             IGenericRepository<Department, int> deparmentRepository,
@@ -30,7 +33,8 @@ namespace HrMangmentSystem_Application.Services
                IMapper mapper,
            IStringLocalizer<SharedResource> localizer,
           IEmployeeRoleService employeeRoleService,
-          IPasswordHasher<Employee> passwordHasher)
+          IPasswordHasher<Employee> passwordHasher,
+          ICurrentUser currentUser)
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = deparmentRepository;
@@ -39,6 +43,7 @@ namespace HrMangmentSystem_Application.Services
             _localizer = localizer;
             _employeeRoleService = employeeRoleService;
             _passwordHasher = passwordHasher;
+            _currentUser = currentUser;
         }
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
@@ -53,13 +58,13 @@ namespace HrMangmentSystem_Application.Services
                     return  ApiResponse<EmployeeDto?>.Fail(_localizer["Employee_BasicFieldsRequired"]);
                 }
 
-                if (createEmployeeDto.DateOfBirth >= DateTime.UtcNow.Date)
+                if (createEmployeeDto.DateOfBirth >= DateTime.Now.Date)
                 {
                     _logger.LogWarning("Create Employee: Invalid Date of Birth");
 
                     return ApiResponse<EmployeeDto?>.Fail(_localizer["Employee_InvalidDateOfBirth"]);
                 }
-                if (createEmployeeDto.EmploymentStartDate > DateTime.UtcNow.AddDays(30))
+                if (createEmployeeDto.EmploymentStartDate > DateTime.Now.AddDays(30))
                 {
                     _logger.LogWarning("Create Employee: Invalid Employment Start Date");
                     return ApiResponse<EmployeeDto?>.Fail(_localizer["Employee_InvalidEmploymentDate"] );
@@ -95,14 +100,18 @@ namespace HrMangmentSystem_Application.Services
 
                 var employee = _mapper.Map<Employee>(createEmployeeDto);
 
-                var tempPassword = PasswordGenerator.Generate(15);
+                
+
+                  var tempPassword = PasswordGenerator.Generate(12);
 
                 employee.PasswordHash = _passwordHasher.HashPassword(employee, tempPassword);
-
-
                 employee.MustChangePassword = true;
                 employee.LastPasswordChangeAt = null;
 
+                employee.EmploymentStatusType = EmployeeStatus.Active;
+
+               
+                
                 await _employeeRepository.AddAsync(employee);
 
                 await _employeeRepository.SaveChangesAsync();
@@ -112,18 +121,18 @@ namespace HrMangmentSystem_Application.Services
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);
 
-                 _logger.LogInformation($"Employee created successfully with Id {employee.Id}");
+                 _logger.LogInformation($"Employee created successfully with Id {employee.Id} with {tempPassword}");
                 return ApiResponse<EmployeeDto?>.Ok(employeeDto, _localizer["Employee_Created"]);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while creating employee");
-                 return ApiResponse<EmployeeDto?>.Fail(_localizer["Generic.UnexpectedError"]);
+                 return ApiResponse<EmployeeDto?>.Fail(_localizer["Generic_UnexpectedError"]);
             }
         }
 
      
-        public async Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId, Guid deletedByEmployeeId)
+        public async Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId)
         {
 
             try
@@ -135,6 +144,7 @@ namespace HrMangmentSystem_Application.Services
                     return ApiResponse<bool>.Fail(_localizer["Employee_NotFound"]);
                 }
 
+                var deletedByEmployeeId = _currentUser.EmployeeId;
                 if (deletedByEmployeeId == Guid.Empty)
                 {
                     _logger.LogWarning("Delete Employee: deletedByEmployeeId is required");
@@ -155,7 +165,7 @@ namespace HrMangmentSystem_Application.Services
                     return ApiResponse<bool>.Fail(_localizer["Employee_IsDepartmentManager"]);
                 }
 
-                await _employeeRepository.DeleteAsync(employeeId, deletedByEmployeeId);
+                await _employeeRepository.DeleteAsync(employeeId , deletedByEmployeeId);
                 await _employeeRepository.SaveChangesAsync();
 
                 _logger.LogInformation($"Employee with Id {employeeId} deleted successfully by {deletedByEmployeeId} ");

@@ -142,7 +142,7 @@ namespace HrMangmentSystem_Application.Services
             {
                 _logger.LogError(ex,$"UpdateRole: Error while updating role for Employee {employeeId} to {newRoleName}");
 
-                return ApiResponse<bool>.Fail( _localization["Generic.UnexpectedError"]);
+                return ApiResponse<bool>.Fail( _localization["Generic_UnexpectedError"]);
             }
         }
     }

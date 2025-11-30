@@ -1,0 +1,16 @@
+﻿namespace HrMangmentSystem_Application.DTOs.Job
+{
+    public class UpdateJobPositionDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = null!;
+        public string? Description { get; set; }
+
+        public string Requirements { get; set; } = null!;
+
+        public bool IsActive { get; set; }
+        public DateTime PostedDate { get; set; }
+        public DateTime ClosingDate { get; set; }
+     
+    }
+}

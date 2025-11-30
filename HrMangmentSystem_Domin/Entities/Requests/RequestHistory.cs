@@ -21,7 +21,7 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public Employee PerformedByEmployee { get; set; } = null!;
 
 
-        public DateTime PerformedAt { get; set; } = DateTime.UtcNow;
+        public DateTime PerformedAt { get; set; } = DateTime.Now;
 
         //edit history
     }

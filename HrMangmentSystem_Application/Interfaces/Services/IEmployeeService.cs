@@ -10,7 +10,7 @@ namespace HrMangmentSystem_Application.Interfaces.Services
         Task<ApiResponse<EmployeeDto?>> GetEmployeeByIdAsync(Guid employeeId);
         Task<ApiResponse<List<EmployeeDto>>> GetAllEmployeesAsync();
         Task<ApiResponse<EmployeeDto>> UpdateEmployeeAsync(UpdateEmployeeDto updateEmployeeDto);
-        Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId, Guid deletedByEmployeeId);
+        Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId );
 
         Task<ApiResponse<PagedResult<EmployeeDto>>> GetEmployeesPagedAsync(PagedRequest request);
     }

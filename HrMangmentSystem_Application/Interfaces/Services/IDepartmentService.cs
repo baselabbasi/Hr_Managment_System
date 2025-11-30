@@ -16,7 +16,7 @@ namespace HrMangmentSystem_Application.Interfaces.Services
 
         Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
 
-        Task<ApiResponse<bool>> DeleteDepartmentAsync(int departmentId , Guid deletedByEmployeeId);
+        Task<ApiResponse<bool>> DeleteDepartmentAsync(int departmentId);
 
 
 

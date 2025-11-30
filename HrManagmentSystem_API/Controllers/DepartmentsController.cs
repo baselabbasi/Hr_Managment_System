@@ -2,10 +2,12 @@
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
 using HrMangmentSystem_Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrManagmentSystem_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DepartmentsController : ControllerBase
@@ -88,9 +90,9 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpDelete("{id:int}")] // delete : api/departments/{id}
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteDepartment(int id, [FromQuery] Guid deletedByEmployeeId)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteDepartment(int departmentId)
         {
-            var result = await _departmentService.DeleteDepartmentAsync(id, deletedByEmployeeId);
+            var result = await _departmentService.DeleteDepartmentAsync(departmentId);
             if (!result.Success)
             {
                 if (result.Message?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
