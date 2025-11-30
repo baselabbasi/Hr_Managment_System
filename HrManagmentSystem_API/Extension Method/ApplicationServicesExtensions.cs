@@ -2,7 +2,6 @@
 using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Application.Services;
-using HrMangmentSystem_Infrastructure.Implementations.Security;
 
 namespace HrMangmentSystem_API.Extension_Method
 {
@@ -20,8 +19,8 @@ namespace HrMangmentSystem_API.Extension_Method
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services.AddScoped<ICurrentTenant, CurrentTenant>();
-          
 
+          
 
             return services;
         }

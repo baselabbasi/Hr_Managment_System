@@ -2,10 +2,12 @@
 using HrManagmentSystem_Shared.Common.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
+using HrMangmentSystem_Application.Common.Security;
 using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Employees;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -20,14 +22,15 @@ namespace HrMangmentSystem_Application.Services
         private readonly IMapper _mapper;
         private readonly ILogger<EmployeeService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
-    
+        private readonly IPasswordHasher<Employee> _passwordHasher;
+
         public EmployeeService(IGenericRepository<Employee, Guid> employeeRepository,
             IGenericRepository<Department, int> deparmentRepository,
             ILogger<EmployeeService> logger,
                IMapper mapper,
            IStringLocalizer<SharedResource> localizer,
-          IEmployeeRoleService employeeRoleService
-            )
+          IEmployeeRoleService employeeRoleService,
+          IPasswordHasher<Employee> passwordHasher)
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = deparmentRepository;
@@ -35,6 +38,7 @@ namespace HrMangmentSystem_Application.Services
             _mapper = mapper;
             _localizer = localizer;
             _employeeRoleService = employeeRoleService;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
@@ -42,7 +46,7 @@ namespace HrMangmentSystem_Application.Services
             try
             {
                
-
+               
                 if (string.IsNullOrWhiteSpace(createEmployeeDto.FirstName) || string.IsNullOrWhiteSpace(createEmployeeDto.LastName) || string.IsNullOrWhiteSpace(createEmployeeDto.Email))
                 {
                     _logger.LogWarning("Create Employee: Missing basic fields (FirstName || LastName || Email) ");
@@ -90,9 +94,14 @@ namespace HrMangmentSystem_Application.Services
 
 
                 var employee = _mapper.Map<Employee>(createEmployeeDto);
-                employee.PasswordHash = "Test@123"; // Default password to Test
 
-              //  var tempPassword = GenerateRandomPassword(12);
+                var tempPassword = PasswordGenerator.Generate(15);
+
+                employee.PasswordHash = _passwordHasher.HashPassword(employee, tempPassword);
+
+
+                employee.MustChangePassword = true;
+                employee.LastPasswordChangeAt = null;
 
                 await _employeeRepository.AddAsync(employee);
 

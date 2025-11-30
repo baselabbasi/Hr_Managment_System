@@ -225,9 +225,6 @@
   <data name="Pagination_InvalidPageSize" xml:space="preserve">
     <value>Invalid page size.</value>
   </data>
-  <data name="Auth_InvalidCredentials" xml:space="preserve">
-    <value>Invalid email or password.</value>
-  </data>
   <data name="Auth_LoginSuccess" xml:space="preserve">
     <value>Login successful.</value>
   </data>
@@ -250,6 +247,45 @@
     <value />
   </data>
   <data name="EmployeeRole_Updated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>Invalid email or password.</value>
+  </data>
+  <data name="Auth_InvalidCurrentPassword" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_IsCommon" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_ContainsEmailPart" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_HasWhitespace" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingSpecial" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingDigit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingLower" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingUpper" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_TooShort" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_Password_Required" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_PasswordChanged" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auth_NewPasswordMustBeDifferent" xml:space="preserve">
     <value />
   </data>
 </root>

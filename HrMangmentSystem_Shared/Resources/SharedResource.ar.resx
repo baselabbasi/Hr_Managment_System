@@ -225,9 +225,6 @@
   <data name="Pagination_InvalidPageSize" xml:space="preserve">
     <value>حجم الصفحة غير صالح.</value>
   </data>
-  <data name="Auth_InvalidCredentials" xml:space="preserve">
-    <value>البريد الإلكتروني أو كلمة المرور غير صحيحة.</value>
-  </data>
   <data name="Auth_LoginSuccess" xml:space="preserve">
     <value>تم تسجيل الدخول بنجاح.</value>
   </data>
@@ -251,6 +248,45 @@
     <value />
   </data>
   <data name="EmployeeRole_Updated" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_InvalidCredentials" xml:space="preserve">
+    <value>البريد الإلكتروني أو كلمة المرور غير صحيحة.</value>
+  </data>
+  <data name="Auth_InvalidCurrentPassword" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_IsCommon" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_ContainsEmailPart" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_HasWhitespace" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingSpecial" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingDigit" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingLower" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_MissingUpper" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_TooShort" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_Password_Required" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_PasswordChanged" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Auth_NewPasswordMustBeDifferent" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

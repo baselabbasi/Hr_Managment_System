@@ -5,6 +5,7 @@ using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Infrastructure.Implementations.Repositories;
 using HrMangmentSystem_Infrastructure.Implementations.Security;
 using HrMangmentSystem_Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrMangmentSystem_API.Extension_Method
@@ -29,7 +30,7 @@ namespace HrMangmentSystem_API.Extension_Method
             services.AddScoped<ITenantRepository, TenantRepository>();
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-            services.AddScoped<IPasswordHasher, PasswordHasherSer>();
+            services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
 
             return services;
         }

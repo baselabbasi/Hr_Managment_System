@@ -70,11 +70,119 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_InvalidCurrentPassword {
+            get {
+                return ResourceManager.GetString("Auth_InvalidCurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login successful..
         /// </summary>
         internal static string Auth_LoginSuccess {
             get {
                 return ResourceManager.GetString("Auth_LoginSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_NewPasswordMustBeDifferent {
+            get {
+                return ResourceManager.GetString("Auth_NewPasswordMustBeDifferent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_ContainsEmailPart {
+            get {
+                return ResourceManager.GetString("Auth_Password_ContainsEmailPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_HasWhitespace {
+            get {
+                return ResourceManager.GetString("Auth_Password_HasWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_IsCommon {
+            get {
+                return ResourceManager.GetString("Auth_Password_IsCommon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_MissingDigit {
+            get {
+                return ResourceManager.GetString("Auth_Password_MissingDigit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_MissingLower {
+            get {
+                return ResourceManager.GetString("Auth_Password_MissingLower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_MissingSpecial {
+            get {
+                return ResourceManager.GetString("Auth_Password_MissingSpecial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_MissingUpper {
+            get {
+                return ResourceManager.GetString("Auth_Password_MissingUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_Required {
+            get {
+                return ResourceManager.GetString("Auth_Password_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_Password_TooShort {
+            get {
+                return ResourceManager.GetString("Auth_Password_TooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Auth_PasswordChanged {
+            get {
+                return ResourceManager.GetString("Auth_PasswordChanged", resourceCulture);
             }
         }
         
