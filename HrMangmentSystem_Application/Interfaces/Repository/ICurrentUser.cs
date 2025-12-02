@@ -2,7 +2,7 @@
 {
     public interface ICurrentUser
     {
-        bool IsAuthenticated { get; }
+     
 
         Guid? EmployeeId { get; }
 

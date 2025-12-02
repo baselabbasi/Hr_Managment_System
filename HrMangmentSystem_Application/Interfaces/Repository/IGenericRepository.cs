@@ -11,7 +11,7 @@ namespace HrMangmentSystem_Application.Interfaces.Repositories
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
 
-        Task DeleteAsync(TId id , Guid? deletedByEmployeeId);
+        Task DeleteAsync(TId id);
         Task<int> SaveChangesAsync();
 
         IQueryable<TEntity> Query(bool asNoTracking =true);

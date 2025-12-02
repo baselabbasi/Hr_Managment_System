@@ -538,6 +538,141 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job position is already closed..
+        /// </summary>
+        public static string JobPosition_AlreadyClosed {
+            get {
+                return ResourceManager.GetString("JobPosition_AlreadyClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position is already open..
+        /// </summary>
+        public static string JobPosition_AlreadyOpen {
+            get {
+                return ResourceManager.GetString("JobPosition_AlreadyOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position was closed successfully..
+        /// </summary>
+        public static string JobPosition_Closed {
+            get {
+                return ResourceManager.GetString("JobPosition_Closed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Closing date cannot be in the past.
+        /// </summary>
+        public static string JobPosition_ClosingDateInvalid {
+            get {
+                return ResourceManager.GetString("JobPosition_ClosingDateInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position created successfully..
+        /// </summary>
+        public static string JobPosition_Created {
+            get {
+                return ResourceManager.GetString("JobPosition_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position deleted successfully..
+        /// </summary>
+        public static string JobPosition_Deleted {
+            get {
+                return ResourceManager.GetString("JobPosition_Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department with Id {0}  was not found.
+        /// </summary>
+        public static string JobPosition_DepartmentNotFound {
+            get {
+                return ResourceManager.GetString("JobPosition_DepartmentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position details loaded successfully..
+        /// </summary>
+        public static string JobPosition_DetailsLoaded {
+            get {
+                return ResourceManager.GetString("JobPosition_DetailsLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position with Id {0} has applications and cannot be deleted..
+        /// </summary>
+        public static string JobPosition_HasApplications {
+            get {
+                return ResourceManager.GetString("JobPosition_HasApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job positions list loaded successfully..
+        /// </summary>
+        public static string JobPosition_ListLoaded {
+            get {
+                return ResourceManager.GetString("JobPosition_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position with Id {0} was not found..
+        /// </summary>
+        public static string JobPosition_NotFound {
+            get {
+                return ResourceManager.GetString("JobPosition_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position was reopened successfully..
+        /// </summary>
+        public static string JobPosition_Reopened {
+            get {
+                return ResourceManager.GetString("JobPosition_Reopened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requirements are required..
+        /// </summary>
+        public static string JobPosition_RequirementRequired {
+            get {
+                return ResourceManager.GetString("JobPosition_RequirementRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to req.
+        /// </summary>
+        public static string JobPosition_TitleRequired {
+            get {
+                return ResourceManager.GetString("JobPosition_TitleRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position updated successfully..
+        /// </summary>
+        public static string JobPosition_Updated {
+            get {
+                return ResourceManager.GetString("JobPosition_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid page number..
         /// </summary>
         public static string Pagination_InvalidPageNumber {

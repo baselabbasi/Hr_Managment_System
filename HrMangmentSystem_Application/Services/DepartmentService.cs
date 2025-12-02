@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HrManagmentSystem_Shared.Common.Resources;
+using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Department;
@@ -27,8 +27,7 @@ namespace HrMangmentSystem_Application.Services
             IMapper mapper,
             IGenericRepository<Department, int> departmentRepository,
             IGenericRepository<Employee, Guid> employeeRepository,
-            IStringLocalizer<SharedResource> localizer
-,
+            IStringLocalizer<SharedResource> localizer,
             ICurrentUser currentUser)
         {
 
@@ -95,12 +94,7 @@ namespace HrMangmentSystem_Application.Services
                     _logger.LogWarning($"Delete Department: Department with Id {departmentId} not found");
                     return ApiResponse<bool>.Fail(_localizer["Department_NotFound", departmentId]);
                 }
-                var deletedByEmployeeId = _currentUser.EmployeeId;
-                if (deletedByEmployeeId == Guid.Empty)
-                {
-                    _logger.LogWarning($"Delete Department: deleted {departmentId} DeletedBy is Required ");
-                    return ApiResponse<bool>.Fail(_localizer["Delete_DeletedByRequired"]);
-                }
+ 
 
                 var hasEmployees = await _employeeRepository.FindAsync(e => e.DepartmentId == departmentId);
                 if (hasEmployees.Any())
@@ -115,10 +109,11 @@ namespace HrMangmentSystem_Application.Services
                     _logger.LogWarning($"Delete Department : Department {departmentId} is has department children ");
                     return ApiResponse<bool>.Fail(_localizer["Department_HasChildren", departmentId]);
                 }
-                await _departmentRepository.DeleteAsync(departmentId , deletedByEmployeeId);
+                await _departmentRepository.DeleteAsync(departmentId );
                 await _departmentRepository.SaveChangesAsync();
 
-                _logger.LogInformation($"Department with Id {departmentId} deleted successfully by {deletedByEmployeeId}");
+                var deletedEmployeeBy = _currentUser.EmployeeId;
+                _logger.LogInformation($"Department with Id {departmentId} deleted successfully by {deletedEmployeeBy}");
                 return ApiResponse<bool>.Ok(true, _localizer["Department_Deleted",departmentId]);
             }
             catch (Exception ex)
@@ -128,22 +123,7 @@ namespace HrMangmentSystem_Application.Services
             }
         }
 
-        public async Task<ApiResponse<List<DepartmentDto>>> GetAllDepartmentsAsync()
-        {
-            try
-            {
-                var departments = await _departmentRepository.GetAllAsync();
-                var departmentDtos = _mapper.Map<List<DepartmentDto>>(departments);
-
-                _logger.LogInformation("Retrieved all departments successfully");
-                return ApiResponse<List<DepartmentDto>>.Ok(departmentDtos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while retrieving all departments");
-                return ApiResponse<List<DepartmentDto>>.Fail(_localizer["Generic_UnexpectedError"]);
-            }
-        }
+      
 
         public async Task<ApiResponse<DepartmentDto?>> GetDepartmentByIdAsync(int departmentId)
         {
@@ -242,7 +222,7 @@ namespace HrMangmentSystem_Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while retrieving department with pagination ");
-                return ApiResponse<PagedResult<DepartmentDto>>.Fail(_localizer["Generic.UnexpectedError"]);
+                return ApiResponse<PagedResult<DepartmentDto>>.Fail(_localizer["Generic_UnexpectedError"]);
             }
 
          }

@@ -1,6 +1,6 @@
 ﻿namespace HrMangmentSystem_Application.DTOs.Job
 {
-    public class JobPositionsDto
+    public class JobPositionDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
@@ -10,6 +10,7 @@
 
         public bool IsActive { get; set; }
         public DateTime PostedDate { get; set; }
+        public DateTime? ClosingDate { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; } = null!;
     }

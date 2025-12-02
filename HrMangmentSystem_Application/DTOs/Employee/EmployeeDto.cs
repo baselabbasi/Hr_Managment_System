@@ -9,6 +9,7 @@
         public string PhoneNumber { get; set; } = null!;
 
         public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; } = null!;
         public string Position { get; set; } = null!;
 
         public DateTime EmploymentStartDate { get; set; }

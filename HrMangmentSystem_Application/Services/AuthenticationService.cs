@@ -1,14 +1,13 @@
-﻿using HrManagmentSystem_Shared.Common.Resources;
+﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.Common.Security;
 using HrMangmentSystem_Application.DTOs.Login;
 using HrMangmentSystem_Application.Interfaces.Auth;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Roles;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -142,8 +141,9 @@ namespace HrMangmentSystem_Application.Services
                 {
                     _logger.LogWarning($"Login failed: Invalid password for email {loginRequestDto.Email} in tenant {tenant.Id}");
 
-                    return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvaildCredentials"]);
+                    return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvalidCredentials"]);
                 }
+                                                                           
                 //tuple value (deconstruction)
                 var (token, expiresAt) = _jwtTokenGenerator.GenerateToken(employee, tenant, roleNames);
 

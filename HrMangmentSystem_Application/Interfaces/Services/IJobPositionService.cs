@@ -6,14 +6,17 @@ namespace HrMangmentSystem_Application.Interfaces.Services
 {
     public interface IJobPositionService
     {
-        Task<ApiResponse<JobPositionsDto>> CreateJobPositionsAsync(CreateJobPositionDto createJobPositionDto);
+        Task<ApiResponse<JobPositionDto>> CreateJobPositionsAsync(CreateJobPositionDto createJobPositionDto);
 
-        Task<ApiResponse<JobPositionsDto?>> GetJobPositionsByIdAsync(int jobPositionId);
+        Task<ApiResponse<JobPositionDto?>> GetJobPositionsByIdAsync(int jobPositionId);
 
-        Task<ApiResponse<PagedResult<JobPositionsDto>>> GetJobPositionsPagedAsync(PagedRequest request);
+        Task<ApiResponse<PagedResult<JobPositionDto>>> GetJobPositionsPagedAsync(PagedRequest request);
 
-        Task<ApiResponse<JobPositionsDto>> UpdateJobPositionsAsync(UpdateJobPositionDto updateJobPositionDto);
+        Task<ApiResponse<JobPositionDto>> UpdateJobPositionsAsync(UpdateJobPositionDto updateJobPositionDto);
 
         Task<ApiResponse<bool>> DeleteJobPositionsAsync(int jobPositionId);
+
+
+        Task<ApiResponse<JobPositionDto>> ChangeStatusAsync(ChangeJobPositionStatusDto changeJobPositionStatusDto);
     }
 }

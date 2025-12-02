@@ -1,4 +1,4 @@
-﻿using HrManagmentSystem_Shared.Common.Resources;
+﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Application.Interfaces.Services;

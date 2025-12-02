@@ -1,6 +1,7 @@
 ﻿using HrMangmentSystem_Application.Interfaces.Auth;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Domain.Entities.Employees;
+using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Infrastructure.Implementations.Repositories;
 using HrMangmentSystem_Infrastructure.Implementations.Security;
@@ -24,8 +25,8 @@ namespace HrMangmentSystem_API.Extension_Method
 
 
             services.AddScoped<IGenericRepository<Employee, Guid>, SoftDeleteRepository<Employee, Guid>>(); // Register SoftDeleteRepository for Employee entity
-
             services.AddScoped<IGenericRepository<Department, int>, SoftDeleteRepository<Department, int>>(); // Register SoftDeleteRepository for Department entity
+            services.AddScoped<IGenericRepository<JobPosition, int>, GenericRepository<JobPosition, int>>(); // 
             services.AddScoped<IGenericRepository<EmployeeRole, int>, GenericRepository<EmployeeRole, int>>(); // 
 
             services.AddScoped<ITenantRepository, TenantRepository>();

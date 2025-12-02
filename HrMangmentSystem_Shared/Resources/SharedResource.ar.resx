@@ -285,4 +285,49 @@
   <data name="EmployeeRole_NotFound" xml:space="preserve">
     <value>لم يتم العثور على صلاحية الموظف.</value>
   </data>
+  <data name="JobPosition_RequirementRequired" xml:space="preserve">
+    <value> المتطلبات الوظيفية مطلوبة.</value>
+  </data>
+  <data name="JobPosition_TitleRequired" xml:space="preserve">
+    <value>العنوان مطلوب.</value>
+  </data>
+  <data name="JobPosition_ClosingDateInvalid" xml:space="preserve">
+    <value>تاريخ إغلاق الوظيفة لا يمكن أن يكون في الماضي.</value>
+  </data>
+  <data name="JobPosition_DepartmentNotFound" xml:space="preserve">
+    <value>القسم ذو الرقم {0} غير موجود</value>
+  </data>
+  <data name="JobPosition_Created" xml:space="preserve">
+    <value>تم إنشاء شاغر الوظيفة بنجاح.</value>
+  </data>
+  <data name="JobPosition_NotFound" xml:space="preserve">
+    <value>الوظيفة ذات الرقم {0} غير موجودة.</value>
+  </data>
+  <data name="JobPosition_DetailsLoaded" xml:space="preserve">
+    <value>تم تحميل تفاصيل الوظيفة بنجاح.</value>
+  </data>
+  <data name="JobPosition_ListLoaded" xml:space="preserve">
+    <value> تم تحميل قائمة الوظائف بنجاح.</value>
+  </data>
+  <data name="JobPosition_Updated" xml:space="preserve">
+    <value>تم تحديث الوظيفة بنجاح.</value>
+  </data>
+  <data name="JobPosition_HasApplications" xml:space="preserve">
+    <value> لا يمكن حذف الوظيفة ذات الرقم {0} لوجود طلبات تقديم مرتبطة بها.</value>
+  </data>
+  <data name="JobPosition_Deleted" xml:space="preserve">
+    <value>تم حذف الوظيفة بنجاح.</value>
+  </data>
+  <data name="JobPosition_AlreadyClosed" xml:space="preserve">
+    <value> الوظيفة مغلقة بالفعل.</value>
+  </data>
+  <data name="JobPosition_AlreadyOpen" xml:space="preserve">
+    <value>الوظيفة مفتوحة بالفعل</value>
+  </data>
+  <data name="JobPosition_Closed" xml:space="preserve">
+    <value>تم اغلاق الوظيفة بنجاح</value>
+  </data>
+  <data name="JobPosition_Reopened" xml:space="preserve">
+    <value> تم إعادة فتح الوظيفة بنجاح.</value>
+  </data>
 </root>

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HrManagmentSystem_Shared.Common.Resources;
+using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Common.Security;
@@ -105,13 +105,8 @@ namespace HrMangmentSystem_Application.Services
                   var tempPassword = PasswordGenerator.Generate(12);
 
                 employee.PasswordHash = _passwordHasher.HashPassword(employee, tempPassword);
-                employee.MustChangePassword = true;
                 employee.LastPasswordChangeAt = null;
 
-                employee.EmploymentStatusType = EmployeeStatus.Active;
-
-               
-                
                 await _employeeRepository.AddAsync(employee);
 
                 await _employeeRepository.SaveChangesAsync();
@@ -144,12 +139,8 @@ namespace HrMangmentSystem_Application.Services
                     return ApiResponse<bool>.Fail(_localizer["Employee_NotFound"]);
                 }
 
-                var deletedByEmployeeId = _currentUser.EmployeeId;
-                if (deletedByEmployeeId == Guid.Empty)
-                {
-                    _logger.LogWarning("Delete Employee: deletedByEmployeeId is required");
-                    return ApiResponse<bool>.Fail(_localizer["Delete_DeletedByRequired"]);
-                }
+              
+                
 
                 var subordinates = await _employeeRepository.FindAsync(e => e.ManagerId == employeeId);
                 if (subordinates.Any())
@@ -165,9 +156,10 @@ namespace HrMangmentSystem_Application.Services
                     return ApiResponse<bool>.Fail(_localizer["Employee_IsDepartmentManager"]);
                 }
 
-                await _employeeRepository.DeleteAsync(employeeId , deletedByEmployeeId);
+                await _employeeRepository.DeleteAsync(employeeId);
                 await _employeeRepository.SaveChangesAsync();
 
+                var deletedByEmployeeId = _currentUser.EmployeeId;
                 _logger.LogInformation($"Employee with Id {employeeId} deleted successfully by {deletedByEmployeeId} ");
                 return ApiResponse<bool>.Ok(true, _localizer["Employee_Deleted"]);
             }
@@ -191,7 +183,7 @@ namespace HrMangmentSystem_Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while retrieving all employees");
-                return ApiResponse<List<EmployeeDto>>.Fail(_localizer["Generic.UnexpectedError"]);
+                return ApiResponse<List<EmployeeDto>>.Fail(_localizer["Generic_UnexpectedError"]);
 
             }
         }
@@ -204,7 +196,7 @@ namespace HrMangmentSystem_Application.Services
                 if (employee is null)
                 {
                     _logger.LogWarning($"Get Employee By Id: Employee Id {employeeId} not found");
-                    return ApiResponse<EmployeeDto?>.Fail(_localizer["Employee.NotFound"]);
+                    return ApiResponse<EmployeeDto?>.Fail(_localizer["Employee_NotFound"]);
                 }
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);
@@ -214,7 +206,7 @@ namespace HrMangmentSystem_Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error occurred while retrieving employee by Id : {employeeId}");
-                return ApiResponse<EmployeeDto?>.Fail(_localizer["Generic.UnexpectedError"]);
+                return ApiResponse<EmployeeDto?>.Fail(_localizer["Generic_UnexpectedError"]);
             }
         }
 
@@ -300,7 +292,7 @@ namespace HrMangmentSystem_Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while retrieving employees with pagination ");
-                return ApiResponse<PagedResult<EmployeeDto>>.Fail( _localizer["Generic.UnexpectedError"]);
+                return ApiResponse<PagedResult<EmployeeDto>>.Fail( _localizer["Generic_UnexpectedError"]);
             }
             
         }
@@ -313,7 +305,7 @@ namespace HrMangmentSystem_Application.Services
                 if (employee is null)
                 {
                     _logger.LogWarning($"Update Employee: Employee Id {updateEmployeeDto.Id} not found");
-                    return ApiResponse<EmployeeDto>.Fail(_localizer["Employee.NotFound"]);
+                    return ApiResponse<EmployeeDto>.Fail(_localizer["Employee_NotFound"]);
                 }
                 if (updateEmployeeDto.DepartmentId.HasValue)
                 {
@@ -321,7 +313,7 @@ namespace HrMangmentSystem_Application.Services
                     if (department is null)
                     {
                         _logger.LogWarning($"Update Employee: Department Id {updateEmployeeDto.DepartmentId} not found");
-                        return ApiResponse<EmployeeDto>.Fail(_localizer["Employee.DepartmentNotFound", updateEmployeeDto.DepartmentId]);
+                        return ApiResponse<EmployeeDto>.Fail(_localizer["Employee_DepartmentNotFound", updateEmployeeDto.DepartmentId]);
                     }
 
                    employee.DepartmentId = updateEmployeeDto.DepartmentId.Value;
@@ -340,12 +332,12 @@ namespace HrMangmentSystem_Application.Services
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);
                 _logger.LogInformation($"Employee Id {updateEmployeeDto.Id} updated successfully");
-                return ApiResponse<EmployeeDto>.Ok(employeeDto, _localizer["Employee.Updated"]);
+                return ApiResponse<EmployeeDto>.Ok(employeeDto, _localizer["Employee_Updated"]);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while updating employee");
-                return ApiResponse<EmployeeDto>.Fail(_localizer["Generic.UnexpectedError"]);
+                return ApiResponse<EmployeeDto>.Fail(_localizer["Generic_UnexpectedError"]);
             }
 
         }

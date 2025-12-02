@@ -1,4 +1,4 @@
-﻿namespace HrManagmentSystem_Shared.Common.Resources
+﻿namespace HrManagmentSystem_Shared.Resources
 {
     public class SharedResource
     {

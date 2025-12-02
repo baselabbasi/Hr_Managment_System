@@ -285,4 +285,49 @@
   <data name="EmployeeRole_NotFound" xml:space="preserve">
     <value>Employee role not found.</value>
   </data>
+  <data name="JobPosition_RequirementRequired" xml:space="preserve">
+    <value>Requirements are required.</value>
+  </data>
+  <data name="JobPosition_TitleRequired" xml:space="preserve">
+    <value>req</value>
+  </data>
+  <data name="JobPosition_ClosingDateInvalid" xml:space="preserve">
+    <value>Closing date cannot be in the past</value>
+  </data>
+  <data name="JobPosition_DepartmentNotFound" xml:space="preserve">
+    <value>Department with Id {0}  was not found</value>
+  </data>
+  <data name="JobPosition_Created" xml:space="preserve">
+    <value>Job position created successfully.</value>
+  </data>
+  <data name="JobPosition_NotFound" xml:space="preserve">
+    <value>Job position with Id {0} was not found.</value>
+  </data>
+  <data name="JobPosition_DetailsLoaded" xml:space="preserve">
+    <value>Job position details loaded successfully.</value>
+  </data>
+  <data name="JobPosition_ListLoaded" xml:space="preserve">
+    <value>Job positions list loaded successfully.</value>
+  </data>
+  <data name="JobPosition_Updated" xml:space="preserve">
+    <value>Job position updated successfully.</value>
+  </data>
+  <data name="JobPosition_HasApplications" xml:space="preserve">
+    <value>Job position with Id {0} has applications and cannot be deleted.</value>
+  </data>
+  <data name="JobPosition_Deleted" xml:space="preserve">
+    <value>Job position deleted successfully.</value>
+  </data>
+  <data name="JobPosition_AlreadyClosed" xml:space="preserve">
+    <value>Job position is already closed.</value>
+  </data>
+  <data name="JobPosition_AlreadyOpen" xml:space="preserve">
+    <value>Job position is already open.</value>
+  </data>
+  <data name="JobPosition_Closed" xml:space="preserve">
+    <value>Job position was closed successfully.</value>
+  </data>
+  <data name="JobPosition_Reopened" xml:space="preserve">
+    <value>Job position was reopened successfully.</value>
+  </data>
 </root>

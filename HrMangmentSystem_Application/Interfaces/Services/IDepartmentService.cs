@@ -10,7 +10,7 @@ namespace HrMangmentSystem_Application.Interfaces.Services
 
         Task<ApiResponse<DepartmentDto?>> GetDepartmentByIdAsync(int departmentId);
 
-        Task<ApiResponse<List<DepartmentDto>>> GetAllDepartmentsAsync();
+       
 
         Task<ApiResponse<PagedResult<DepartmentDto>>> GetDepartmentPagedAsync(PagedRequest request);
 

@@ -1,4 +1,5 @@
-﻿using HrManagmentSystem_Shared.Common.Resources;
+﻿
+using HrManagmentSystem_Shared.Resources;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using System.Globalization;

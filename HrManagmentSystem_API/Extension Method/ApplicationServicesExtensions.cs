@@ -18,6 +18,7 @@ namespace HrMangmentSystem_API.Extension_Method
             services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IJobPositionService , JobPositionService>();
 
             services.AddScoped<ICurrentTenant, CurrentTenant>();
 

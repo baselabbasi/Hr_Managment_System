@@ -8,7 +8,7 @@
         public string Requirements { get; set; } = null!;
 
        
-        public DateTime PostedDate { get; set; }
+        public DateTime? ClosingDate { get; set; }
         public int DepartmentId { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Identity
             _httpContextAccessor = httpContextAccessor;
         }
         private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
-        public bool IsAuthenticated => User?.Identity?.IsAuthenticated == true;
+   
 
         public Guid? EmployeeId
         {

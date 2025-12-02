@@ -19,7 +19,7 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
         }
 
 
-        public override async Task DeleteAsync(TId id, Guid? deletedByEmployeeId)
+        public override async Task DeleteAsync(TId id)
         {
             var entity = await _dbSet
                  .FirstOrDefaultAsync(e => !e.IsDeleted && e.Id!.Equals(id));
@@ -30,7 +30,7 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
             entity.IsDeleted = true;
             entity.DeletedAt = DateTime.Now;
 
-            var emplyeeIdDeleted = deletedByEmployeeId ?? _currentUser.EmployeeId ?? Guid.Empty;
+            var emplyeeIdDeleted = _currentUser.EmployeeId;
 
             entity.DeletedByEmployeeId = emplyeeIdDeleted;
 

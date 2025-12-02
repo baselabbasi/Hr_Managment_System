@@ -3,11 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HrMangmentSystem_Domain.Common
 {
-    public interface ITenantEntity   //abstraction 
-    {
-       
-        Guid TenantId { get; set; } 
-    }
     public class TenantEntity<T> : BaseEntity<T> , ITenantEntity
     {
         public Guid TenantId { get; set; } 
