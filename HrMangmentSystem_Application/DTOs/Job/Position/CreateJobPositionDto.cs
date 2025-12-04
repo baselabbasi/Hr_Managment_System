@@ -1,4 +1,4 @@
-﻿namespace HrMangmentSystem_Application.DTOs.Job
+﻿namespace HrMangmentSystem_Application.DTOs.Job.Position
 {
     public class CreateJobPositionDto
     {

@@ -2,7 +2,7 @@
 using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job;
+using HrMangmentSystem_Application.DTOs.Job.Position;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Services
 {
     public class JobPositionService : IJobPositionService
     {
@@ -217,9 +217,9 @@ namespace HrMangmentSystem_Application.Services
                     var term = request.Term.Trim().ToLower();
 
                     query = query.Where(j =>
-                        (!string.IsNullOrEmpty(j.Requirements) && j.Requirements.ToLower().Contains(term)) ||
-                        (!string.IsNullOrEmpty(j.Title) && j.Title.ToLower().Contains(term)) ||
-                        (!string.IsNullOrEmpty(j.Department.DeptName) && j.Department.DeptName.ToLower().Contains(term)));
+                        !string.IsNullOrEmpty(j.Requirements) && j.Requirements.ToLower().Contains(term) ||
+                        !string.IsNullOrEmpty(j.Title) && j.Title.ToLower().Contains(term) ||
+                        !string.IsNullOrEmpty(j.Department.DeptName) && j.Department.DeptName.ToLower().Contains(term));
                 }
 
                 if (!string.IsNullOrWhiteSpace(request.SortBy))

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Auth
 {
     public class AuthenticationService : IAuthenticationService
     {

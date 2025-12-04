@@ -4,6 +4,7 @@ using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrMangmentSystem_Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251202101509_RemoveJobPositionCreatedByEmployeeFk")]
+    partial class RemoveJobPositionCreatedByEmployeeFk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,13 +382,10 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<int>("JobPositionId")
                         .HasColumnType("int");
 
-                    b.Property<double?>("MatchScore")
-                        .HasColumnType("float");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ReviewedByEmployeeId")
+                    b.Property<Guid?>("ReviewedByEmployeeIdId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
@@ -406,7 +406,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("JobPositionId");
 
-                    b.HasIndex("ReviewedByEmployeeId");
+                    b.HasIndex("ReviewedByEmployeeIdId");
 
                     b.HasIndex("TenantId");
 
@@ -979,10 +979,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Entities.Employees.Employee", "ReviewedByEmployee")
+                    b.HasOne("HrMangmentSystem_Domain.Entities.Employees.Employee", "ReviewedByEmployeeId")
                         .WithMany()
-                        .HasForeignKey("ReviewedByEmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ReviewedByEmployeeIdId");
 
                     b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
                         .WithMany()
@@ -994,7 +993,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.Navigation("JobPosition");
 
-                    b.Navigation("ReviewedByEmployee");
+                    b.Navigation("ReviewedByEmployeeId");
 
                     b.Navigation("Tenant");
                 });

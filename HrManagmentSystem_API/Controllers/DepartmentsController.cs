@@ -69,12 +69,8 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpPut]  // update : api/departments
-        public async Task<ActionResult<ApiResponse<DepartmentDto>>> UpdateDepatrment (int id , [FromBody] UpdateDepartmentDto updateDepartmentDto)
+        public async Task<ActionResult<ApiResponse<DepartmentDto>>> UpdateDepatrment ( [FromBody] UpdateDepartmentDto updateDepartmentDto)
         {
-            if (id != updateDepartmentDto.Id)
-            {
-                return BadRequest(ApiResponse<bool>.Fail("ID mismatch"));
-            }
             var result = await _departmentService.UpdateDepartmentAsync(updateDepartmentDto);
 
             if (!result.Success)

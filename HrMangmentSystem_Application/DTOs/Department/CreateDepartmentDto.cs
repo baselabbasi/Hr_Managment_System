@@ -18,8 +18,7 @@ namespace HrMangmentSystem_Application.DTOs.Department
         
         public Guid? DepartmentManagerId { get; set; }
 
-        [Required]
-        public Guid TenantId { get; set; }
+
 
 
     }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Services
 {
     public class DepartmentService : IDepartmentService
     {
@@ -42,7 +42,7 @@ namespace HrMangmentSystem_Application.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(createDepartmentDto.Code) || (string.IsNullOrWhiteSpace(createDepartmentDto.DeptName)))
+                if (string.IsNullOrWhiteSpace(createDepartmentDto.Code) || string.IsNullOrWhiteSpace(createDepartmentDto.DeptName))
                 {
                     _logger.LogWarning("Create Department : DeptName and Code are required.");
                     return ApiResponse<DepartmentDto?>.Fail(_localizer["Department_CodeRequired"]);
@@ -163,9 +163,9 @@ namespace HrMangmentSystem_Application.Services
                     var term = request.Term.Trim().ToLower();
 
                     query = query.Where(d =>
-                        (!string.IsNullOrEmpty(d.DeptName) && d.DeptName.ToLower().Contains(term)) ||
-                        (!string.IsNullOrEmpty(d.Code) && d.Code.ToLower().Contains(term)) ||
-                        (!string.IsNullOrEmpty(d.Location) && d.Location.ToLower().Contains(term)));
+                        !string.IsNullOrEmpty(d.DeptName) && d.DeptName.ToLower().Contains(term) ||
+                        !string.IsNullOrEmpty(d.Code) && d.Code.ToLower().Contains(term) ||
+                        !string.IsNullOrEmpty(d.Location) && d.Location.ToLower().Contains(term));
                 }
                 if (!string.IsNullOrWhiteSpace(request.SortBy))
                 {

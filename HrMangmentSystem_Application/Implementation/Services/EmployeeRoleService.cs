@@ -8,7 +8,7 @@ using HrMangmentSystem_Domain.Entities.Roles;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Services
 {
     public class EmployeeRoleService : IEmployeeRoleService
     {

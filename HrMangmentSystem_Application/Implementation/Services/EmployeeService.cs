@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Services
 {
     public class EmployeeService : IEmployeeService
     {
@@ -229,9 +229,9 @@ namespace HrMangmentSystem_Application.Services
                     var term = request.Term.Trim().ToLower();
 
                     query = query.Where(e =>
-                    (!string.IsNullOrEmpty(e.FirstName) &&  e.FirstName.ToLower().Contains(term)) ||
-                    (!string.IsNullOrWhiteSpace(e.LastName) && e.LastName.ToLower().Contains(term)) ||
-                    (!string.IsNullOrWhiteSpace(e.Email) && e.Email.ToLower().Contains(term)));
+                    !string.IsNullOrEmpty(e.FirstName) &&  e.FirstName.ToLower().Contains(term) ||
+                    !string.IsNullOrWhiteSpace(e.LastName) && e.LastName.ToLower().Contains(term) ||
+                    !string.IsNullOrWhiteSpace(e.Email) && e.Email.ToLower().Contains(term));
                 }
 
                 if(!string.IsNullOrWhiteSpace(request.SortBy))

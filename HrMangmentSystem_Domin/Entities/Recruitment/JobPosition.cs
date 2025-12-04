@@ -16,10 +16,6 @@ namespace HrMangmentSystem_Domain.Entities.Recruitment
         public int DepartmentId { get; set; } 
         public Department Department { get; set; } = null!;
 
-
-        public Guid CreatedByEmployeeId { get; set; } 
-        public Employee CreatedByEmployee { get; set; } = null!;
-
         public ICollection<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
 
     }

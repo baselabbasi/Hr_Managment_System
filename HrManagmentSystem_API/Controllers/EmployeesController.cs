@@ -74,12 +74,8 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpPut("{id:guid}")] // update : api/employees/{id}
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> UpdateEmployee(Guid id, [FromBody] UpdateEmployeeDto updateEmployeeDto)
+        public async Task<ActionResult<ApiResponse<EmployeeDto>>> UpdateEmployee( [FromBody] UpdateEmployeeDto updateEmployeeDto)
         {
-            if (id != updateEmployeeDto.Id)
-            {
-                return BadRequest(ApiResponse<bool>.Fail("ID mismatch"));
-            }
             var result = await _employeeService.UpdateEmployeeAsync(updateEmployeeDto);
 
             if (!result.Success || result.Data is null)

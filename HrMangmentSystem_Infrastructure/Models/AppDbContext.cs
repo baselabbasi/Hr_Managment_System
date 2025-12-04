@@ -229,10 +229,7 @@ namespace HrMangmentSystem_Infrastructure.Models
                       .HasForeignKey(jp => jp.DepartmentId)
                       .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(jp => jp.CreatedByEmployee)
-                      .WithMany()
-                      .HasForeignKey(jp => jp.CreatedByEmployeeId)
-                      .OnDelete(DeleteBehavior.Restrict);
+              
 
                 entity.HasOne(jp => jp.Tenant)
                       .WithMany()
@@ -260,6 +257,11 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasOne(ja => ja.DocumentCv)
                       .WithMany()
                       .HasForeignKey(ja => ja.DocumentCvId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(ja => ja.ReviewedByEmployee)
+                      .WithMany()
+                      .HasForeignKey(ja => ja.ReviewedByEmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasQueryFilter(ja =>

@@ -26,8 +26,11 @@ namespace HrMangmentSystem_API.Extension_Method
 
             services.AddScoped<IGenericRepository<Employee, Guid>, SoftDeleteRepository<Employee, Guid>>(); // Register SoftDeleteRepository for Employee entity
             services.AddScoped<IGenericRepository<Department, int>, SoftDeleteRepository<Department, int>>(); // Register SoftDeleteRepository for Department entity
-            services.AddScoped<IGenericRepository<JobPosition, int>, GenericRepository<JobPosition, int>>(); // 
-            services.AddScoped<IGenericRepository<EmployeeRole, int>, GenericRepository<EmployeeRole, int>>(); // 
+            services.AddScoped<IGenericRepository<JobPosition, int>, SoftDeleteRepository<JobPosition, int>>();  
+            services.AddScoped<IGenericRepository<EmployeeRole, int>, GenericRepository<EmployeeRole, int>>(); 
+            services.AddScoped<IGenericRepository<JobApplication, int>, SoftDeleteRepository<JobApplication, int>>();
+            services.AddScoped<IGenericRepository<DocumentCv , int>, GenericRepository<DocumentCv , int>>();
+
 
             services.AddScoped<ITenantRepository, TenantRepository>();
 

@@ -1,7 +1,10 @@
-﻿using HrMangmentSystem_Application.Interfaces.Auth;
+﻿using HrManagmentSystem_API.Interfaces;
+using HrMangmentSystem_Application.Implementation.Auth;
+using HrMangmentSystem_Application.Implementation.Repository;
+using HrMangmentSystem_Application.Implementation.Services;
+using HrMangmentSystem_Application.Interfaces.Auth;
 using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
-using HrMangmentSystem_Application.Services;
 using HrMangmentSystem_Infrastructure.Implementations.Identity;
 
 namespace HrMangmentSystem_API.Extension_Method
@@ -26,6 +29,10 @@ namespace HrMangmentSystem_API.Extension_Method
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUser, HttpCurrentUser>();
 
+            services.AddScoped<IJobApplicationService, JobApplicationService>();
+            services.AddScoped<IDocumentCvService, DocumentCvService>();
+
+            services.AddScoped<IFileStorageService, FileStorageService>();
            
 
             return services;

@@ -11,7 +11,7 @@
         public string? Location { get; set; }
         public Guid? DepartmentManagerId { get; set; }
 
-        public Guid TenantId { get; set; }
+    
         }
 
    

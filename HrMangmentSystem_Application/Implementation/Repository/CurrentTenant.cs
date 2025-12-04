@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Application.Interfaces.Repository;
 
-namespace HrMangmentSystem_Application.Services
+namespace HrMangmentSystem_Application.Implementation.Repository
 {
     public class CurrentTenant : ICurrentTenant
     {

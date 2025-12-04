@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.DTOs.Job;
+using HrMangmentSystem_Application.DTOs.Job.Position;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using System.Xml.Serialization;
 
@@ -25,24 +25,20 @@ namespace HrMangmentSystem_Application.Mapper
 
             // Mapping for UpdateJobPositionDtoDto
             CreateMap<UpdateJobPositionDto, JobPosition>()   //partial update
-                  .ForMember(d => d.Id, opt => opt.Ignore())               // don't edit at Job Position Id  
-                  .ForMember(d => d.TenantId, opt => opt.Ignore())         //  don't edit at TenantId
-                  .ForMember(d => d.CreatedAt, opt => opt.Ignore())      //don't edit at Created at 
-                  .ForMember(d => d.CreatedBy, opt => opt.Ignore())        //don't edit at Created by
-                  .ForAllMembers(opt =>
-                      opt.Condition((src, dest, srcMember, destMember) =>  
+                 .ForAllMembers(opt =>
+                      opt.Condition((src, dest, srcMember, destMember) =>
                       {
                           // Ignore if the source member is null (no value provided in DTO)
                           if (srcMember is null)
-                                  return false;
+                              return false;
 
                           // Ignore empty or whitespace-only strings (treat them as "not provided")
                           if (srcMember is string s && string.IsNullOrWhiteSpace(s))
-                                  return false;
+                              return false;
 
                           // Otherwise, apply the value to the destination
                           return true;
                       }));
-                  }
+        }
     }
 }

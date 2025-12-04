@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job;
+using HrMangmentSystem_Application.DTOs.Job.Position;
 
 namespace HrMangmentSystem_Application.Interfaces.Services
 {

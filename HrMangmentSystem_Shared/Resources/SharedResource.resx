@@ -228,9 +228,6 @@
   <data name="Auth_LoginSuccess" xml:space="preserve">
     <value>Login successful.</value>
   </data>
-  <data name="Auth_Unauthorized" xml:space="preserve">
-    <value>You are not authorized.</value>
-  </data>
   <data name="Role_NotFound" xml:space="preserve">
     <value>Role employee not found</value>
   </data>
@@ -329,5 +326,26 @@
   </data>
   <data name="JobPosition_Reopened" xml:space="preserve">
     <value>Job position was reopened successfully.</value>
+  </data>
+  <data name="Auth_Unauthorized" xml:space="preserve">
+    <value>You are not authorized.</value>
+  </data>
+  <data name="JobApplication_PositionClosed" xml:space="preserve">
+    <value>This job position is not accepting applications anymore.</value>
+  </data>
+  <data name="JobApplication_CvRequired" xml:space="preserve">
+    <value>CV is required to apply for this position.</value>
+  </data>
+  <data name="JobApplication_CvNotFound" xml:space="preserve">
+    <value>CV with Id {0} was not found.</value>
+  </data>
+  <data name="JobApplication_AlreadyApplied" xml:space="preserve">
+    <value>You have already applied to this position with this CV.</value>
+  </data>
+  <data name="JobApplication_ListLoaded" xml:space="preserve">
+    <value>Job applications loaded successfully.</value>
+  </data>
+  <data name="JobApplication_Created" xml:space="preserve">
+    <value>apply with position is done</value>
   </data>
 </root>

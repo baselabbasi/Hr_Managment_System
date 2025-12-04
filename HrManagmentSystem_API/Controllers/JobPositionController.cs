@@ -1,7 +1,11 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job;
+using HrMangmentSystem_Application.DTOs.Job.Appilcation;
+using HrMangmentSystem_Application.DTOs.Job.Position;
+using HrMangmentSystem_Application.Interfaces.Repositories;
+using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +17,11 @@ namespace HrManagmentSystem_API.Controllers
     public class JobPositionController : ControllerBase
     {
         private readonly IJobPositionService _jobPositionService;
-
-        public JobPositionController(IJobPositionService jobPositionService)
+        private readonly IJobApplicationService _jobApplicationService;
+        public JobPositionController(IJobPositionService jobPositionService, IJobApplicationService jobApplicationService)
         {
             _jobPositionService = jobPositionService;
+            _jobApplicationService = jobApplicationService;
         }
 
 
@@ -27,7 +32,7 @@ namespace HrManagmentSystem_API.Controllers
 
             return Ok(result);
         }
-        
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ApiResponse<JobPositionDto>>> GetJobPositionById(int id)
         {
@@ -39,7 +44,7 @@ namespace HrManagmentSystem_API.Controllers
             return Ok(result);
         }
 
-       
+
         [HttpPost]
         public async Task<ActionResult<ApiResponse<JobPositionDto>>> CreateJobPosition([FromBody] CreateJobPositionDto createJobPositionDto)
         {
@@ -63,13 +68,10 @@ namespace HrManagmentSystem_API.Controllers
         }
 
 
-        [HttpPut("{id:int}")] 
-        public async Task<ActionResult<ApiResponse<JobPositionDto>>> UpdateJobPosition(int id, [FromBody] UpdateJobPositionDto updateJobPositionDto)
+        [HttpPut]
+        public async Task<ActionResult<ApiResponse<JobPositionDto>>> UpdateJobPosition([FromBody] UpdateJobPositionDto updateJobPositionDto)
         {
-            if (id != updateJobPositionDto.Id)
-            {
-                return BadRequest(ApiResponse<bool>.Fail("ID mismatch"));
-            }
+
             var result = await _jobPositionService.UpdateJobPositionsAsync(updateJobPositionDto);
 
             if (!result.Success || result.Data is null)
@@ -83,7 +85,7 @@ namespace HrManagmentSystem_API.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteJobPosition(int jobPositionId)
         {
@@ -100,5 +102,47 @@ namespace HrManagmentSystem_API.Controllers
             }
             return Ok(result);
         }
+
+
+        [HttpPost("{id:int}/status")]
+        public async Task<ActionResult<ApiResponse<JobPositionDto>>> ChangeStatus([FromBody] ChangeJobPositionStatusDto changeJobPositionStatusDto)
+        {
+
+            var result = await _jobPositionService.ChangeStatusAsync(changeJobPositionStatusDto);
+            return Ok(result);
+        }
+
+
+        [HttpPost("{jobPositionId:int}/apply")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ApiResponse<JobApplicationDto>>> Apply(
+            int jobPositionId,
+            [FromBody] CreateJobApplicationDto createJobApplicationDto,
+            [FromQuery] string tenantCode,
+            [FromServices] ITenantRepository tenantRepository,
+            [FromServices] ICurrentTenant currentTenant
+            )
+        {
+            var tenant = await tenantRepository.FindByCodeAsync(tenantCode);
+            if (tenant is null)
+                return ApiResponse<JobApplicationDto>.Fail("Tenant_NotFound");
+
+            currentTenant.SetTenant(tenant.Id);
+
+            var result = await _jobApplicationService.ApplyAsync(jobPositionId, createJobApplicationDto);
+            return Ok(result);
+        }
+
+        [HttpGet("{jobPositionId:int}/applications")]
+        [Authorize(Roles = $"{RoleNames.HrAdmin},{RoleNames.Recruiter}")]
+        public async Task<ActionResult<ApiResponse<JobApplicationDto>>> GetApplications(
+            int jobPositionId , 
+            [FromQuery] PagedRequest request)
+        {
+            var result = await _jobApplicationService.GetByJobPositionPagedAsync(jobPositionId, request);
+            return Ok(result);
+        }
+
+     
     }
 }

@@ -17,8 +17,10 @@ namespace HrMangmentSystem_Domain.Entities.Recruitment
 
         public DateTime AppliedAt { get; set; } = DateTime.Now;
 
-        public Employee? ReviewedByEmployeeId { get; set; }
+        public Guid? ReviewedByEmployeeId { get; set; }
+        public Employee? ReviewedByEmployee { get; set; }
 
+        public double? MatchScore { get; set; }
         public string? Notes { get; set; }
 
         }

@@ -538,6 +538,60 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have already applied to this position with this CV..
+        /// </summary>
+        public static string JobApplication_AlreadyApplied {
+            get {
+                return ResourceManager.GetString("JobApplication_AlreadyApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apply with position is done.
+        /// </summary>
+        public static string JobApplication_Created {
+            get {
+                return ResourceManager.GetString("JobApplication_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CV with Id {0} was not found..
+        /// </summary>
+        public static string JobApplication_CvNotFound {
+            get {
+                return ResourceManager.GetString("JobApplication_CvNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CV is required to apply for this position..
+        /// </summary>
+        public static string JobApplication_CvRequired {
+            get {
+                return ResourceManager.GetString("JobApplication_CvRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job applications loaded successfully..
+        /// </summary>
+        public static string JobApplication_ListLoaded {
+            get {
+                return ResourceManager.GetString("JobApplication_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This job position is not accepting applications anymore..
+        /// </summary>
+        public static string JobApplication_PositionClosed {
+            get {
+                return ResourceManager.GetString("JobApplication_PositionClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job position is already closed..
         /// </summary>
         public static string JobPosition_AlreadyClosed {
