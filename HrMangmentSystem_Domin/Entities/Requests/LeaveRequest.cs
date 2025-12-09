@@ -16,6 +16,7 @@ namespace HrMangmentSystem_Domain.Entities.Requests
 
         public string? Reason { get; set; }
 
+        public int GenericRequestId { get; set; }
         public GenericRequest GenericRequest { get; set; } = null!;
     }
 }

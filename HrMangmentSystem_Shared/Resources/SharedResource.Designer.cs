@@ -322,6 +322,42 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Candidate name and email are required.
+        /// </summary>
+        public static string DocumentCv_CandidateInfoRequired {
+            get {
+                return ResourceManager.GetString("DocumentCv_CandidateInfoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The uploaded file is empty. Please upload a valid CV file.
+        /// </summary>
+        public static string DocumentCv_EmptyFile {
+            get {
+                return ResourceManager.GetString("DocumentCv_EmptyFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only PDF files are allowed.
+        /// </summary>
+        public static string DocumentCv_OnlyPdfAllowed {
+            get {
+                return ResourceManager.GetString("DocumentCv_OnlyPdfAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CV has been uploaded successfully..
+        /// </summary>
+        public static string DocumentCv_Uploaded {
+            get {
+                return ResourceManager.GetString("DocumentCv_Uploaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First name, last name and email are required..
         /// </summary>
         public static string Employee_BasicFieldsRequired {
@@ -574,6 +610,15 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid status transition from &apos;{0}&apos; to &apos;{1}&apos;.
+        /// </summary>
+        public static string JobApplication_InvalidTransition {
+            get {
+                return ResourceManager.GetString("JobApplication_InvalidTransition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job applications loaded successfully..
         /// </summary>
         public static string JobApplication_ListLoaded {
@@ -583,11 +628,38 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job application with Id {0} was not found..
+        /// </summary>
+        public static string JobApplication_NotFound {
+            get {
+                return ResourceManager.GetString("JobApplication_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This job position is not accepting applications anymore..
         /// </summary>
         public static string JobApplication_PositionClosed {
             get {
                 return ResourceManager.GetString("JobApplication_PositionClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application {0} status has been changed to &apos;{1}&apos;.
+        /// </summary>
+        public static string JobApplication_StatusChanged {
+            get {
+                return ResourceManager.GetString("JobApplication_StatusChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application is already in the requested status.
+        /// </summary>
+        public static string JobApplication_StatusSame {
+            get {
+                return ResourceManager.GetString("JobApplication_StatusSame", resourceCulture);
             }
         }
         
@@ -682,7 +754,16 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Job position with Id {0} was not found..
+        ///   Looks up a localized string similar to This job position is not active and cannot accept applications..
+        /// </summary>
+        public static string JobPosition_NotActive {
+            get {
+                return ResourceManager.GetString("JobPosition_NotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job position with Id {0} was not found.
         /// </summary>
         public static string JobPosition_NotFound {
             get {

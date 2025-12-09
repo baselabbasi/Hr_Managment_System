@@ -1,11 +1,9 @@
 ﻿using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
-using HrMangmentSystem_Domain.Enum.Employee;
 using HrMangmentSystem_Domain.Tenants;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,11 +34,12 @@ namespace HrMangmentSystem_Infrastructure.Models
         public DbSet<DocumentEmployeeInfo> DocumentEmployeeInfo { get; set; }
 
         public DbSet<GenericRequest> GenericRequests { get; set; }
-
+        public DbSet<FinancialRequest> FinancialRequests { get; set; }
+        public DbSet<ResignationRequest> ResignationRequests { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
 
         public DbSet<EmployeeDataChange> EmployeeDataChanges { get; set; }
-
+        public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances { get; set; }
         public DbSet<RequestHistory> RequestHistories { get; set; }
 
         public DbSet<Tenant> Tenants { get; set; }
@@ -54,124 +53,18 @@ namespace HrMangmentSystem_Infrastructure.Models
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            
+
             ApplyTenantRules();
             ApplyAuditInfo();
             return base.SaveChangesAsync();
         }
 
-    
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure relationships and constraints 
-
-
-            var tenantId = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            var employeeId = Guid.Parse("22222222-2222-2222-2222-222222222222");
-
-            modelBuilder.Entity<Tenant>().HasData(
-                new Tenant
-                {
-                    Id = tenantId,
-                    Name = "Demo Tenant",
-                    Code = "DEMO",
-                    Description = "Seeder Tenant",
-                    IsActive = true,
-                    ContactEmail = "admin@demo.com",
-                    ContactPhone = "+962790000000",
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000000")
-                }
-            );
-
-            modelBuilder.Entity<Department>().HasData(
-                new Department
-                {
-                    Id = 1,
-                    TenantId = tenantId,
-                    Code = "IT",
-                    DeptName = "IT Department",
-                    Description = "Tech Dept",
-                    Location = "HQ",
-                    DepartmentManagerId = null,
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty
-                }
-            );
-
-            modelBuilder.Entity<Employee>().HasData(
-                new Employee
-                {
-                    Id = employeeId,
-                    TenantId = tenantId,
-                    FirstName = "Test",
-                    LastName = "Employee",
-                    Email = "test@demo.com",
-                    PhoneNumber = "0790000000",
-                    Position = "Developer",
-                    Address = "Amman",
-                    DepartmentId = 1,
-                    DateOfBirth = new DateTime(1995, 1, 1),
-                    EmploymentStartDate = new DateTime(2024, 1, 1),
-                    PasswordHash = "Test@123",
-                    Gender = (Gender)1,
-                    IsDeleted = false,
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty
-                }
-            );
-
-            modelBuilder.Entity<Role>().HasData(
-                new Role
-                {
-                    Id = 1,
-                    Name = RoleNames.SystemAdmin,
-                    Description = "System administrator",
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty,
-                    TenantId = tenantId
-                },
-                 new Role
-                 {
-                     Id = 2,
-                     Name = RoleNames.HrAdmin,
-                     Description = "Hr Manager",
-                     CreatedAt = new DateTime(2024, 1, 1),
-                     CreatedBy = Guid.Empty,
-                     TenantId = tenantId
-
-                 },
-                new Role
-                {
-                    Id = 3,
-                    Name = RoleNames.Manager,
-                    Description = "Manager",
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty,
-                    TenantId = tenantId
-                },
-                new Role
-                {
-                    Id = 4,
-                    Name = RoleNames.Employee,
-                    Description = "Regular employee",
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty,
-                    TenantId = tenantId
-                },
-                new Role
-                {
-                    Id = 5,
-                    Name = RoleNames.Recruiter,
-                    Description = "Recruitment role",
-                    CreatedAt = new DateTime(2024, 1, 1),
-                    CreatedBy = Guid.Empty,
-                    TenantId = tenantId
-                }
-            );
             modelBuilder.Entity<Employee>(entity =>
                {
                    entity.HasKey(e => e.Id);
@@ -219,6 +112,23 @@ namespace HrMangmentSystem_Infrastructure.Models
                       !_currentTenant.IsSet ||
                     d.TenantId == _currentTenant.TenantId);
             });
+
+
+            modelBuilder.Entity<EmployeeLeaveBalance>(entity => 
+                {
+                    entity.HasIndex(elb => new {elb.EmployeeId, elb.LeaveType}).IsUnique();
+
+
+                    entity.HasOne(jp => jp.Tenant)
+                          .WithMany()
+                          .HasForeignKey(jp => jp.TenantId)
+                          .OnDelete(DeleteBehavior.Restrict);
+
+                    entity.HasQueryFilter(jp =>
+                    !_currentTenant.IsSet ||
+                  jp.TenantId == _currentTenant.TenantId);
+                });
+
 
             modelBuilder.Entity<JobPosition>(entity =>
             {
@@ -305,11 +215,13 @@ namespace HrMangmentSystem_Infrastructure.Models
             modelBuilder.Entity<GenericRequest>(entity =>
             {
                 entity.HasKey(gr => gr.Id);
+
                 entity.HasOne(gr => gr.RequestedByEmployee)
                       .WithMany()
                       .HasForeignKey(gr => gr.RequestedByEmployeeId)
                       .OnDelete(DeleteBehavior.Restrict);
 
+            
                 entity.HasOne(gr => gr.Tenant)
                         .WithMany()
                         .HasForeignKey(gr => gr.TenantId)
@@ -322,10 +234,11 @@ namespace HrMangmentSystem_Infrastructure.Models
             modelBuilder.Entity<LeaveRequest>(entity =>
             {
                 entity.HasKey(lr => lr.Id);
+
                 entity.HasOne(lr => lr.GenericRequest)
-                      .WithOne()
-                      .HasForeignKey<LeaveRequest>(lr => lr.Id)
-                      .OnDelete(DeleteBehavior.Restrict);
+                      .WithOne(g => g.LeaveRequest)
+                      .HasForeignKey<LeaveRequest>(lr => lr.GenericRequestId)
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(lr => lr.Tenant)
                       .WithMany()
@@ -339,9 +252,10 @@ namespace HrMangmentSystem_Infrastructure.Models
             modelBuilder.Entity<EmployeeDataChange>(entity =>
             {
                 entity.HasKey(edc => edc.Id);
+
                 entity.HasOne(edc => edc.GenericRequest)
-                      .WithOne()
-                      .HasForeignKey<EmployeeDataChange>(edc => edc.Id)
+                      .WithOne(g => g.EmployeeDataChange)
+                      .HasForeignKey<EmployeeDataChange>(edc => edc.GenericRequestId)
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(edc => edc.Tenant)
@@ -353,14 +267,56 @@ namespace HrMangmentSystem_Infrastructure.Models
                       !_currentTenant.IsSet ||
                     edc.TenantId == _currentTenant.TenantId);
             });
+            modelBuilder.Entity<FinancialRequest>(entity =>
+            {
+                entity.HasKey(fr =>fr.Id);
+
+                entity.Property(fr => fr.Amount)
+                .HasColumnType("decimal(18,2)");
+
+
+                entity.HasOne(fr => fr.GenericRequest)
+                .WithOne(g => g.FinancialRequest)
+                .HasForeignKey<FinancialRequest>(fr => fr.GenericRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(fr => fr.Tenant)
+                      .WithMany()
+                      .HasForeignKey(fr => fr.TenantId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(fr =>
+                      !_currentTenant.IsSet ||
+                    fr.TenantId == _currentTenant.TenantId);
+
+            });
+
+            modelBuilder.Entity<ResignationRequest>(entity =>
+            {
+                entity.HasKey(rr => rr.Id);
+
+                entity.HasOne(rr => rr.GenericRequest)
+                      .WithOne(g => g.ResignationRequest)
+                      .HasForeignKey<ResignationRequest>(rr => rr.GenericRequestId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(rr => rr.Tenant)
+                        .WithMany()
+                        .HasForeignKey(rr => rr.TenantId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasQueryFilter(rr =>
+                      !_currentTenant.IsSet ||
+                    rr.TenantId == _currentTenant.TenantId);
+            });
             modelBuilder.Entity<RequestHistory>(entity =>
             {
                 entity.HasKey(h => h.Id);
 
                 entity.HasOne(h => h.GenericRequest)
-                      .WithMany()
+                      .WithMany(g => g.History)
                       .HasForeignKey(h => h.GenericRequestId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(h => h.PerformedByEmployee)
                       .WithMany()
@@ -433,7 +389,7 @@ namespace HrMangmentSystem_Infrastructure.Models
                  .ToList();
 
             var now = DateTime.Now;
-            var currentUserId = _currentUser.EmployeeId ?? Guid.Empty;
+            var currentUserId = _currentUser.EmployeeId;
 
             foreach (var entry in entries)
             {

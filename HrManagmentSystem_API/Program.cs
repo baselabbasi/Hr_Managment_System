@@ -1,8 +1,7 @@
-﻿using HrManagmentSystem_API.Middleware;
+﻿using HrManagmentSystem_API.Extension_Method;
+using HrManagmentSystem_API.Middleware;
 using HrMangmentSystem_API.Extension_Method;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,40 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationService();
 builder.Services.AddAutoMapperProfiles();
 builder.Services.AddConfigureDatabases(builder.Configuration);
-builder.Services.AddLocaizationResource(); 
+builder.Services.AddLocaizationResource();
+builder.Services.AddLeaveAccrualQuartz();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+              .AddJsonOptions(options =>
+              {
+                  options.JsonSerializerOptions.Converters.Add(
+                      new JsonStringEnumConverter());
+              });
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "");
 
-var jwtSection = builder.Configuration.GetSection("JwtSettings");
-var key = jwtSection["Key"];
-
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false; 
-        options.SaveToken = true;
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-
-            ValidIssuer = jwtSection["Issuer"],
-            ValidAudience = jwtSection["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
-
-            ClockSkew = TimeSpan.FromMinutes(30)
-        };
-    });
 
 builder.Services.AddAuthorization();
 
@@ -55,6 +33,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+
+//await DataSeeding.SeedAsync(app.Services);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

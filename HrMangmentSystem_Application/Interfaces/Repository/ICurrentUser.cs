@@ -4,7 +4,7 @@
     {
      
 
-        Guid? EmployeeId { get; }
+        Guid EmployeeId { get; }
 
         string? Email { get; }
 

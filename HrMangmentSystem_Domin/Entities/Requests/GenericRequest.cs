@@ -14,10 +14,6 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public Employee RequestedByEmployee { get; set; } = null!;
 
 
-        public Guid? TargetEmployeeId { get; set; } // For requests that target a specific employee
-        public Employee? TargetEmployee { get; set; } // For requests that target a specific employee
-
-
         public DateTime RequestedAt { get; set; } = DateTime.Now;
         public DateTime? LastUpdatedAt { get; set; }
 
@@ -25,6 +21,12 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public string? Description { get; set; }
 
 
-        public FinancialType? FinancialType { get; set; }
+       public LeaveRequest? LeaveRequest { get; set; }
+        public EmployeeDataChange? EmployeeDataChange { get; set; }
+        public FinancialRequest? FinancialRequest { get;set; }
+        public ResignationRequest? ResignationRequest { get; set; }
+        
+        public ICollection<RequestHistory> History { get; set; } = new List<RequestHistory>();
+
     }
 }

@@ -31,7 +31,7 @@ namespace HrManagmentSystem_API.Controllers
 
         
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetAllEmployees([FromQuery] PagedRequest request)
+        public async Task<ActionResult<ApiResponse<PagedResult<EmployeeDto>>>> GetAllEmployees([FromQuery] PagedRequest request)
         {
             var result = await _employeeService.GetEmployeesPagedAsync(request);
 

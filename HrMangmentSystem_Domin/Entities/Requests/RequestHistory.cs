@@ -9,7 +9,7 @@ namespace HrMangmentSystem_Domain.Entities.Requests
         public int GenericRequestId { get; set; }
         public GenericRequest GenericRequest { get; set; } = null!;
 
-        public string Action { get; set; } = null!;
+        public RequestAction Action { get; set; } 
 
         public RequestStatus? OldStatus { get; set; }
 

@@ -297,9 +297,6 @@
   <data name="JobPosition_Created" xml:space="preserve">
     <value>تم إنشاء شاغر الوظيفة بنجاح.</value>
   </data>
-  <data name="JobPosition_NotFound" xml:space="preserve">
-    <value>الوظيفة ذات الرقم {0} غير موجودة.</value>
-  </data>
   <data name="JobPosition_DetailsLoaded" xml:space="preserve">
     <value>تم تحميل تفاصيل الوظيفة بنجاح.</value>
   </data>
@@ -347,5 +344,35 @@
   </data>
   <data name="JobApplication_Created" xml:space="preserve">
     <value>تم التقديم للوظيفة بنجاح </value>
+  </data>
+  <data name="JobPosition_NotActive" xml:space="preserve">
+    <value>هذه الوظيفة غير مفعلة ولا تقبل الطلبات حالياً</value>
+  </data>
+  <data name="DocumentCv_EmptyFile" xml:space="preserve">
+    <value>الملف المرفوع فارغ و يرجى رفع ملف سيرة ذاتية صالح</value>
+  </data>
+  <data name="JobPosition_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على الوظيفة ذات المعرّف {0}.</value>
+  </data>
+  <data name="DocumentCv_OnlyPdfAllowed" xml:space="preserve">
+    <value>يسمح برفع ملفات PDF فقط</value>
+  </data>
+  <data name="DocumentCv_CandidateInfoRequired" xml:space="preserve">
+    <value>اسم المتقدم و بريده الالكتروني مطلوبان</value>
+  </data>
+  <data name="DocumentCv_Uploaded" xml:space="preserve">
+    <value>تم رفع السيرة الذاتية بنجاح</value>
+  </data>
+  <data name="JobApplication_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على طلب التوظيف ذو المعرّف {0}.</value>
+  </data>
+  <data name="JobApplication_StatusSame" xml:space="preserve">
+    <value>طلب التوظيف موجود بالفعل في نفس الحالة المطلوبة.</value>
+  </data>
+  <data name="JobApplication_InvalidTransition" xml:space="preserve">
+    <value>انتقال حالة غير صالح من '{0}' إلى '{1}'.</value>
+  </data>
+  <data name="JobApplication_StatusChanged" xml:space="preserve">
+    <value>تم تغيير حالة طلب التوظيف {0} إلى '{1}'.</value>
   </data>
 </root>

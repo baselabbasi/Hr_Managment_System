@@ -4,6 +4,7 @@ using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.DTOs.Job.Appilcation;
 using HrMangmentSystem_Application.Interfaces.Repositories;
+using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Enum.Recruitment;
@@ -21,6 +22,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
         private readonly IMapper _mapper;
         private readonly ILogger<JobApplicationService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly ICurrentUser _currentUser;
 
         public JobApplicationService(
             IGenericRepository<JobApplication, int> jobApplicationRepository,
@@ -28,7 +30,9 @@ namespace HrMangmentSystem_Application.Implementation.Services
             IGenericRepository<DocumentCv, int> documentCvRepository,
             IMapper mapper,
             ILogger<JobApplicationService> logger,
-            IStringLocalizer<SharedResource> localizer
+            IStringLocalizer<SharedResource> localizer,
+            ICurrentUser currentUser
+
             )
         {
             _jobApplicationRepository = jobApplicationRepository;
@@ -37,6 +41,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
             _mapper = mapper;
             _logger = logger;
             _localizer = localizer;
+            _currentUser = currentUser;
         }
 
         public async Task<ApiResponse<JobApplicationDto>> ApplyAsync(int jobPositionId, CreateJobApplicationDto createJobApplicationDto)
@@ -94,6 +99,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
 
                 return ApiResponse<JobApplicationDto>.Ok(resultDto, _localizer["JobApplication_Created"]);
 
+                
             }
             catch (Exception ex)
             {
@@ -103,7 +109,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
             }
         }
 
-        public async Task<ApiResponse<PagedResult<JobApplicationDto>>> GetByJobPositionPagedAsync(int jobPositionId, PagedRequest request)
+
+        public async Task<ApiResponse<PagedResult<JobApplicationDto>>> GetByJobApplicationPagedAsync(int jobPositionId, PagedRequest request)
         {
             try
             {
@@ -118,7 +125,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
                     _logger.LogWarning($"Get JobApplication: Job Position {jobPositionId} not found");
                     return ApiResponse<PagedResult<JobApplicationDto>>.Fail(_localizer["JobPosition_NotFound", jobPositionId]);
                 }
-              
+
                 var query = _jobApplicationRepository.Query()
                     .Include(j => j.JobPosition)
                         .ThenInclude(jp => jp.Department)
@@ -154,14 +161,14 @@ namespace HrMangmentSystem_Application.Implementation.Services
                         _ => request.Desc
                              ? query.OrderByDescending(j => j.AppliedAt)
                              : query.OrderBy(j => j.AppliedAt),
-                          
+
                     };
                 }
                 else
                 {
-                    query =query.OrderByDescending(j => j.AppliedAt);
+                    query = query.OrderByDescending(j => j.AppliedAt);
                 }
-                var totalCount= await query.CountAsync();
+                var totalCount = await query.CountAsync();
 
                 var items = await query
                     .Skip((request.PageNumber - 1) * request.PageSize)
@@ -170,7 +177,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
 
                 var dtoItems = _mapper.Map<List<JobApplicationDto>>(items);
 
-                var paged =  new PagedResult<JobApplicationDto>
+                var paged = new PagedResult<JobApplicationDto>
                 {
                     Items = dtoItems,
                     TotalCount = totalCount,
@@ -180,15 +187,112 @@ namespace HrMangmentSystem_Application.Implementation.Services
                 };
 
                 _logger.LogInformation($"Get JobApplications: Loaded page {request.PageNumber} for JobPosition {jobPositionId}");
- 
-                return ApiResponse<PagedResult<JobApplicationDto>>.Ok(paged , _localizer["JobApplication_ListLoaded"]);
+
+                return ApiResponse<PagedResult<JobApplicationDto>>.Ok(paged, _localizer["JobApplication_ListLoaded"]);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Get JobApplications: Unexpected error for JobPosition {jobPositionId}");
 
-                return ApiResponse<PagedResult<JobApplicationDto>>.Fail( _localizer["Generic_UnexpectedError"]);
+                return ApiResponse<PagedResult<JobApplicationDto>>.Fail(_localizer["Generic_UnexpectedError"]);
             }
+        }
+
+
+        public async Task<ApiResponse<JobApplicationDto>> ChangeStatusAsync(ChangeJobApplicationStatusDto changeJobApplicationStatusDto)
+        {
+            try
+            {
+                var application = await _jobApplicationRepository
+                    .Query()
+                    .Include(j => j.JobPosition)
+                    .Include(j => j.DocumentCvId)
+                    .FirstOrDefaultAsync(j => j.Id == changeJobApplicationStatusDto.JobApplicationId);
+
+                if (application is null)
+                {
+                    _logger.LogWarning($"Change Status JobApplication : Application {changeJobApplicationStatusDto.JobApplicationId} not found");
+                   return ApiResponse<JobApplicationDto>.Fail(_localizer["JobApplication_NotFound",changeJobApplicationStatusDto.JobApplicationId]);
+                }
+
+                var currentStatus = application.Status;
+                var newStatus = changeJobApplicationStatusDto.Newstatus;
+
+                if (currentStatus == newStatus)
+                {
+                    _logger.LogWarning($"ChangeStatus JobApplication: Application {changeJobApplicationStatusDto.JobApplicationId}" +
+                        $" already in status {currentStatus}");
+
+                    return ApiResponse<JobApplicationDto>.Fail(_localizer["JobApplication_StatusSame"]);
+                }
+                if(!IsValidStatusTransition(currentStatus, newStatus))
+                {
+                    _logger.LogWarning($"ChangeStatus JobApplaication : Invalid status transition {currentStatus} -> {newStatus} " +
+                        $"for application {changeJobApplicationStatusDto.JobApplicationId}");
+                    return ApiResponse<JobApplicationDto>.Fail(_localizer["JobApplication_InvalidTransition",
+                        currentStatus.ToString(), newStatus.ToString()]);
+                }
+                application.Status = newStatus;
+                application.AppliedAt = DateTime.Now;
+
+                application.ReviewedByEmployeeId = _currentUser.EmployeeId;
+                application.UpdatedBy = _currentUser.EmployeeId;
+                application.UpdatedAt = DateTime.Now;
+                
+                if(!string.IsNullOrWhiteSpace(changeJobApplicationStatusDto.Notes))
+                {
+                    if (!string.IsNullOrWhiteSpace(changeJobApplicationStatusDto.Notes))
+                    {
+                        application.Notes = changeJobApplicationStatusDto.Notes.Trim();
+                    }
+                    else
+                    {
+                        application.Notes = application.Notes + Environment.NewLine +
+                            $"[{DateTime.Now:yyyy-mm-dd HH:mm}] {changeJobApplicationStatusDto.Notes.Trim()}";
+                    }
+
+                }
+
+                _jobApplicationRepository.Update(application);
+                await _jobApplicationRepository.SaveChangesAsync();
+
+                var resultDto = _mapper.Map<JobApplicationDto>(application);
+
+                _logger.LogInformation($"ChangeStatus JobApplication : Application {changeJobApplicationStatusDto.JobApplicationId} " +
+                    $"changed from {currentStatus} to {newStatus}");
+
+                return ApiResponse<JobApplicationDto>.Ok(resultDto, _localizer["JobApplication_StatusChanged",
+                    changeJobApplicationStatusDto.JobApplicationId, newStatus.ToString()]);
+            }
+
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"ChangeStatus JobApplication: Unexpected error for Application {changeJobApplicationStatusDto.JobApplicationId}");
+
+                return ApiResponse<JobApplicationDto>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
+        }
+      
+        private bool IsValidStatusTransition(JobApplicationStatus current , JobApplicationStatus target)
+        {
+            if(current == target)
+                return false;
+
+            return current switch
+            {
+                JobApplicationStatus.New => target is JobApplicationStatus.UnderReview or JobApplicationStatus.Rejected,
+
+                JobApplicationStatus.UnderReview => target is JobApplicationStatus.Shortlisted or JobApplicationStatus.Rejected,
+
+                JobApplicationStatus.Shortlisted => target is JobApplicationStatus.Hired or JobApplicationStatus.Rejected,
+
+                JobApplicationStatus.Rejected => false,
+
+                JobApplicationStatus.Hired => false,
+
+                _ => false
+            };
         }
     }
 }

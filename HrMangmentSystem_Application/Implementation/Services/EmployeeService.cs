@@ -6,6 +6,7 @@ using HrMangmentSystem_Application.Common.Security;
 using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Enum.Employee;
@@ -26,6 +27,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IPasswordHasher<Employee> _passwordHasher;
         private readonly ICurrentUser _currentUser;
+        private readonly ILeaveBalanceService _leaveBalanceService;
 
         public EmployeeService(IGenericRepository<Employee, Guid> employeeRepository,
             IGenericRepository<Department, int> deparmentRepository,
@@ -34,7 +36,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
            IStringLocalizer<SharedResource> localizer,
           IEmployeeRoleService employeeRoleService,
           IPasswordHasher<Employee> passwordHasher,
-          ICurrentUser currentUser)
+          ICurrentUser currentUser,
+          ILeaveBalanceService leaveBalanceService)
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = deparmentRepository;
@@ -44,6 +47,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
             _employeeRoleService = employeeRoleService;
             _passwordHasher = passwordHasher;
             _currentUser = currentUser;
+            _leaveBalanceService = leaveBalanceService;
         }
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
@@ -112,6 +116,9 @@ namespace HrMangmentSystem_Application.Implementation.Services
                 await _employeeRepository.SaveChangesAsync();
 
                 await _employeeRoleService.AssignDefaultRoleToEmployeeAsync(employee.Id);
+
+                await _leaveBalanceService.InitializeAnnualLeaveForEmployeeAsync(
+                    employee.Id, employee.EmploymentStartDate);
                   
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);

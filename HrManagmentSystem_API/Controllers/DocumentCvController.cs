@@ -16,7 +16,7 @@ namespace HrManagmentSystem_API.Controllers
     [ApiController]
     public class DocumentCvController : ControllerBase
     {
-        private readonly IGenericRepository<JobPosition,int> _jobPositionRepository;
+        private readonly IGenericRepository<JobPosition, int> _jobPositionRepository;
         private readonly ICurrentTenant _currentTenant;
         private readonly IDocumentCvService _documentCvService;
         private readonly IStringLocalizer<SharedResource> _localizer;
@@ -43,21 +43,34 @@ namespace HrManagmentSystem_API.Controllers
             var jobPosition = await _jobPositionRepository.GetByIdAsync(jobPositionId);
             if (jobPosition is null)
             {
-                return ApiResponse<DocumentCvDto>.Fail("JobPosition_NotFound");
+                return ApiResponse<DocumentCvDto>.Fail(_localizer["JobPosition_NotFound", jobPositionId]);
             }
             if (!jobPosition.IsActive)
             {
-                return ApiResponse<DocumentCvDto>.Fail("JobPosition_NotActive");
+                return ApiResponse<DocumentCvDto>.Fail(_localizer["JobPosition_NotActive"]);
             }
             _currentTenant.SetTenant(jobPosition.TenantId);
 
 
-            if (cvFile == null || cvFile.Length <= 0) 
+            if (cvFile == null || cvFile.Length <= 0)
             {
                 return ApiResponse<DocumentCvDto>.Fail(_localizer["DocumentCv_EmptyFile"]);
             }
-            var relativePath = await fileStorageService.SaveCvAsync(cvFile , candidateName , jobPosition.Title);
-         
+            string relativePath;
+            
+            try
+            {
+                relativePath = await fileStorageService.SaveCvAsync(cvFile, candidateName, jobPosition.Title);
+            }
+            catch (InvalidOperationException ex) when (ex.Message == "DocumentCv_OnlyPdfAllowed")
+            {
+                return ApiResponse<DocumentCvDto>.Fail(_localizer["DocumentCv_OnlyPdfAllowed"]);
+            }
+            catch(InvalidOperationException ex) when (ex.Message == "DocumentCv_EmptyFile")
+            {
+                return ApiResponse<DocumentCvDto>.Fail(_localizer["DocumentCv_EmptyFile"]);
+            }
+
             var createDto = new CreateDocumentCvDto
             {
                 FileName = cvFile.FileName,
@@ -67,10 +80,10 @@ namespace HrManagmentSystem_API.Controllers
                 CandidateEmail = candidateEmail,
                 CandidatePhone = candidatePhone
             };
-            var result = await _documentCvService.CreateAsync(createDto , relativePath);
-            
+            var result = await _documentCvService.CreateAsync(createDto, relativePath);
+
             return Ok(result);
         }
-     
+
     }
 }

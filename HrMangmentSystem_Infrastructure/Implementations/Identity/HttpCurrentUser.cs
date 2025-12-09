@@ -16,12 +16,18 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Identity
         private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
    
 
-        public Guid? EmployeeId
+        public Guid EmployeeId
         {
             get
             {
                 var id = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                return Guid.TryParse(id, out var guid) ? guid : null;
+
+                if (!Guid.TryParse(id, out var guid))
+                {
+                    return Guid.Empty;
+                }
+
+                return guid;
             }
         }
 

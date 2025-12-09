@@ -16,6 +16,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
         private readonly IMapper _mapper;
         private readonly ILogger<DocumentCvService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
+      
 
         public DocumentCvService(
             IGenericRepository<DocumentCv, int> documentCvRepository,

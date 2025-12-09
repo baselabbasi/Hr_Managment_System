@@ -1,7 +1,4 @@
-﻿using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
-
-namespace HrManagmentSystem_API.Interfaces
+﻿namespace HrManagmentSystem_API.Interfaces
 {
     public interface IFileStorageService
 

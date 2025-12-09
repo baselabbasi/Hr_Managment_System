@@ -28,7 +28,7 @@ namespace HrManagmentSystem_API.Controllers
         }*/
 
         [HttpGet] // get all : api/departments
-        public async Task<ActionResult<ApiResponse<DepartmentDto>>> GetAllDepartments([FromQuery] PagedRequest request)
+        public async Task<ActionResult<ApiResponse<PagedResult<DepartmentDto>>>> GetAllDepartments([FromQuery] PagedRequest request)
         {
             var result = await _departmentService.GetDepartmentPagedAsync(request);
             return Ok(result);

@@ -2,6 +2,7 @@
 using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
+using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Infrastructure.Implementations.Repositories;
 using HrMangmentSystem_Infrastructure.Implementations.Security;
@@ -30,19 +31,21 @@ namespace HrMangmentSystem_API.Extension_Method
             services.AddScoped<IGenericRepository<EmployeeRole, int>, GenericRepository<EmployeeRole, int>>(); 
             services.AddScoped<IGenericRepository<JobApplication, int>, SoftDeleteRepository<JobApplication, int>>();
             services.AddScoped<IGenericRepository<DocumentCv , int>, GenericRepository<DocumentCv , int>>();
-
-
+            services.AddScoped<IGenericRepository<Role, int>, GenericRepository<Role, int>>();
+            services.AddScoped<IGenericRepository<EmployeeDataChange, int>, SoftDeleteRepository<EmployeeDataChange, int>>();
+            services.AddScoped<IGenericRepository<FinancialRequest,int> , SoftDeleteRepository<FinancialRequest, int>>();
+            services.AddScoped<IGenericRepository<GenericRequest ,int>, SoftDeleteRepository<GenericRequest ,int>>();
+            services.AddScoped<IGenericRepository<LeaveRequest, int>, SoftDeleteRepository<LeaveRequest, int>>();
+            services.AddScoped<IGenericRepository<RequestHistory,int> , GenericRepository<RequestHistory, int>>();
+            services.AddScoped<IGenericRepository<DocumentEmployeeInfo, Guid>, SoftDeleteRepository<DocumentEmployeeInfo, Guid>>();
+            services.AddScoped<IGenericRepository<EmployeeLeaveBalance, int>, SoftDeleteRepository<EmployeeLeaveBalance, int>>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
 
-            services.AddControllers()
-               .AddJsonOptions(options =>
-               {
-                   options.JsonSerializerOptions.Converters.Add(
-                       new JsonStringEnumConverter());
-               });
+           
 
             return services;
         }

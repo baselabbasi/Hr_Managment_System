@@ -82,21 +82,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Departments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "IT",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            DeletedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeptName = "IT Department",
-                            Description = "Tech Dept",
-                            IsDeleted = false,
-                            Location = "HQ",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        });
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.DocumentEmployeeInfo", b =>
@@ -262,30 +247,60 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Employees");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            Address = "Amman",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            DateOfBirth = new DateTime(1995, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeletedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DepartmentId = 1,
-                            Email = "test@demo.com",
-                            EmploymentStartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmploymentStatusType = 0,
-                            FirstName = "Test",
-                            Gender = 1,
-                            IsDeleted = false,
-                            LastName = "Employee",
-                            MustChangePassword = false,
-                            PasswordHash = "Test@123",
-                            PhoneNumber = "0790000000",
-                            Position = "Developer",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        });
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.EmployeeLeaveBalance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BalanceDays")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaveType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("EmployeeId", "LeaveType")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeLeaveBalances");
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.DocumentCv", b =>
@@ -480,7 +495,10 @@ namespace HrMangmentSystem_Infrastructure.Migrations
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.EmployeeDataChange", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("AppliedAt")
                         .HasColumnType("datetime2");
@@ -500,13 +518,13 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<Guid?>("DeletedByEmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
+                    b.Property<int>("GenericRequestId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RequsetedDataJson")
+                    b.Property<string>("RequestedDataJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -521,9 +539,76 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GenericRequestId")
+                        .IsUnique();
+
                     b.HasIndex("TenantId");
 
                     b.ToTable("EmployeeDataChanges");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.FinancialRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FinancialType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GenericRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenericRequestId")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("FinancialRequests");
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", b =>
@@ -549,9 +634,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FinancialType")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -570,9 +652,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<Guid>("RequestedByEmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TargetEmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
@@ -589,8 +668,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("RequestedByEmployeeId");
 
-                    b.HasIndex("TargetEmployeeId");
-
                     b.HasIndex("TenantId");
 
                     b.ToTable("GenericRequests");
@@ -599,7 +676,10 @@ namespace HrMangmentSystem_Infrastructure.Migrations
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -615,6 +695,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("GenericRequestId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -642,6 +725,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GenericRequestId")
+                        .IsUnique();
+
                     b.HasIndex("TenantId");
 
                     b.ToTable("LeaveRequests");
@@ -655,9 +741,8 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Action")
+                        .HasColumnType("int");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -701,6 +786,64 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("RequestHistories");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.ResignationRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("GenericRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVoluntary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ProposdLastWorkWorkingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenericRequestId")
+                        .IsUnique();
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("ResignationRequests");
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Roles.EmployeeRole", b =>
@@ -779,53 +922,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "System administrator",
-                            Name = "SystemAdmin",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "Hr Manager",
-                            Name = "HrAdmin",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "Manager",
-                            Name = "Manager",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "Regular employee",
-                            Name = "Employee",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "Recruitment role",
-                            Name = "Recruiter",
-                            TenantId = new Guid("11111111-1111-1111-1111-111111111111")
-                        });
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Tenants.Tenant", b =>
@@ -875,20 +971,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Tenants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Code = "DEMO",
-                            ContactEmail = "admin@demo.com",
-                            ContactPhone = "+962790000000",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Description = "Seeder Tenant",
-                            IsActive = true,
-                            Name = "Demo Tenant"
-                        });
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.Department", b =>
@@ -950,6 +1032,17 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Manager");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.EmployeeLeaveBalance", b =>
+                {
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Tenant");
                 });
@@ -1021,8 +1114,27 @@ namespace HrMangmentSystem_Infrastructure.Migrations
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.EmployeeDataChange", b =>
                 {
                     b.HasOne("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", "GenericRequest")
-                        .WithOne()
-                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.EmployeeDataChange", "Id")
+                        .WithOne("EmployeeDataChange")
+                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.EmployeeDataChange", "GenericRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GenericRequest");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.FinancialRequest", b =>
+                {
+                    b.HasOne("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", "GenericRequest")
+                        .WithOne("FinancialRequest")
+                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.FinancialRequest", "GenericRequestId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1045,10 +1157,6 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Entities.Employees.Employee", "TargetEmployee")
-                        .WithMany()
-                        .HasForeignKey("TargetEmployeeId");
-
                     b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
@@ -1057,17 +1165,15 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.Navigation("RequestedByEmployee");
 
-                    b.Navigation("TargetEmployee");
-
                     b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.LeaveRequest", b =>
                 {
                     b.HasOne("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", "GenericRequest")
-                        .WithOne()
-                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.LeaveRequest", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithOne("LeaveRequest")
+                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.LeaveRequest", "GenericRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
@@ -1084,9 +1190,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.RequestHistory", b =>
                 {
                     b.HasOne("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", "GenericRequest")
-                        .WithMany()
+                        .WithMany("History")
                         .HasForeignKey("GenericRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HrMangmentSystem_Domain.Entities.Employees.Employee", "PerformedByEmployee")
@@ -1104,6 +1210,25 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Navigation("GenericRequest");
 
                     b.Navigation("PerformedByEmployee");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.ResignationRequest", b =>
+                {
+                    b.HasOne("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", "GenericRequest")
+                        .WithOne("ResignationRequest")
+                        .HasForeignKey("HrMangmentSystem_Domain.Entities.Requests.ResignationRequest", "GenericRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GenericRequest");
 
                     b.Navigation("Tenant");
                 });
@@ -1161,6 +1286,19 @@ namespace HrMangmentSystem_Infrastructure.Migrations
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.JobPosition", b =>
                 {
                     b.Navigation("JobApplications");
+                });
+
+            modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", b =>
+                {
+                    b.Navigation("EmployeeDataChange");
+
+                    b.Navigation("FinancialRequest");
+
+                    b.Navigation("History");
+
+                    b.Navigation("LeaveRequest");
+
+                    b.Navigation("ResignationRequest");
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Roles.Role", b =>

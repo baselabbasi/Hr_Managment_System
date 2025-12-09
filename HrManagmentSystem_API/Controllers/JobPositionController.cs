@@ -133,16 +133,25 @@ namespace HrManagmentSystem_API.Controllers
             return Ok(result);
         }
 
+
         [HttpGet("{jobPositionId:int}/applications")]
         [Authorize(Roles = $"{RoleNames.HrAdmin},{RoleNames.Recruiter}")]
-        public async Task<ActionResult<ApiResponse<JobApplicationDto>>> GetApplications(
+        public async Task<ActionResult<ApiResponse<PagedResult<JobApplicationDto>>>> GetApplications(
             int jobPositionId , 
             [FromQuery] PagedRequest request)
         {
-            var result = await _jobApplicationService.GetByJobPositionPagedAsync(jobPositionId, request);
+            var result = await _jobApplicationService.GetByJobApplicationPagedAsync(jobPositionId, request);
             return Ok(result);
         }
 
-     
+
+        [HttpPut("status")]
+        [Authorize(Roles =$"{RoleNames.HrAdmin},{RoleNames.Recruiter}")]
+        public async Task<ActionResult<ApiResponse<JobApplicationDto>>> ChangeStatus(
+            [FromBody] ChangeJobApplicationStatusDto changeJobApplicationStatusDto)
+        {
+            var result = await _jobApplicationService.ChangeStatusAsync(changeJobApplicationStatusDto);
+            return Ok(result);
+        }
     }
 }

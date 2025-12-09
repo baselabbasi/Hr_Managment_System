@@ -6,6 +6,5 @@
         LeaveRequest =2,
         FinancialRequest = 3,
         ResignationRequest = 4
-     
     }
 }
