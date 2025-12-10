@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using HrManagmentSystem_Shared.Enum.Recruitment;
 using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
-using HrMangmentSystem_Application.Interfaces.Repositories;
-using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Recruitment;
-using HrMangmentSystem_Domain.Enum.Recruitment;
+using HrMangmentSystem_Dto.DTOs.Job.Appilcation;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;

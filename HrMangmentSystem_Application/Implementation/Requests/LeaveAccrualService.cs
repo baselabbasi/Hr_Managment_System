@@ -1,11 +1,14 @@
-﻿using HrManagmentSystem_Shared.Resources;
-using HrMangmentSystem_Application.Interfaces.Repositories;
+﻿using HrManagmentSystem_Shared.Enum.Employee;
+using HrManagmentSystem_Shared.Enum.Request;
+using HrManagmentSystem_Shared.Resources;
+using HrMangmentSystem_Application.Config;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Domain.Entities.Employees;
-using HrMangmentSystem_Domain.Enum.Request;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace HrMangmentSystem_Application.Implementation.Requests
 {
@@ -14,13 +17,18 @@ namespace HrMangmentSystem_Application.Implementation.Requests
         private readonly IGenericRepository<EmployeeLeaveBalance, int> _leaveBalanceRepository;
         private readonly ILogger<LeaveAccrualService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly LeaveAccrualOptions _options;
 
-        private const decimal AnnualLeaveDaysPerYear = 14;
-        public LeaveAccrualService(IStringLocalizer<SharedResource> localizer, ILogger<LeaveAccrualService> logger, IGenericRepository<EmployeeLeaveBalance, int> leaveBalanceRepository)
+        public LeaveAccrualService(
+            IStringLocalizer<SharedResource> localizer,
+            ILogger<LeaveAccrualService> logger,
+            IGenericRepository<EmployeeLeaveBalance, int> leaveBalanceRepository, 
+            IOptions<LeaveAccrualOptions> options)
         {
             _localizer = localizer;
             _logger = logger;
             _leaveBalanceRepository = leaveBalanceRepository;
+            _options = options.Value;
         }
 
         public async Task RunDailyAccrualAsync()
@@ -29,22 +37,29 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             {
                 var today = DateTime.Now.Date;
 
-                var balances = await _leaveBalanceRepository.Query()
-                    .Where(b => b.LeaveType == LeaveType.Annual)
-                    .ToListAsync();
+                var query  = _leaveBalanceRepository.Query()
+                    .Include(b => b.Employee)
+                    .Where(b =>
+                           b.LeaveType == LeaveType.Annual //Is Active User
+                          && b.Employee.EmploymentStatusType == EmployeeStatus.Active
+                          && b.LastUpdatedAt.Date < today);
+                   
+                query = query.Where(b =>
+                         EF.Functions.DateDiffDay(b.LastUpdatedAt, today) > 0);
 
+                var balancesNeedingUpdate = await  query.ToListAsync();
 
-                if (!balances.Any())
+                if (!balancesNeedingUpdate.Any())
                 {
-                    _logger.LogInformation("LeaveAccrual: {Message}", _localizer["LeaveAccrual_NoBalancesFound"]);
+                    _logger.LogInformation($"LeaveAccrual: No balances need update for today {today}");
                     return;
                 }
-                var dailyRate = AnnualLeaveDaysPerYear / 365m;
+                var dailyRate = 365m; 
 
-                foreach (var balance in balances)
+                foreach (var balance in balancesNeedingUpdate)
                 {
-                    var last = balance.LastUpdatedAt.Date;
-                    var daysDiff =(today - last).Days;
+                
+                    var daysDiff =(today - balance.LastUpdatedAt.Date).Days;
 
                     if (daysDiff <= 0)
                         continue;

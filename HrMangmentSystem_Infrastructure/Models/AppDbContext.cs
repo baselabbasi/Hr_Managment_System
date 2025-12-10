@@ -1,10 +1,10 @@
-﻿using HrMangmentSystem_Application.Interfaces.Repository;
-using HrMangmentSystem_Domain.Common;
+﻿using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Domain.Tenants;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrMangmentSystem_Infrastructure.Models

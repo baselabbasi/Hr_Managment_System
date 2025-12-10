@@ -1,6 +1,6 @@
-﻿using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Requests.EmployeeData;
-using HrMangmentSystem_Domain.Enum.Request;
+﻿using HrManagmentSystem_Shared.Enum.Request;
+using HrMangmentSystem_Application.Common.Responses;
+using HrMangmentSystem_Dto.DTOs.Requests.EmployeeData;
 
 namespace HrMangmentSystem_Application.Interfaces.Requests
 {

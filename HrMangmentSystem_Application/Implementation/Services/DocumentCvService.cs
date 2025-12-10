@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
-using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Recruitment;
+using HrMangmentSystem_Dto.DTOs.Job.Appilcation;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 

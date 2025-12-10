@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
 using HrMangmentSystem_Domain.Entities.Recruitment;
-using HrMangmentSystem_Domain.Enum.Recruitment;
-using System.Xml.Serialization;
+using HrMangmentSystem_Dto.DTOs.Job.Appilcation;
 
 namespace HrMangmentSystem_Application.Mapper
 {

@@ -1,4 +1,5 @@
-﻿using HrMangmentSystem_Domain.Enum.Roles;
+﻿
+using HrManagmentSystem_Shared.Enum.Roles;
 
 namespace HrMangmentSystem_Domain.Constants
 {

@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
+using HrManagmentSystem_Shared.Enum.Request;
 using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Requests.Generic;
-using HrMangmentSystem_Application.DTOs.Requests.Leave;
-using HrMangmentSystem_Application.Interfaces.Repositories;
-using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Requests;
-using HrMangmentSystem_Domain.Enum.Request;
+using HrMangmentSystem_Dto.DTOs.Requests.Generic;
+using HrMangmentSystem_Dto.DTOs.Requests.Leave;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
-namespace HrMangmentSystem_Application.Implementation.Requests
+namespace HrMangmentSystem_Infrastructure.Implementation.Requests
 {
     public class LeaveRequestService : ILeaveRequestService
     {
@@ -46,7 +46,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
         public async Task<ApiResponse<LeaveRequestDetailsDto>> CreateLeaveRequestAsync(CreateLeaveRequestDto createLeaveRequestDto)
         {
             try
-            {
+            {  //add validation to  balance leave 
                 var employeeId = _currentUser.EmployeeId;
                 if (employeeId == Guid.Empty)
                 {

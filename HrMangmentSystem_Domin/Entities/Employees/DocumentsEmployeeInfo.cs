@@ -1,5 +1,5 @@
-﻿using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Enum.Employee;
+﻿using HrManagmentSystem_Shared.Enum.Employee;
+using HrMangmentSystem_Domain.Common;
 
 namespace HrMangmentSystem_Domain.Entities.Employees
 {

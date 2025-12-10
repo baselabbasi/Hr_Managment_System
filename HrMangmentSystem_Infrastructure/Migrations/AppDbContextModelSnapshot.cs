@@ -1038,11 +1038,19 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.EmployeeLeaveBalance", b =>
                 {
+                    b.HasOne("HrMangmentSystem_Domain.Entities.Employees.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Tenant");
                 });

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.DTOs.Employee;
+using HrManagmentSystem_Shared.Enum.Employee;
 using HrMangmentSystem_Domain.Entities.Employees;
-using HrMangmentSystem_Domain.Enum.Employee;
+using HrMangmentSystem_Dto.DTOs.Employee;
 
 namespace HrMangmentSystem_Application.Mapper
 {

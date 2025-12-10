@@ -1,7 +1,7 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Requests.Generic;
-using HrMangmentSystem_Application.DTOs.Requests.Leave;
+using HrMangmentSystem_Dto.DTOs.Requests.Generic;
+using HrMangmentSystem_Dto.DTOs.Requests.Leave;
 
 namespace HrMangmentSystem_Application.Interfaces.Requests
 {

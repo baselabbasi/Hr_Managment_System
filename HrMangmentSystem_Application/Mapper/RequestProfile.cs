@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using HrMangmentSystem_Application.DTOs.Requests.EmployeeData;
-using HrMangmentSystem_Application.DTOs.Requests.Financial;
-using HrMangmentSystem_Application.DTOs.Requests.Generic;
-using HrMangmentSystem_Application.DTOs.Requests.Leave;
-using HrMangmentSystem_Application.DTOs.Requests.Resignation;
+using HrManagmentSystem_Shared.Enum.Request;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Requests;
-using HrMangmentSystem_Domain.Enum.Request;
+using HrMangmentSystem_Dto.DTOs.Requests.EmployeeData;
+using HrMangmentSystem_Dto.DTOs.Requests.Financial;
+using HrMangmentSystem_Dto.DTOs.Requests.Generic;
+using HrMangmentSystem_Dto.DTOs.Requests.Leave;
+using HrMangmentSystem_Dto.DTOs.Requests.Resignation;
 
 namespace HrMangmentSystem_Application.Mapper
 {

@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Employee;
+using HrMangmentSystem_Dto.DTOs.Employee;
 
 namespace HrMangmentSystem_Application.Interfaces.Services
 {

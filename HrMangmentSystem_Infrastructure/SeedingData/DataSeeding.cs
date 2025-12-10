@@ -1,7 +1,7 @@
-﻿using HrMangmentSystem_Domain.Constants;
+﻿using HrManagmentSystem_Shared.Enum.Employee;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Roles;
-using HrMangmentSystem_Domain.Enum.Employee;
 using HrMangmentSystem_Domain.Tenants;
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;

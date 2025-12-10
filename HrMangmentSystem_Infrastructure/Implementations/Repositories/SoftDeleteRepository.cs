@@ -1,5 +1,5 @@
-﻿using HrMangmentSystem_Application.Interfaces.Repository;
-using HrMangmentSystem_Domain.Common;
+﻿using HrMangmentSystem_Domain.Common;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using HrMangmentSystem_Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 

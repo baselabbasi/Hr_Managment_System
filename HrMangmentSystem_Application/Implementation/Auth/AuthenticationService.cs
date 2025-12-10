@@ -1,11 +1,10 @@
 ﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Login;
 using HrMangmentSystem_Application.Interfaces.Auth;
-using HrMangmentSystem_Application.Interfaces.Repositories;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Roles;
-
+using HrMangmentSystem_Dto.DTOs.Login;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;

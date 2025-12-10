@@ -1,5 +1,5 @@
 ﻿using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Login;
+using HrMangmentSystem_Dto.DTOs.Login;
 
 namespace HrMangmentSystem_Application.Interfaces.Auth
 {

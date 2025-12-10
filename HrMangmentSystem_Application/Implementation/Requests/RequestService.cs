@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
+using HrManagmentSystem_Shared.Enum.Request;
 using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Requests.Generic;
-using HrMangmentSystem_Application.Interfaces.Repositories;
-using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Requests;
-using HrMangmentSystem_Domain.Enum.Request;
+using HrMangmentSystem_Dto.DTOs.Requests.Generic;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -19,6 +19,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
     {
         private readonly IGenericRepository<GenericRequest, int> _genericRequestRepository;
         private readonly IGenericRepository<RequestHistory, int> _requestHistoryRepository;
+        private readonly IGenericRepository<LeaveRequest, int> _leaveRequestRepository;
         private readonly ICurrentUser _currentUser;
         private readonly ILogger<RequestService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
@@ -32,7 +33,8 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             ILogger<RequestService> logger,
             IStringLocalizer<SharedResource> localizer,
             IMapper mapper,
-            ILeaveBalanceService leaveBalanceService)
+            ILeaveBalanceService leaveBalanceService,
+            IGenericRepository<LeaveRequest, int> leaveRequestRepository)
         {
             _genericRequestRepository = genericRequestRepository;
             _requestHistoryRepository = requestHistoryRepository;
@@ -41,6 +43,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             _localizer = localizer;
             _mapper = mapper;
             _leaveBalanceService = leaveBalanceService;
+            _leaveRequestRepository = leaveRequestRepository;
         }
 
 
@@ -380,7 +383,6 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                 var request = await _genericRequestRepository
                     .Query() // tracking
                     .Include(g => g.History)
-                    .Include(g => g.LeaveRequest)
                     .FirstOrDefaultAsync(g => g.Id == changeRequestStatusDto.RequestId);
 
                 if (request is null)
@@ -391,8 +393,9 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                 }
 
                 var newStatus = changeRequestStatusDto.NewStatus;
-                
-                if (!IsTransitionAllowed(request.RequestStatus, newStatus))
+                var oldStatus = request.RequestStatus;
+
+                if (!IsTransitionAllowed(oldStatus, newStatus))
                 {
                     _logger.LogWarning("ChangeStatus: Invalid transition {Old} -> {New} for Request {RequestId}",
                         request.RequestStatus, newStatus, request.Id);
@@ -401,56 +404,13 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                         _localizer["Request_StatusChange_InvalidTransition",
                             request.RequestStatus.ToString(), newStatus.ToString()]);
                 }
-
-                if (request.RequestType == RequestType.LeaveRequest && newStatus == RequestStatus.Approved)
+                var leaveSideEffectResult =  await HandleLeaveRequestSideEffectsAsync(request, oldStatus, newStatus);
+              
+                if (leaveSideEffectResult is not null)
                 {
-                    if (request.LeaveRequest == null)
-                    {
-                        _logger.LogError("ChangeStatus: LeaveRequest navigation is null for GenericRequest {RequestId}" +
-                            " while trying to approve leave.", request.Id);
-
-                        return ApiResponse<bool>.Fail(_localizer["LeaveRequest_DetailsNotLoaded"]);
-                    }
-                    var days = request.LeaveRequest.TotalDays;
-                    var leaveType = request.LeaveRequest.LeaveType;
-                    var employeeRequestId = request.RequestedByEmployeeId;
-
-                    _logger.LogInformation("ChangeStatus: Trying to consume {Days} days from leave balance " +
-                                               "for employee {EmployeeId}, type {LeaveType}, request {RequestId}",
-                                               days, employeeRequestId, leaveType, request.Id);
-
-                    var success = await _leaveBalanceService.TryConsumeLeaveAsync(employeeRequestId, leaveType, days);
-
-                    if (!success)
-                    {
-                        _logger.LogWarning(
-                            "ChangeStatus: Insufficient leave balance for employee {EmployeeId}, " +
-                            "type {LeaveType}. Request {RequestId}",
-                            employeeRequestId, leaveType, request.Id);
-
-                        return ApiResponse<bool>.Fail(_localizer["LeaveBalance_Insufficient"]);
-                    }
-
-                    _logger.LogInformation(
-                        "ChangeStatus: Leave balance successfully consumed for employee {EmployeeId}, " +
-                        "request {RequestId}. Days={Days}, Type={LeaveType}",
-                        employeeRequestId, request.Id, days, leaveType);
+                    return leaveSideEffectResult;
                 }
-                var oldStatus = request.RequestStatus;
-                if (request.RequestType == RequestType.LeaveRequest &&
-                                      oldStatus == RequestStatus.Approved &&
-                               (newStatus == RequestStatus.Cancelled || newStatus == RequestStatus.Rejected))
-                {
-                    if (request.LeaveRequest != null)
-                    {
-                        var days = request.LeaveRequest.TotalDays;
-                        var leaveType = request.LeaveRequest.LeaveType;
-                        var employeeRequestId = request.RequestedByEmployeeId;
 
-                        await _leaveBalanceService.RefundLeaveAsync(employeeRequestId, leaveType, days);
-                    }
-                }
-                   
                 request.RequestStatus = newStatus;
                 request.LastUpdatedAt = DateTime.Now;
 
@@ -496,6 +456,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                 (RequestStatus.Submitted, RequestStatus.Cancelled) => true,
                 (RequestStatus.InReview, RequestStatus.Approved) => true,
                 (RequestStatus.InReview, RequestStatus.Rejected) => true,
+                (RequestStatus.Approved, RequestStatus.Cancelled) => true,
                 _ => false
             };
         }
@@ -511,6 +472,147 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             };
         }
 
+        private async Task<ApiResponse<bool>?> HandleLeaveRequestSideEffectsAsync(
+               GenericRequest request,
+               RequestStatus oldStatus,
+               RequestStatus newStatus)
+        {
+          
+            if (request.RequestType != RequestType.LeaveRequest)
+                return null;
 
+            var today = DateTime.UtcNow.Date;
+
+        
+            if (newStatus == RequestStatus.Approved && oldStatus != RequestStatus.Approved)
+            {
+                var leave = await _leaveRequestRepository
+                    .Query(asNoTracking: true)
+                    .FirstOrDefaultAsync(l => l.GenericRequestId == request.Id);
+
+                if (leave == null)
+                {
+                    _logger.LogError(
+                        "ChangeStatus: LeaveRequest not found for GenericRequest {RequestId} " +
+                        "while trying to approve leave.", request.Id);
+
+                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_DetailsNotLoaded"]);
+                }
+
+                var days = leave.TotalDays;
+                var leaveType = leave.LeaveType;
+                var employeeRequestId = request.RequestedByEmployeeId;
+
+                _logger.LogInformation(
+                    "ChangeStatus: Trying to consume {Days} days from leave balance " +
+                    "for employee {EmployeeId}, type {LeaveType}, request {RequestId}",
+                    days, employeeRequestId, leaveType, request.Id);
+
+                var success = await _leaveBalanceService
+                    .TryConsumeLeaveAsync(employeeRequestId, leaveType, days);
+
+                if (!success)
+                {
+                    _logger.LogWarning(
+                        "ChangeStatus: Insufficient leave balance for employee {EmployeeId}, " +
+                        "type {LeaveType}. Request {RequestId}",
+                        employeeRequestId, leaveType, request.Id);
+
+                    return ApiResponse<bool>.Fail(_localizer["LeaveBalance_Insufficient"]);
+                }
+
+                _logger.LogInformation(
+                    "ChangeStatus: Leave balance successfully consumed for employee {EmployeeId}, " +
+                    "request {RequestId}. Days={Days}, Type={LeaveType}",
+                    employeeRequestId, request.Id, days, leaveType);
+            }
+
+          
+            if (oldStatus == RequestStatus.Approved &&
+                newStatus == RequestStatus.Cancelled)
+            {
+                var leave = await _leaveRequestRepository
+                    .Query(asNoTracking: true)
+                    .FirstOrDefaultAsync(l => l.GenericRequestId == request.Id);
+
+                if (leave == null)
+                {
+                    _logger.LogError(
+                        "ChangeStatus: LeaveRequest not found for GenericRequest {RequestId} " +
+                        "while trying to cancel approved leave.", request.Id);
+
+                   
+                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_DetailsNotLoaded"]);
+                }
+
+              
+                if (today > leave.EndDate.Date)
+                {
+                    _logger.LogWarning(
+                        "ChangeStatus: Attempt to cancel leave after it has fully ended. " +
+                        "RequestId={RequestId}, EmployeeId={EmployeeId}, Leave [{Start} - {End}]",
+                        request.Id, request.RequestedByEmployeeId,
+                        leave.StartDate.Date, leave.EndDate.Date);
+
+                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_CannotCancelPastLeave"]);
+                }
+
+                decimal refundDays;
+
+            
+                if (today <= leave.StartDate.Date)
+                {
+                    refundDays = leave.TotalDays;
+
+                    _logger.LogInformation(
+                        "ChangeStatus: Full leave cancellation before start date. " +
+                        "Refund {Days} days. RequestId={RequestId}, EmployeeId={EmployeeId}",
+                        refundDays, request.Id, request.RequestedByEmployeeId);
+                }
+                else
+                {
+                
+                    var remainingDays = (leave.EndDate.Date - today).Days + 1;
+
+                    if (remainingDays <= 0)
+                    {
+                     
+                        _logger.LogInformation(
+                            "ChangeStatus: No remaining days to refund for leave. " +
+                            "RequestId={RequestId}, EmployeeId={EmployeeId}",
+                            request.Id, request.RequestedByEmployeeId);
+
+                        refundDays = 0;
+                    }
+                    else
+                    {
+                        refundDays = remainingDays;
+
+                        _logger.LogInformation(
+                            "ChangeStatus: Partial leave cancellation. " +
+                            "Refund {RefundDays} of {TotalDays} days. " +
+                            "RequestId={RequestId}, EmployeeId={EmployeeId}, Today={Today}, " +
+                            "Start={Start}, End={End}",
+                            refundDays, leave.TotalDays, request.Id, request.RequestedByEmployeeId,
+                            today, leave.StartDate.Date, leave.EndDate.Date);
+                    }
+                }
+
+                if (refundDays > 0)
+                {
+                    await _leaveBalanceService.RefundLeaveAsync(
+                        request.RequestedByEmployeeId,
+                        leave.LeaveType,
+                        refundDays);
+
+                    _logger.LogInformation(
+                        "ChangeStatus: Leave balance refunded ({RefundDays} days) " +
+                        "for employee {EmployeeId}, request {RequestId}",
+                        refundDays, request.RequestedByEmployeeId, request.Id);
+                }
+            }
+
+            return null;
+        }
     }
 }

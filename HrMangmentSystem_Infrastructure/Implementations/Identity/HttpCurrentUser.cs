@@ -1,4 +1,4 @@
-﻿using HrMangmentSystem_Application.Interfaces.Repository;
+﻿using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

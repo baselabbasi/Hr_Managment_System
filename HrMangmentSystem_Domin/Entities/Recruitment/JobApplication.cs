@@ -1,6 +1,6 @@
-﻿using HrMangmentSystem_Domain.Common;
+﻿using HrManagmentSystem_Shared.Enum.Recruitment;
+using HrMangmentSystem_Domain.Common;
 using HrMangmentSystem_Domain.Entities.Employees;
-using HrMangmentSystem_Domain.Enum.Recruitment;
 
 namespace HrMangmentSystem_Domain.Entities.Recruitment
 {

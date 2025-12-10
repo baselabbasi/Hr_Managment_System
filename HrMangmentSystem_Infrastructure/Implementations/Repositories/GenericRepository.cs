@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Domain.Common;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using HrMangmentSystem_Infrastructure.Models;
-using HrMangmentSystem_Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

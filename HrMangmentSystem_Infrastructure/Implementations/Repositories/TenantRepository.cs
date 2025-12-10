@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Domain.Tenants;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using HrMangmentSystem_Infrastructure.Models;
-using HrMangmentSystem_Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HrMangmentSystem_Infrastructure.Implementations.Repositories

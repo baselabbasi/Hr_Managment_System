@@ -1,6 +1,6 @@
 ﻿
+using HrManagmentSystem_Shared.Enum.Request;
 using HrMangmentSystem_Domain.Common;
-using HrMangmentSystem_Domain.Enum.Request;
 
 namespace HrMangmentSystem_Domain.Entities.Requests
 {
