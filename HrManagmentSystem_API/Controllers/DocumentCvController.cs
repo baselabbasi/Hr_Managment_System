@@ -1,11 +1,11 @@
-﻿using HrManagmentSystem_API.Interfaces;
-using HrManagmentSystem_Shared.Resources;
+﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
-using HrMangmentSystem_Application.Interfaces.Repositories;
-using HrMangmentSystem_Application.Interfaces.Repository;
+using HrMangmentSystem_Application.File;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Recruitment;
+using HrMangmentSystem_Dto.DTOs.Job.Appilcation;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -21,7 +21,11 @@ namespace HrManagmentSystem_API.Controllers
         private readonly IDocumentCvService _documentCvService;
         private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public DocumentCvController(IDocumentCvService documentCvService, IWebHostEnvironment webHostEnvironment, IStringLocalizer<SharedResource> localizer, ICurrentTenant currentTenant, IGenericRepository<JobPosition, int> jobPositionRepository)
+        public DocumentCvController
+            (IDocumentCvService documentCvService,
+            IStringLocalizer<SharedResource> localizer,
+            ICurrentTenant currentTenant,
+            IGenericRepository<JobPosition, int> jobPositionRepository)
         {
             _documentCvService = documentCvService;
             _localizer = localizer;

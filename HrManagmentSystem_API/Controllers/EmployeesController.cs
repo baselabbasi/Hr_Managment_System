@@ -1,7 +1,7 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Employee;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Dto.DTOs.Employee;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

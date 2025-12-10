@@ -37,6 +37,7 @@ namespace HrManagmentSystem_API.Extension_Method
                         ClockSkew = TimeSpan.FromMinutes(30)
                     };
                 });
+            services.AddHttpContextAccessor();
 
             return services;
         }

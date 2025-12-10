@@ -1,11 +1,11 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Job.Appilcation;
-using HrMangmentSystem_Application.DTOs.Job.Position;
-using HrMangmentSystem_Application.Interfaces.Repositories;
-using HrMangmentSystem_Application.Interfaces.Repository;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Constants;
+using HrMangmentSystem_Dto.DTOs.Job.Appilcation;
+using HrMangmentSystem_Dto.DTOs.Job.Position;
+using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
+using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

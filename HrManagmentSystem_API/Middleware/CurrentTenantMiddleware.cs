@@ -1,5 +1,4 @@
-﻿using HrMangmentSystem_Application.Interfaces.Repository;
-using System.Threading.Tasks;
+﻿using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 
 namespace HrManagmentSystem_API.Middleware
 {

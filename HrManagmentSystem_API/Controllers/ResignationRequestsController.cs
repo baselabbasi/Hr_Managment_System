@@ -1,8 +1,8 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Requests.Generic;
-using HrMangmentSystem_Application.DTOs.Requests.Resignation;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Dto.DTOs.Requests.Generic;
+using HrMangmentSystem_Dto.DTOs.Requests.Resignation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

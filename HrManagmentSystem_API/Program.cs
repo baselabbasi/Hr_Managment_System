@@ -1,6 +1,8 @@
 ﻿using HrManagmentSystem_API.Extension_Method;
 using HrManagmentSystem_API.Middleware;
 using HrMangmentSystem_API.Extension_Method;
+using HrMangmentSystem_Application.Extension_Method;
+using HrMangmentSystem_Infrastructure.Extension_Method;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationService();
 builder.Services.AddAutoMapperProfiles();
 builder.Services.AddConfigureDatabases(builder.Configuration);
-builder.Services.AddLocaizationResource();
-builder.Services.AddLeaveAccrualQuartz();
+builder.Services.AddLocaizationResource(builder.Configuration) ;
+builder.Services.AddLeaveAccrualQuartz(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddControllers()

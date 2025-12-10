@@ -1,6 +1,6 @@
 ﻿using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.DTOs.Login;
 using HrMangmentSystem_Application.Interfaces.Auth;
+using HrMangmentSystem_Dto.DTOs.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
