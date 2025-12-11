@@ -42,4 +42,14 @@ public class EmployeeDataChangeRequestsController : ControllerBase
        
         return Ok(result);
     }
+
+    [HttpPost("{requestId}/status")]
+    public async Task<ActionResult<ApiResponse<bool>>> ChangeStatus(
+        int requestId,
+        [FromBody] ChangeRequestStatusDto dto)
+    {
+        dto.RequestId = requestId;
+        var result = await _service.ChangeEmployeeDataChangeStatusAsync(dto);
+        return Ok(result);
+    }
 }

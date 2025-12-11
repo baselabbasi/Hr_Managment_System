@@ -7,6 +7,7 @@ namespace HrMangmentSystem_Application.Interfaces.Requests
 {
     public interface IFinancialRequestService
     {
+        Task<ApiResponse<bool>> ChangeFinancialStatusAsync(ChangeRequestStatusDto changeRequestStatusDto);
         Task<ApiResponse<FinancialRequestDetailsDto>> CreateFinancialRequestAsync(CreateFinancialRequestDto createFinancialRequestDto);
 
         Task<ApiResponse<FinancialRequestDetailsDto?>> GetDetailsByIdAsync(int requestId);

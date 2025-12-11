@@ -3,6 +3,7 @@ using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Common.Security;
+using HrMangmentSystem_Application.Interfaces.Notifications;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Employees;
@@ -27,6 +28,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
         private readonly IPasswordHasher<Employee> _passwordHasher;
         private readonly ICurrentUser _currentUser;
         private readonly ILeaveBalanceService _leaveBalanceService;
+        private readonly IEmailSender _emailSender;
 
         public EmployeeService(IGenericRepository<Employee, Guid> employeeRepository,
             IGenericRepository<Department, int> deparmentRepository,
@@ -36,7 +38,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
           IEmployeeRoleService employeeRoleService,
           IPasswordHasher<Employee> passwordHasher,
           ICurrentUser currentUser,
-          ILeaveBalanceService leaveBalanceService)
+          ILeaveBalanceService leaveBalanceService,
+          IEmailSender emailSender)
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = deparmentRepository;
@@ -47,6 +50,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
             _passwordHasher = passwordHasher;
             _currentUser = currentUser;
             _leaveBalanceService = leaveBalanceService;
+            _emailSender = emailSender;
         }
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
@@ -121,8 +125,43 @@ namespace HrMangmentSystem_Application.Implementation.Services
                   
 
                 var employeeDto = _mapper.Map<EmployeeDto>(employee);
+                try
+                {
+                    var subject = "Welcome to HR Management System";
 
-                 _logger.LogInformation($"Employee created successfully with Id {employee.Id} with {tempPassword}");
+                    var body = $@"
+                        Hello {employee.FirstName},
+                        
+                        Welcome to the company!
+                        
+                        Your account has been created in the HR Management System.
+                        You can log in using the following credentials:
+                        
+                        Email: {employee.Email}
+                        Temporary Password: {tempPassword}
+                        
+                        Please make sure to log in and change your password as soon as possible.
+                        
+                        Best regards,
+                        HR Team
+                        ";
+                        
+                    await _emailSender.SendEmailAsync(employee.Email, subject, body);
+
+                    _logger.LogInformation(
+                        "Create Employee: Welcome email sent successfully to {Email}",
+                        employee.Email);
+                }
+                catch (Exception ex)
+                {
+                   
+                    _logger.LogError(
+                        ex,
+                        "Create Employee: Failed to send welcome email to {Email}",
+                        employee.Email);
+                }
+
+                _logger.LogInformation($"Employee created successfully with Id {employee.Id}");
                 return ApiResponse<EmployeeDto?>.Ok(employeeDto, _localizer["Employee_Created"]);
             }
             catch (Exception ex)

@@ -41,4 +41,14 @@ public class ResignationRequestsController : ControllerBase
         var result = await _service.GetMyResignationRequestsPagedAsync(request);
         return Ok(result);
     }
+
+    [HttpPost("{requestId}/status")]
+    public async Task<ActionResult<ApiResponse<bool>>> ChangeStatus(
+        int requestId,
+        [FromBody] ChangeRequestStatusDto dto)
+    {
+        dto.RequestId = requestId;
+        var result = await _service.ChangeResignationStatusAsync(dto);
+        return Ok(result);
+    }
 }

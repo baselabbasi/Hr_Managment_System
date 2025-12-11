@@ -1,6 +1,6 @@
 ﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Common.Responses;
-using HrMangmentSystem_Application.File;
+using HrMangmentSystem_Application.Interfaces.FileStorage;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Domain.Entities.Recruitment;
 using HrMangmentSystem_Dto.DTOs.Job.Appilcation;

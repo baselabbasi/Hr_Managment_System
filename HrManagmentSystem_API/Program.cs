@@ -1,6 +1,7 @@
 ﻿using HrManagmentSystem_API.Extension_Method;
 using HrManagmentSystem_API.Middleware;
 using HrMangmentSystem_API.Extension_Method;
+using HrMangmentSystem_Application.Config;
 using HrMangmentSystem_Application.Extension_Method;
 using HrMangmentSystem_Infrastructure.Extension_Method;
 using System.Text.Json.Serialization;
@@ -14,7 +15,13 @@ builder.Services.AddAutoMapperProfiles();
 builder.Services.AddConfigureDatabases(builder.Configuration);
 builder.Services.AddLocaizationResource(builder.Configuration) ;
 builder.Services.AddLeaveAccrualQuartz(builder.Configuration);
-builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration); 
+builder.Services.AddHangfireWithJobs(builder.Configuration);
+
+builder.Services.Configure<LeaveAccrualOptions>(builder.Configuration.GetSection("LeaveAccrual"));
+builder.Services.Configure<FileStorageOptions>(builder.Configuration.GetSection("FileStorage"));
+builder.Services.Configure<LeaveBalanceOptions>(builder.Configuration.GetSection("LeaveBalance"));
+builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 
 builder.Services.AddControllers()
               .AddJsonOptions(options =>
@@ -50,7 +57,7 @@ app.UseAuthentication();
 app.UseAddLocalization();
 
 app.UseMiddleware<CurrentTenantMiddleware>(); //after Authentication : because httpContext.User fill from JWT 
-
+app.UseHangfireRecurringJobs();
 app.UseHttpsRedirection();
 
 

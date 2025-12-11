@@ -16,6 +16,6 @@ namespace HrMangmentSystem_Application.Interfaces.Requests
 
         Task InitializeAnnualLeaveForEmployeeAsync(Guid employeeId, DateTime employmentStartDate);
 
-
+        Task<bool> HasSufficientBalanceAsync(Guid employeeId, LeaveType leaveType, decimal days);
     }
 }

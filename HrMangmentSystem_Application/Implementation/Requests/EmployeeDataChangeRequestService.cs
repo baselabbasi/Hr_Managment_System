@@ -23,6 +23,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
         private readonly IGenericRepository<EmployeeDataChange , int > _employeeDataChangeRepository;
         private readonly IGenericRepository<RequestHistory , int > _requestHistoryRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IRequestService _requestService;
         private readonly IMapper _mapper;
         private readonly ILogger<EmployeeDataChangeRequestService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
@@ -34,7 +35,8 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             ICurrentUser currentUser,
             IMapper mapper,
             ILogger<EmployeeDataChangeRequestService> logger,
-            IStringLocalizer<SharedResource> localizer)
+            IStringLocalizer<SharedResource> localizer,
+            IRequestService requestService)
         {
             _genericRequestRepository = genericRequestRepository;
             _employeeDataChangeRepository = employeeDataChangeRepository;
@@ -43,6 +45,59 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             _mapper = mapper;
             _logger = logger;
             _localizer = localizer;
+            _requestService = requestService;
+        }
+
+        public async Task<ApiResponse<bool>> ChangeEmployeeDataChangeStatusAsync(ChangeRequestStatusDto changeRequestStatusDto)
+        {
+            try
+            {
+                var employeeId = _currentUser.EmployeeId;
+                if (employeeId == Guid.Empty)
+                {
+                    _logger.LogWarning("ChangeEmployeeDataChangeStatus: Current user missing EmployeeId");
+                    return ApiResponse<bool>.Fail(_localizer["Auth_EmployeeNotLinked"]);
+                }
+
+                var request = await _genericRequestRepository
+                    .Query(asNoTracking: false)
+                    .FirstOrDefaultAsync(g => g.Id == changeRequestStatusDto.RequestId);
+
+                if (request is null)
+                {
+                    _logger.LogWarning("ChangeEmployeeDataChangeStatus: Request {RequestId} not found", changeRequestStatusDto.RequestId);
+                    return ApiResponse<bool>.Fail(_localizer["Request_NotFound"]);
+                }
+
+                if (request.RequestType != RequestType.UpdateEmployeeData)
+                {
+                    _logger.LogWarning(
+                        "ChangeEmployeeDataChangeStatus: Request {RequestId} type mismatch. Expected={Expected}, Actual={Actual}",
+                        changeRequestStatusDto.RequestId, RequestType.UpdateEmployeeData, request.RequestType);
+
+                    return ApiResponse<bool>.Fail(_localizer["Request_InvalidType"]);
+                }
+
+                var oldStatus = request.RequestStatus;
+                var newStatus = changeRequestStatusDto.NewStatus;
+
+               
+
+                _logger.LogInformation(
+                    "ChangeEmployeeDataChangeStatus: Changing status for Request {RequestId} from {Old} to {New}",
+                    request.Id, oldStatus, newStatus);
+
+               
+                return await _requestService.ChangeStatusAsync(changeRequestStatusDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "ChangeEmployeeDataChangeStatus: Unexpected error for RequestId {RequestId}",
+                    changeRequestStatusDto.RequestId);
+
+                return ApiResponse<bool>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
         }
 
         public async Task<ApiResponse<EmployeeDataChangeDetailsDto>> CreateEmployeeDataChangeAsync(

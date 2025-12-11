@@ -37,7 +37,7 @@ namespace HrMangmentSystem_Application.Extension_Method
             {
                 options.WaitForJobsToComplete = true;
             });
-   
+         
             return services;
         }
     }

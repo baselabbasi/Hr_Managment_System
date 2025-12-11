@@ -1,17 +1,17 @@
-﻿using HrMangmentSystem_Application.Config;
-using HrMangmentSystem_Application.File;
-using HrMangmentSystem_Application.Implementation.Auth;
+﻿using HrMangmentSystem_Application.Implementation.Auth;
+using HrMangmentSystem_Application.Implementation.FileStorage;
+using HrMangmentSystem_Application.Implementation.Notifications;
 using HrMangmentSystem_Application.Implementation.Requests;
 using HrMangmentSystem_Application.Implementation.Services;
 using HrMangmentSystem_Application.Interfaces.Auth;
+using HrMangmentSystem_Application.Interfaces.FileStorage;
+using HrMangmentSystem_Application.Interfaces.Notifications;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Application.Interfaces.Services;
 using HrMangmentSystem_Infrastructure.Implementation.Requests;
 using HrMangmentSystem_Infrastructure.Implementation.Tenant;
 using HrMangmentSystem_Infrastructure.Implementations.Identity;
-using HrMangmentSystem_Infrastructure.Implementations.Security;
 using HrMangmentSystem_Infrastructure.Interfaces.Repository;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HrMangmentSystem_Application.Extension_Method
@@ -50,9 +50,10 @@ namespace HrMangmentSystem_Application.Extension_Method
             services.AddScoped<ILeaveAccrualService, LeaveAccrualService>();
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
 
+            services.AddScoped<IPendingRequestsReminderService, PendingRequestsReminderService>();
 
-           
             return services;
         }
     }

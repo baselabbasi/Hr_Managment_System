@@ -19,8 +19,7 @@ namespace HrMangmentSystem_API.Extension_Method
 
             services.AddSingleton<IStringLocalizer<SharedResource> , StringLocalizer<SharedResource>>();
 
-            services.Configure<LeaveAccrualOptions>(configuration.GetSection("LeaveAccrual"));
-            services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
+         
 
             return services;
         }

@@ -7,6 +7,8 @@ namespace HrMangmentSystem_Application.Interfaces.Requests
 {
     public interface IResignationRequestService
     {
+        Task<ApiResponse<bool>> ChangeResignationStatusAsync(ChangeRequestStatusDto changeRequestStatusDto);
+
         Task<ApiResponse<ResignationRequestDetailsDto>> CreateResignationRequestAsync(
                         CreateResignationRequestDto createResignationRequestDto);
 

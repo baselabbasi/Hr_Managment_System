@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace HrMangmentSystem_Application.File
+namespace HrMangmentSystem_Application.Interfaces.FileStorage
 {
     public interface IFileStorageService
 

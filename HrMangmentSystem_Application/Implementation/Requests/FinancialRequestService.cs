@@ -22,6 +22,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
         private readonly IGenericRepository<FinancialRequest, int> _financialRequestRepository;
         private readonly IGenericRepository<RequestHistory, int> _requestHistoryRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IRequestService _requestService;
         private readonly ILogger<FinancialRequestService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IMapper _mapper;
@@ -33,7 +34,8 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             ICurrentUser currentUser,
             ILogger<FinancialRequestService> logger,
             IStringLocalizer<SharedResource> localizer,
-            IMapper mapper)
+            IMapper mapper,
+            IRequestService requestService)
         {
             _genericRequestRepository = genericRequestRepository;
             _financialRequestRepository = financialRequestRepository;
@@ -42,10 +44,58 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             _logger = logger;
             _localizer = localizer;
             _mapper = mapper;
+            _requestService = requestService;
         }
 
-       
-       
+        public async Task<ApiResponse<bool>> ChangeFinancialStatusAsync(ChangeRequestStatusDto changeRequestStatusDto)
+        {
+            try
+            {
+                var employeeId = _currentUser.EmployeeId;
+                if (employeeId == Guid.Empty)
+                {
+                    _logger.LogWarning("ChangeFinancialStatus: Current user missing EmployeeId");
+                    return ApiResponse<bool>.Fail(_localizer["Auth_EmployeeNotLinked"]);
+                }
+
+                var request = await _genericRequestRepository
+                    .Query(asNoTracking: false)
+                    .FirstOrDefaultAsync(g => g.Id == changeRequestStatusDto.RequestId);
+
+                if (request is null)
+                {
+                    _logger.LogWarning("ChangeFinancialStatus: Request {RequestId} not found", changeRequestStatusDto.RequestId);
+                    return ApiResponse<bool>.Fail(_localizer["Request_NotFound"]);
+                }
+
+                if (request.RequestType != RequestType.FinancialRequest)
+                {
+                    _logger.LogWarning(
+                        "ChangeFinancialStatus: Request {RequestId} type mismatch. Expected={Expected}, Actual={Actual}",
+                        changeRequestStatusDto.RequestId, RequestType.FinancialRequest, request.RequestType);
+
+                    return ApiResponse<bool>.Fail(_localizer["Request_InvalidType"]);
+                }
+
+                var oldStatus = request.RequestStatus;
+                var newStatus = changeRequestStatusDto.NewStatus;
+
+                _logger.LogInformation(
+                    "ChangeFinancialStatus: Changing status for Request {RequestId} from {Old} to {New}",
+                    request.Id, oldStatus, newStatus);
+
+                return await _requestService.ChangeStatusAsync(changeRequestStatusDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "ChangeFinancialStatus: Unexpected error for RequestId {RequestId}",
+                    changeRequestStatusDto.RequestId);
+
+                return ApiResponse<bool>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
+        }
+
         public async Task<ApiResponse<FinancialRequestDetailsDto>> CreateFinancialRequestAsync(
             CreateFinancialRequestDto createFinancialRequestDto)
         {

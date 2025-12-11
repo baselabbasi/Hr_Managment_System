@@ -11,5 +11,7 @@ namespace HrMangmentSystem_Application.Interfaces.Requests
 
         Task<ApiResponse<LeaveRequestDetailsDto?>> GetDetailsByIdAsync(int requestId);
         Task<ApiResponse<PagedResult<GenericRequestListItemDto>>> GetMyLeaveRequestsPagedAsync( PagedRequest request);
+
+        Task<ApiResponse<bool>> ChangeLeaveStatusAsync(ChangeRequestStatusDto changeRequestStatusDto);
     }
 }

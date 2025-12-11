@@ -1,5 +1,6 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
+using HrMangmentSystem_Application.Implementation.Requests;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Dto.DTOs.Requests.Financial;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
@@ -11,18 +12,18 @@ using Microsoft.AspNetCore.Mvc;
 [Authorize]
 public class FinancialRequestsController : ControllerBase
 {
-    private readonly IFinancialRequestService _service;
+    private readonly IFinancialRequestService _financialRequestService;
 
-    public FinancialRequestsController(IFinancialRequestService service)
+    public FinancialRequestsController( IFinancialRequestService financialRequestService)
     {
-        _service = service;
+        _financialRequestService = financialRequestService;
     }
 
     [HttpPost]
     public async Task<ActionResult<ApiResponse<FinancialRequestDetailsDto>>> CreateFinancialRequest(
         [FromBody] CreateFinancialRequestDto request)
     {
-        var result = await _service.CreateFinancialRequestAsync(request);
+        var result = await _financialRequestService.CreateFinancialRequestAsync(request);
         return Ok(result);
     }
 
@@ -30,7 +31,7 @@ public class FinancialRequestsController : ControllerBase
     public async Task<ActionResult<ApiResponse<FinancialRequestDetailsDto?>>> GetFinancialRequestDetails(
         int requestId)
     {
-        var result = await _service.GetDetailsByIdAsync(requestId);
+        var result = await _financialRequestService.GetDetailsByIdAsync(requestId);
         return Ok(result);
     }
 
@@ -38,7 +39,17 @@ public class FinancialRequestsController : ControllerBase
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetMyFinancialRequests(
         [FromQuery] PagedRequest request)
     {
-        var result = await _service.GetMyFinancialRequestsPagedAsync(request);
+        var result = await _financialRequestService.GetMyFinancialRequestsPagedAsync(request);
+        return Ok(result);
+    }
+
+    [HttpPost("{requestId}/status")]
+    public async Task<ActionResult<ApiResponse<bool>>> ChangeFinancialStatus(
+       int requestId,
+       [FromBody] ChangeRequestStatusDto dto)
+    {
+        dto.RequestId = requestId;
+        var result = await _financialRequestService.ChangeFinancialStatusAsync(dto);
         return Ok(result);
     }
 }

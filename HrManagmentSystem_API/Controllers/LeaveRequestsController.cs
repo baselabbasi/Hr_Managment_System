@@ -50,4 +50,14 @@ public class LeaveRequestsController : ControllerBase
         var result = await _leaveBalanceService.GetMyLeaveBalanceAsync();
         return Ok(result);
     }
+
+    [HttpPost("{requestId}/status")]
+    public async Task<ActionResult<ApiResponse<bool>>> ChangeLeaveStatus(
+      int requestId,
+      [FromBody] ChangeRequestStatusDto dto)
+    {
+        dto.RequestId = requestId;
+        var result = await _leaveRequestService.ChangeLeaveStatusAsync(dto);
+        return Ok(result);
+    }
 }

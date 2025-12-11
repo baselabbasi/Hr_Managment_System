@@ -7,6 +7,8 @@ namespace HrMangmentSystem_Application.Interfaces.Requests
 {
     public interface IEmployeeDataChangeRequestService
     {
+        Task<ApiResponse<bool>> ChangeEmployeeDataChangeStatusAsync(ChangeRequestStatusDto changeRequestStatusDto);
+
         Task<ApiResponse<EmployeeDataChangeDetailsDto>> CreateEmployeeDataChangeAsync(
                          CreateEmployeeDataChangeRequestDto createEmployeeDataChangeRequestDto);
 

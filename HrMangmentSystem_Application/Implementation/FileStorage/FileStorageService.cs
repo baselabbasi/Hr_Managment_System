@@ -1,9 +1,10 @@
 ﻿using HrMangmentSystem_Application.Config;
+using HrMangmentSystem_Application.Interfaces.FileStorage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HrMangmentSystem_Application.File
+namespace HrMangmentSystem_Application.Implementation.FileStorage
 {
     public class FileStorageService : IFileStorageService
     {
@@ -52,7 +53,7 @@ namespace HrMangmentSystem_Application.File
             var fileNameOnDisk = $"{candidatePart}_{positionPart}_{shortGuid}{extension}";
             var physicalPath = Path.Combine(uploadsRoot, fileNameOnDisk);
 
-            using (var stream = System.IO.File.Create(physicalPath))
+            using (var stream = File.Create(physicalPath))
             {
                 await formFile.CopyToAsync(stream);
             }

@@ -404,12 +404,8 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                         _localizer["Request_StatusChange_InvalidTransition",
                             request.RequestStatus.ToString(), newStatus.ToString()]);
                 }
-                var leaveSideEffectResult =  await HandleLeaveRequestSideEffectsAsync(request, oldStatus, newStatus);
-              
-                if (leaveSideEffectResult is not null)
-                {
-                    return leaveSideEffectResult;
-                }
+           
+               
 
                 request.RequestStatus = newStatus;
                 request.LastUpdatedAt = DateTime.Now;
@@ -472,147 +468,8 @@ namespace HrMangmentSystem_Application.Implementation.Requests
             };
         }
 
-        private async Task<ApiResponse<bool>?> HandleLeaveRequestSideEffectsAsync(
-               GenericRequest request,
-               RequestStatus oldStatus,
-               RequestStatus newStatus)
-        {
-          
-            if (request.RequestType != RequestType.LeaveRequest)
-                return null;
-
-            var today = DateTime.UtcNow.Date;
-
+       
+       
         
-            if (newStatus == RequestStatus.Approved && oldStatus != RequestStatus.Approved)
-            {
-                var leave = await _leaveRequestRepository
-                    .Query(asNoTracking: true)
-                    .FirstOrDefaultAsync(l => l.GenericRequestId == request.Id);
-
-                if (leave == null)
-                {
-                    _logger.LogError(
-                        "ChangeStatus: LeaveRequest not found for GenericRequest {RequestId} " +
-                        "while trying to approve leave.", request.Id);
-
-                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_DetailsNotLoaded"]);
-                }
-
-                var days = leave.TotalDays;
-                var leaveType = leave.LeaveType;
-                var employeeRequestId = request.RequestedByEmployeeId;
-
-                _logger.LogInformation(
-                    "ChangeStatus: Trying to consume {Days} days from leave balance " +
-                    "for employee {EmployeeId}, type {LeaveType}, request {RequestId}",
-                    days, employeeRequestId, leaveType, request.Id);
-
-                var success = await _leaveBalanceService
-                    .TryConsumeLeaveAsync(employeeRequestId, leaveType, days);
-
-                if (!success)
-                {
-                    _logger.LogWarning(
-                        "ChangeStatus: Insufficient leave balance for employee {EmployeeId}, " +
-                        "type {LeaveType}. Request {RequestId}",
-                        employeeRequestId, leaveType, request.Id);
-
-                    return ApiResponse<bool>.Fail(_localizer["LeaveBalance_Insufficient"]);
-                }
-
-                _logger.LogInformation(
-                    "ChangeStatus: Leave balance successfully consumed for employee {EmployeeId}, " +
-                    "request {RequestId}. Days={Days}, Type={LeaveType}",
-                    employeeRequestId, request.Id, days, leaveType);
-            }
-
-          
-            if (oldStatus == RequestStatus.Approved &&
-                newStatus == RequestStatus.Cancelled)
-            {
-                var leave = await _leaveRequestRepository
-                    .Query(asNoTracking: true)
-                    .FirstOrDefaultAsync(l => l.GenericRequestId == request.Id);
-
-                if (leave == null)
-                {
-                    _logger.LogError(
-                        "ChangeStatus: LeaveRequest not found for GenericRequest {RequestId} " +
-                        "while trying to cancel approved leave.", request.Id);
-
-                   
-                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_DetailsNotLoaded"]);
-                }
-
-              
-                if (today > leave.EndDate.Date)
-                {
-                    _logger.LogWarning(
-                        "ChangeStatus: Attempt to cancel leave after it has fully ended. " +
-                        "RequestId={RequestId}, EmployeeId={EmployeeId}, Leave [{Start} - {End}]",
-                        request.Id, request.RequestedByEmployeeId,
-                        leave.StartDate.Date, leave.EndDate.Date);
-
-                    return ApiResponse<bool>.Fail(_localizer["LeaveRequest_CannotCancelPastLeave"]);
-                }
-
-                decimal refundDays;
-
-            
-                if (today <= leave.StartDate.Date)
-                {
-                    refundDays = leave.TotalDays;
-
-                    _logger.LogInformation(
-                        "ChangeStatus: Full leave cancellation before start date. " +
-                        "Refund {Days} days. RequestId={RequestId}, EmployeeId={EmployeeId}",
-                        refundDays, request.Id, request.RequestedByEmployeeId);
-                }
-                else
-                {
-                
-                    var remainingDays = (leave.EndDate.Date - today).Days + 1;
-
-                    if (remainingDays <= 0)
-                    {
-                     
-                        _logger.LogInformation(
-                            "ChangeStatus: No remaining days to refund for leave. " +
-                            "RequestId={RequestId}, EmployeeId={EmployeeId}",
-                            request.Id, request.RequestedByEmployeeId);
-
-                        refundDays = 0;
-                    }
-                    else
-                    {
-                        refundDays = remainingDays;
-
-                        _logger.LogInformation(
-                            "ChangeStatus: Partial leave cancellation. " +
-                            "Refund {RefundDays} of {TotalDays} days. " +
-                            "RequestId={RequestId}, EmployeeId={EmployeeId}, Today={Today}, " +
-                            "Start={Start}, End={End}",
-                            refundDays, leave.TotalDays, request.Id, request.RequestedByEmployeeId,
-                            today, leave.StartDate.Date, leave.EndDate.Date);
-                    }
-                }
-
-                if (refundDays > 0)
-                {
-                    await _leaveBalanceService.RefundLeaveAsync(
-                        request.RequestedByEmployeeId,
-                        leave.LeaveType,
-                        refundDays);
-
-                    _logger.LogInformation(
-                        "ChangeStatus: Leave balance refunded ({RefundDays} days) " +
-                        "for employee {EmployeeId}, request {RequestId}",
-                        refundDays, request.RequestedByEmployeeId, request.Id);
-                }
-            }
-
-            return null;
-        }
     }
 }
