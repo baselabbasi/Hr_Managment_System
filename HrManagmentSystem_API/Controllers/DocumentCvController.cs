@@ -8,6 +8,7 @@ using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
 namespace HrManagmentSystem_API.Controllers
@@ -35,6 +36,7 @@ namespace HrManagmentSystem_API.Controllers
 
         [HttpPost("{jobPositionId:int}/cv/upload")]
         [AllowAnonymous]
+        [EnableRateLimiting("RequestUploadPolicy")]
         public async Task<ActionResult<ApiResponse<DocumentCvDto>>> UploadDocumentCv(
             int jobPositionId,
             [FromForm] IFormFile cvFile,

@@ -14,26 +14,47 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task<Tenant?> FindByCodeAsync(string code)
+        public async Task AddAsync(TenantEntity tenant)
+        {
+           
+            await _appDbContext.Tenants.AddAsync(tenant);
+        }
+
+        public async Task<TenantEntity?> FindByCodeAsync(string code)
         {
             var normalizedCode = code.Trim();
            var tenant =  await _appDbContext.Tenants.FirstOrDefaultAsync(t => t.Code == normalizedCode);
             return tenant;
         }
 
-    
+        public async Task<List<TenantEntity>> GetAllAsync()
+        {
+            return await _appDbContext.Tenants
+            .OrderBy(t => t.Name)
+            .ToListAsync();
+        }
 
-        public async Task<Tenant?> GetByIdAsync(Guid id)
+        public async Task<TenantEntity?> GetByIdAsync(Guid id)
         {
             var tenant = await _appDbContext.Tenants.FindAsync(id);
             return tenant;
         }
 
-        public async Task<Tenant?> GetByNameAsync(string name)
+        public async Task<TenantEntity?> GetByNameAsync(string name)
         {
             var normalizedName = name.Trim();
             var tenant = await _appDbContext.Tenants.FirstOrDefaultAsync(t => t.Name == normalizedName);
             return tenant;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public void Update(TenantEntity tenant)
+        {
+            _appDbContext.Tenants.Update(tenant);
         }
     }
 }

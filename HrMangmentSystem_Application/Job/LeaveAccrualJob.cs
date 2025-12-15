@@ -1,6 +1,4 @@
-﻿
-
-using HrManagmentSystem_Shared.Resources;
+﻿using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;

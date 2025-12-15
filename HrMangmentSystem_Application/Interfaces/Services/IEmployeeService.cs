@@ -13,5 +13,8 @@ namespace HrMangmentSystem_Application.Interfaces.Services
         Task<ApiResponse<bool>> DeleteEmployeeAsync(Guid employeeId );
 
         Task<ApiResponse<PagedResult<EmployeeDto>>> GetEmployeesPagedAsync(PagedRequest request);
+
+        Task<ApiResponse<bool>> AssignManagerAsync(Guid employeeId, Guid managerId);
+
     }
 }

@@ -81,7 +81,7 @@ namespace HrMangmentSystem_Infrastructure.Implementation.Requests
 
                 var oldStatus = request.RequestStatus;
                 var newStatus = changeRequestStatusDto.NewStatus;
-                var today = DateTime.UtcNow.Date;
+                var today = DateTime.Now.Date;
 
                
                 var leave = await _leaveRequestRepository

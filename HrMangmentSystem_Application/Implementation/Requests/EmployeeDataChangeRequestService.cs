@@ -169,9 +169,9 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                     DataChange = dataChangeDto
                 };
 
-                _logger.LogInformation($"Create EmployeeDataChange: Request {generic.Id} created by {employeeId}");
-                return ApiResponse<EmployeeDataChangeDetailsDto>.Ok(details,_localizer["EmployeeDataChange_Created"]);
-            
+                _logger.LogInformation("Create EmployeeDataChange: Request {generic.Id} created by {employeeId}" , generic.Id , employeeId);
+                return ApiResponse<EmployeeDataChangeDetailsDto>.Ok(details, _localizer["EmployeeDataChange_Created"]);
+
             }
             catch (Exception ex)
             {
@@ -203,13 +203,13 @@ namespace HrMangmentSystem_Application.Implementation.Requests
 
                 if (generic is null)
                 {
-                    _logger.LogWarning($"Get EmployeeDataChangeRequestDetails: Request {requestId} not found");
+                    _logger.LogWarning("Get EmployeeDataChangeRequestDetails: Request {requestId} not found" , requestId);
                     return ApiResponse<EmployeeDataChangeDetailsDto?>.Fail(_localizer["Request_NotFound"]);
                 }
 
                 if (generic.RequestedByEmployeeId != employeeId && !_currentUser.Roles.Contains(RoleNames.HrAdmin))
                 {
-                    _logger.LogWarning($"Get EmployeeDataChangeRequestDetails: Forbidden for employee {employeeId}");
+                    _logger.LogWarning("Get EmployeeDataChangeRequestDetails: Forbidden for employee {employeeId}" , employeeId);
                     return ApiResponse<EmployeeDataChangeDetailsDto?>.Fail(_localizer["Auth_Forbidden"]);
                 }
                 var requestDto = _mapper.Map<GenericRequestListItemDto>(generic);

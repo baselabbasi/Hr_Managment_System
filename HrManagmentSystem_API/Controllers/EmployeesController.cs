@@ -1,23 +1,26 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Employee;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrManagmentSystem_API.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = RoleNames.HrAdmin +","+ RoleNames.SystemAdmin)]
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeRoleService _employeeRoleService;
 
-
-        public EmployeesController( IEmployeeService employeeService)
+        public EmployeesController(IEmployeeService employeeService, IEmployeeRoleService employeeRoleService)
         {
             _employeeService = employeeService;
+            _employeeRoleService = employeeRoleService;
         }
 
         // GET: api/Employees
@@ -29,7 +32,7 @@ namespace HrManagmentSystem_API.Controllers
         //    return  Ok(result);
         //}
 
-        
+        // GET: api/employees
         [HttpGet]
         public async Task<ActionResult<ApiResponse<PagedResult<EmployeeDto>>>> GetAllEmployees([FromQuery] PagedRequest request)
         {
@@ -37,6 +40,7 @@ namespace HrManagmentSystem_API.Controllers
 
             return Ok(result);
         }
+
         // GET: api/Employees/{id}
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ApiResponse<EmployeeDto>>> GetEmployeeById(Guid id)
@@ -54,7 +58,7 @@ namespace HrManagmentSystem_API.Controllers
         public async Task<ActionResult<ApiResponse<EmployeeDto>>> CreateEmployee([FromBody] CreateEmployeeDto createEmployeeDto) 
         {
             if (!ModelState.IsValid)
-            {
+            {  // Validation errors
                 var error = ModelState.ToDictionary(
                          k => k.Key,
                          v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
@@ -91,11 +95,11 @@ namespace HrManagmentSystem_API.Controllers
      
         // DELETE: api/Employees/{id}
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee(Guid employeeId)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteEmployee(Guid Id)
         {
            
 
-            var result = await _employeeService.DeleteEmployeeAsync(employeeId);
+            var result = await _employeeService.DeleteEmployeeAsync(Id);
             
             if (!result.Success)
             {
@@ -104,6 +108,32 @@ namespace HrManagmentSystem_API.Controllers
 
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+        // PUT: api/employees/assign-manager
+        [HttpPut("assign-manager")]
+        public async Task<ActionResult<ApiResponse<bool>>> AssignManager( [FromBody] AssignManagerDto dto)
+        {
+            if (dto is null )
+            {
+                return BadRequest(ApiResponse<bool>.Fail("Invalid request."));
+            }
+
+            var result = await _employeeService.AssignManagerAsync(dto.EmployeeId, dto.ManagerId);
+            return Ok(result);
+        }
+
+        // PUT: api/employees/update-role
+        [HttpPut("update-role")]
+        public async Task<ActionResult<ApiResponse<bool>>> UpdateEmployeeRole(
+            [FromBody] UpdateEmployeeRoleDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.RoleName))
+            {
+                return BadRequest(ApiResponse<bool>.Fail("Invalid request."));
+            }
+
+            var result = await _employeeRoleService.UpdateRoleToEmployeeAsync(dto.EmployeeId, dto.RoleName);
             return Ok(result);
         }
     }

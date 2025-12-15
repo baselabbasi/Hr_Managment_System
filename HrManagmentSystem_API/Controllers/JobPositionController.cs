@@ -8,12 +8,14 @@ using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using HrMangmentSystem_Infrastructure.Interfaces.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace HrManagmentSystem_API.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Recruiter + "," + RoleNames.SystemAdmin)]
     public class JobPositionController : ControllerBase
     {
         private readonly IJobPositionService _jobPositionService;
@@ -115,6 +117,7 @@ namespace HrManagmentSystem_API.Controllers
 
         [HttpPost("{jobPositionId:int}/apply")]
         [AllowAnonymous]
+        //[EnableRateLimiting("FixedWindowPolicy")]
         public async Task<ActionResult<ApiResponse<JobApplicationDto>>> Apply(
             int jobPositionId,
             [FromBody] CreateJobApplicationDto createJobApplicationDto,
@@ -135,7 +138,6 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpGet("{jobPositionId:int}/applications")]
-        [Authorize(Roles = $"{RoleNames.HrAdmin},{RoleNames.Recruiter}")]
         public async Task<ActionResult<ApiResponse<PagedResult<JobApplicationDto>>>> GetApplications(
             int jobPositionId , 
             [FromQuery] PagedRequest request)

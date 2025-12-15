@@ -1,6 +1,7 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
 using HrMangmentSystem_Dto.DTOs.Requests.Resignation;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("api/requests/resignation")]
 [Authorize]
+
 public class ResignationRequestsController : ControllerBase
 {
     private readonly IResignationRequestService _service;
@@ -42,6 +44,7 @@ public class ResignationRequestsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager + "," + RoleNames.SystemAdmin)]
     [HttpPost("{requestId}/status")]
     public async Task<ActionResult<ApiResponse<bool>>> ChangeStatus(
         int requestId,

@@ -4,10 +4,16 @@ namespace HrMangmentSystem_Infrastructure.Interfaces.Repositories
 {
     public interface ITenantRepository
     {
-        Task<Tenant?> GetByIdAsync(Guid id);
+        Task<TenantEntity?> GetByIdAsync(Guid id);
 
-        Task<Tenant?> GetByNameAsync(string name);
+        Task<TenantEntity?> GetByNameAsync(string name);
 
-        Task<Tenant?> FindByCodeAsync(string code);
+        Task<TenantEntity?> FindByCodeAsync(string code);
+
+        Task<List<TenantEntity>> GetAllAsync();
+
+        Task AddAsync(TenantEntity tenant);
+        void Update(TenantEntity tenant);
+        Task SaveChangesAsync();
     }
 }

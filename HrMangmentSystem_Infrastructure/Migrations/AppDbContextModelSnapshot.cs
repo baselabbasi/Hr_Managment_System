@@ -188,15 +188,17 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<DateTime>("EmploymentStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmploymentStatusType")
-                        .HasColumnType("int");
+                    b.Property<string>("EmploymentStatusType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -403,8 +405,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<Guid?>("ReviewedByEmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
@@ -577,8 +580,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FinancialType")
-                        .HasColumnType("int");
+                    b.Property<string>("FinancialType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FromDate")
                         .HasColumnType("datetime2");
@@ -640,11 +644,13 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RequestStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("RequestStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestType")
-                        .HasColumnType("int");
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("datetime2");
@@ -702,8 +708,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LeaveType")
-                        .HasColumnType("int");
+                    b.Property<string>("LeaveType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
@@ -741,8 +748,9 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Action")
-                        .HasColumnType("int");
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -756,11 +764,11 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.Property<int>("GenericRequestId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NewStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("NewStatus")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OldStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("OldStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PerformedAt")
                         .HasColumnType("datetime2");
@@ -924,7 +932,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("HrMangmentSystem_Domain.Tenants.Tenant", b =>
+            modelBuilder.Entity("HrMangmentSystem_Domain.Tenants.TenantEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -980,7 +988,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .HasForeignKey("DepartmentManagerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -999,7 +1007,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1023,7 +1031,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1044,7 +1052,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1057,7 +1065,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.DocumentCv", b =>
                 {
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1085,7 +1093,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .HasForeignKey("ReviewedByEmployeeId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1108,7 +1116,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1127,7 +1135,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1146,7 +1154,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1165,7 +1173,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1184,7 +1192,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1209,7 +1217,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1230,7 +1238,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1255,7 +1263,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1270,7 +1278,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Roles.Role", b =>
                 {
-                    b.HasOne("HrMangmentSystem_Domain.Tenants.Tenant", "Tenant")
+                    b.HasOne("HrMangmentSystem_Domain.Tenants.TenantEntity", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)

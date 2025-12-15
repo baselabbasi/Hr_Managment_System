@@ -1,13 +1,17 @@
 ﻿using HrMangmentSystem_Application.Implementation.Auth;
 using HrMangmentSystem_Application.Implementation.FileStorage;
 using HrMangmentSystem_Application.Implementation.Notifications;
+using HrMangmentSystem_Application.Implementation.OpenAi;
 using HrMangmentSystem_Application.Implementation.Requests;
 using HrMangmentSystem_Application.Implementation.Services;
+using HrMangmentSystem_Application.Implementation.Tenant;
 using HrMangmentSystem_Application.Interfaces.Auth;
 using HrMangmentSystem_Application.Interfaces.FileStorage;
 using HrMangmentSystem_Application.Interfaces.Notifications;
+using HrMangmentSystem_Application.Interfaces.OpenAi;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Application.Interfaces.Tenant;
 using HrMangmentSystem_Infrastructure.Implementation.Requests;
 using HrMangmentSystem_Infrastructure.Implementation.Tenant;
 using HrMangmentSystem_Infrastructure.Implementations.Identity;
@@ -53,7 +57,9 @@ namespace HrMangmentSystem_Application.Extension_Method
             services.AddScoped<IEmailSender, SmtpEmailSender>();
 
             services.AddScoped<IPendingRequestsReminderService, PendingRequestsReminderService>();
-
+            services.AddScoped<IOpenAiCvScoringClient, OpenAiCvScoringClient>();
+            services.AddScoped<ICvRankingService, CvRankingService>();
+            services.AddScoped<ITenantService, TenantService>();
             return services;
         }
     }

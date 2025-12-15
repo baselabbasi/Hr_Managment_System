@@ -1,15 +1,17 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Department;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrManagmentSystem_API.Controllers
 {
-    [Authorize]
+  
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = RoleNames.HrAdmin+ "," + RoleNames.SystemAdmin)]
     public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -98,6 +100,30 @@ namespace HrManagmentSystem_API.Controllers
 
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+        
+        // PUT: api/departments/set-manager
+        [HttpPut("set-manager")]
+        public async Task<ActionResult<ApiResponse<bool>>> SetDepartmentManager(
+            [FromBody] SetDepartmentManagerDto dto)
+        {
+            var result = await _departmentService.SetDepartmentManagerAsync(
+                dto.DepartmentId,
+                dto.ManagerEmployeeId);
+
+            return Ok(result);
+        }
+
+        // PUT: api/departments/set-parent
+        [HttpPut("set-parent")]
+        public async Task<ActionResult<ApiResponse<bool>>> SetParentDepartment(
+            [FromBody] SetParentDepartmentDto dto)
+        {
+            var result = await _departmentService.SetParentDepartmentAsync(
+                dto.DepartmentId,
+                dto.ParentDepartmentId);
+
             return Ok(result);
         }
     }

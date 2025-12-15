@@ -18,7 +18,8 @@ namespace HrMangmentSystem_Application.Interfaces.Services
 
         Task<ApiResponse<bool>> DeleteDepartmentAsync(int departmentId);
 
-
+        Task<ApiResponse<bool>> SetParentDepartmentAsync(int departmentId, int? parentDepartmentId);
+        Task<ApiResponse<bool>> SetDepartmentManagerAsync(int departmentId, Guid managerEmployeeId);
 
 
     }

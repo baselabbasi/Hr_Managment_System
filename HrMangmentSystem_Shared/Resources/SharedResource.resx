@@ -189,9 +189,6 @@
   <data name="Employee_InvalidDateOfBirth" xml:space="preserve">
     <value>Invalid date of birth.</value>
   </data>
-  <data name="Employee_InvalidEmploymentDate" xml:space="preserve">
-    <value>Invalid employment start date.</value>
-  </data>
   <data name="Employee_MustBeAdult" xml:space="preserve">
     <value>Employee must be at least 18 years old.</value>
   </data>
@@ -374,5 +371,173 @@
   </data>
   <data name="JobApplication_StatusChanged" xml:space="preserve">
     <value>Application {0} status has been changed to '{1}'</value>
+  </data>
+  <data name="LeaveAccrualJob_Finished" xml:space="preserve">
+    <value>Leave accrual job finished successfully</value>
+  </data>
+  <data name="LeaveAccrualJob_Started" xml:space="preserve">
+    <value>Leave accrual job started</value>
+  </data>
+  <data name="Request_InvalidType" xml:space="preserve">
+    <value>Invalid request type</value>
+  </data>
+  <data name="Request_NotFound" xml:space="preserve">
+    <value>Request was not found</value>
+  </data>
+  <data name="Auth_EmployeeNotLinked" xml:space="preserve">
+    <value>Current user is not linked to any employee</value>
+  </data>
+  <data name="EmployeeDataChange_NoChanges" xml:space="preserve">
+    <value>No changes were detected in the employee data</value>
+  </data>
+  <data name="EmployeeDataChange_Created" xml:space="preserve">
+    <value>Employee data change request created successfully</value>
+  </data>
+  <data name="EmployeeDataChange_ListLoaded" xml:space="preserve">
+    <value>Employee data change requests loaded successfully</value>
+  </data>
+  <data name="FinancialRequest_InvalidAmount" xml:space="preserve">
+    <value>Amount must be greater than zero</value>
+  </data>
+  <data name="FinancialRequest_InvalidDateRange" xml:space="preserve">
+    <value>From date must be before or equal to to date</value>
+  </data>
+  <data name="FinancialRequest_Created" xml:space="preserve">
+    <value>Financial request created successfully</value>
+  </data>
+  <data name="FinancialRequest_ListLoaded" xml:space="preserve">
+    <value>Financial requests loaded successfully</value>
+  </data>
+  <data name="LeaveAccrual_Completed" xml:space="preserve">
+    <value>Leave accrual process completed successfully</value>
+  </data>
+  <data name="LeaveAccrual_UnexpectedError" xml:space="preserve">
+    <value>Unexpected error occurred while running leave accrual</value>
+  </data>
+  <data name="LeaveBalance_MyLoaded" xml:space="preserve">
+    <value>Leave balance loaded successfully</value>
+  </data>
+  <data name="LeaveBalance_Insufficient" xml:space="preserve">
+    <value>Insufficient leave balance for this request</value>
+  </data>
+  <data name="LeaveRequest_ListLoaded" xml:space="preserve">
+    <value>Leave requests loaded successfully</value>
+  </data>
+  <data name="LeaveRequest_Created" xml:space="preserve">
+    <value>Leave request created successfully</value>
+  </data>
+  <data name="LeaveRequest_OverlappingDates" xml:space="preserve">
+    <value>You already have another leave request overlapping this date range</value>
+  </data>
+  <data name="LeaveRequest_InvalidTotalDays" xml:space="preserve">
+    <value>Total leave days must be greater than zero</value>
+  </data>
+  <data name="LeaveRequest_EndDateInPast" xml:space="preserve">
+    <value>End date cannot be in the past</value>
+  </data>
+  <data name="LeaveRequest_InvalidDateRange" xml:space="preserve">
+    <value>Start date must be before or equal to end date</value>
+  </data>
+  <data name="LeaveRequest_CannotCancelPastLeave" xml:space="preserve">
+    <value>You cannot cancel a leave that has already ended</value>
+  </data>
+  <data name="LeaveRequest_DetailsNotLoaded" xml:space="preserve">
+    <value>Leave request details could not be loaded</value>
+  </data>
+  <data name="ResignationRequest_ListLoaded" xml:space="preserve">
+    <value>Resignation requests loaded successfully</value>
+  </data>
+  <data name="ResignationRequest_Created" xml:space="preserve">
+    <value>Resignation request created successfully</value>
+  </data>
+  <data name="ResignationRequest_InvalidLastWorkingDate" xml:space="preserve">
+    <value>Proposed last working date must be in the future</value>
+  </data>
+  <data name="Request_StatusChanged" xml:space="preserve">
+    <value>Request status changed successfully</value>
+  </data>
+  <data name="Request_StatusChange_InvalidTransition" xml:space="preserve">
+    <value>Invalid status transition from {0} to {1}</value>
+  </data>
+  <data name="Request_HistoryLoaded" xml:space="preserve">
+    <value>Request history loaded successfully</value>
+  </data>
+  <data name="Request_ApprovalListLoaded" xml:space="preserve">
+    <value>Approval requests loaded successfully</value>
+  </data>
+  <data name="Request_ListLoaded" xml:space="preserve">
+    <value>Requests loaded successfully</value>
+  </data>
+  <data name="Employee_CircularManagementDetected" xml:space="preserve">
+    <value>Circular management relationship detected</value>
+  </data>
+  <data name="Employee_ManagerDepartmentMismatch" xml:space="preserve">
+    <value>Employee and manager must belong to the same department</value>
+  </data>
+  <data name="Employee_InvalidEmploymentDate" xml:space="preserve">
+    <value>Invalid employment start date.</value>
+  </data>
+  <data name="Tenant_CrossTenantNotAllowed" xml:space="preserve">
+    <value>Cross-tenant operation is not allowed</value>
+  </data>
+  <data name="Employee_ManagerNotFound" xml:space="preserve">
+    <value>Manager was not found</value>
+  </data>
+  <data name="Employee_ManagerCannotBeSelf" xml:space="preserve">
+    <value>Employee cannot be their own manager</value>
+  </data>
+  <data name="Tenant_NotFound" xml:space="preserve">
+    <value>Tenant was not found</value>
+  </data>
+  <data name="Tenant_ListRetrieved" xml:space="preserve">
+    <value>Tenant list retrieved successfully</value>
+  </data>
+  <data name="Tenant_Created" xml:space="preserve">
+    <value>Tenant has been created successfully</value>
+  </data>
+  <data name="Tenant_NameExists" xml:space="preserve">
+    <value>A tenant with the same name already exists</value>
+  </data>
+  <data name="Tenant_CodeExists" xml:space="preserve">
+    <value>A tenant with the same code already exists</value>
+  </data>
+  <data name="Tenant_NameCodeRequired" xml:space="preserve">
+    <value>Tenant name and code are required</value>
+  </data>
+  <data name="Employee_ManagerAlreadyAssigned" xml:space="preserve">
+    <value>This manager is already assigned to the employee</value>
+  </data>
+  <data name="Employee_ManagerAssigned" xml:space="preserve">
+    <value>Manager has been assigned successfully</value>
+  </data>
+  <data name="Department_ManagerAlreadyAssigned" xml:space="preserve">
+    <value>This manager is already assigned to the department</value>
+  </data>
+  <data name="Department_ManagerDepartmentMismatch" xml:space="preserve">
+    <value>The selected manager does not belong to this department</value>
+  </data>
+  <data name="Tenant_StatusUpdated" xml:space="preserve">
+    <value>Tenant has been updated successfully</value>
+  </data>
+  <data name="Tenant_Updated" xml:space="preserve">
+    <value>Tenant has been updated successfully</value>
+  </data>
+  <data name="Department_InvalidParent" xml:space="preserve">
+    <value>Invalid parent department</value>
+  </data>
+  <data name="DocumentCv_NotFound" xml:space="preserve">
+    <value>CV record was not found</value>
+  </data>
+  <data name="DocumentCv_FileNotFound" xml:space="preserve">
+    <value>CV file could not be found on the server</value>
+  </data>
+  <data name="CvRanking_Scored" xml:space="preserve">
+    <value>CV has been scored successfully</value>
+  </data>
+  <data name="Department_ParentAssigned" xml:space="preserve">
+    <value>Parent department has been set successfully</value>
+  </data>
+  <data name="Department_CyclicHierarchyNotAllowed" xml:space="preserve">
+    <value>Cyclic department hierarchy is not allowed</value>
   </data>
 </root>

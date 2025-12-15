@@ -2,7 +2,7 @@
 
 namespace HrMangmentSystem_Domain.Tenants
 {
-    public class Tenant : BaseEntity<Guid>
+    public class TenantEntity : BaseEntity<Guid>
     {
         public string Name { get; set; } = null!;
 

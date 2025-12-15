@@ -2,6 +2,7 @@
 using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ public class RequestsController : ControllerBase
     }
 
     // Get requests pending for approval (HR / approver).
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager)]
     [HttpGet("for-approval")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetRequestsForApproval(
         [FromQuery] PagedRequest request,
@@ -39,8 +41,9 @@ public class RequestsController : ControllerBase
         return Ok(result);
     }
 
-    
+
     // Get request header (basic info) by id.
+ 
     [HttpGet("{requestId:int}/header")]
     public async Task<ActionResult<ApiResponse<GenericRequestListItemDto?>>> GetRequestHeader(int requestId)
     {
@@ -48,8 +51,9 @@ public class RequestsController : ControllerBase
         return Ok(result);
     }
 
- 
+
     // Get request history (status changes / comments / actions).
+
     [HttpGet("{requestId:int}/history")]
     public async Task<ActionResult<ApiResponse<List<RequestHistoryDto>>>> GetRequestHistory(int requestId)
     {
@@ -57,8 +61,9 @@ public class RequestsController : ControllerBase
         return Ok(result);
     }
 
-  
+
     // Change request status (Approve / Reject / Cancel / InReview)
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager + "," + RoleNames.SystemAdmin)]
     [HttpPost("change-status")]
     public async Task<ActionResult<ApiResponse<bool>>> ChangeStatus([FromBody] ChangeRequestStatusDto dto)
     {

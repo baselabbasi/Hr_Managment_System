@@ -23,7 +23,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
         private readonly ILogger<JobApplicationService> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly ICurrentUser _currentUser;
-
+        private readonly ICvRankingService _cvRankingService;
         public JobApplicationService(
             IGenericRepository<JobApplication, int> jobApplicationRepository,
             IGenericRepository<JobPosition, int> jobPositionRepository,
@@ -31,8 +31,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
             IMapper mapper,
             ILogger<JobApplicationService> logger,
             IStringLocalizer<SharedResource> localizer,
-            ICurrentUser currentUser
-
+            ICurrentUser currentUser,
+            ICvRankingService cvRankingService
             )
         {
             _jobApplicationRepository = jobApplicationRepository;
@@ -42,6 +42,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
             _logger = logger;
             _localizer = localizer;
             _currentUser = currentUser;
+            _cvRankingService = cvRankingService;
         }
 
         public async Task<ApiResponse<JobApplicationDto>> ApplyAsync(int jobPositionId, CreateJobApplicationDto createJobApplicationDto)
@@ -92,6 +93,19 @@ namespace HrMangmentSystem_Application.Implementation.Services
                 };
                 await _jobApplicationRepository.AddAsync(application);
                 await _jobApplicationRepository.SaveChangesAsync();
+
+                var rankResult = await _cvRankingService.CalculateMatchScoreAsync(application.Id);
+                application.MatchScore = rankResult.Data;
+                if (!rankResult.Success)
+                { 
+                    _logger.LogWarning("JobApplication created but ranking failed. JobAppId={Id}, Msg={Msg}",
+                        application.Id, rankResult.Message);
+                }
+                else
+                {
+                    _logger.LogInformation("JobApplication ranked successfully. JobAppId={Id}, Score={Score}",
+                        application.Id, rankResult.Data);
+                }
 
                 var resultDto = _mapper.Map<JobApplicationDto>(application);
 

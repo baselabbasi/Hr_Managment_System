@@ -95,55 +95,93 @@ namespace HrMangmentSystem_Application.Implementation.Services
             {
                 if (string.IsNullOrWhiteSpace(newRoleName))
                 {
-                    _logger.LogWarning("Update Role: Role name is required");
+                    _logger.LogWarning("UpdateRole: Role name is required");
                     return ApiResponse<bool>.Fail(_localization["Role_NameRequired"]);
                 }
 
                 var employee = await _employeeRepository.GetByIdAsync(employeeId);
                 if (employee == null)
                 {
-                    _logger.LogWarning($"Update Role: Employee {employeeId} not found");
+                    _logger.LogWarning("UpdateRole: Employee {EmployeeId} not found", employeeId);
                     return ApiResponse<bool>.Fail(_localization["Employee_NotFound"]);
                 }
 
-                var Roles = await _roleRepository.FindAsync(r => r.Name == newRoleName); 
-                var newRole = Roles.FirstOrDefault();                                        
+                
+                var roles = await _roleRepository.FindAsync(r => r.Name == newRoleName);
+                var newRole = roles.FirstOrDefault();
                 if (newRole == null)
                 {
-                    _logger.LogWarning($"Update Role: Role {newRoleName} not found");
+                    _logger.LogWarning("UpdateRole: Role {RoleName} not found", newRoleName);
                     return ApiResponse<bool>.Fail(_localization["Role_NotFound", newRoleName]);
                 }
 
-                var employeeRoles = await _employeeRoleRepository.FindAsync(er => er.EmployeeId == employeeId);
-                var employeeRole = employeeRoles.FirstOrDefault();
-                if(employeeRole == null)
+                // Prevent cross-tenant role assignments
+                if (employee.TenantId != newRole.TenantId)
                 {
-                    _logger.LogWarning($"Update Role:  Employee {employeeId} has no role record to update");
-                    return ApiResponse<bool>.Fail(_localization["EmployeeRole_NotFound"]);
+                    _logger.LogWarning(
+                        "UpdateRole: Cross-tenant role update blocked. EmployeeTenant={EmployeeTenant}, RoleTenant={RoleTenant}",
+                        employee.TenantId, newRole.TenantId);
+
+                    return ApiResponse<bool>.Fail(_localization["Tenant_CrossTenantNotAllowed"]);
                 }
-                
-                if (employeeRole.RoleId == newRole.Id)
+
+                var employeeRoles = await _employeeRoleRepository.FindAsync(er => er.EmployeeId == employeeId);
+                var employeeRolesList = employeeRoles.ToList();
+
+                    
+                if (!employeeRolesList.Any())
                 {
-                    _logger.LogInformation($"UpdateRole: Employee {employeeId} already has role {newRoleName}");
+                    var employeeRole = new EmployeeRole
+                    {
+                        EmployeeId = employeeId,
+                        RoleId = newRole.Id,
+                        TenantId = employee.TenantId
+                    };
+
+                    await _employeeRoleRepository.AddAsync(employeeRole);
+                    await _employeeRoleRepository.SaveChangesAsync();
+
+                    _logger.LogInformation(
+                        "UpdateRole: Employee {EmployeeId} had no roles. Assigned role {RoleName}.",
+                        employeeId, newRoleName);
+
+                    return ApiResponse<bool>.Ok(true, _localization["EmployeeRole_Assigned", newRoleName]);
+                }
+
+               
+                if (employeeRolesList.Any(er => er.RoleId == newRole.Id))
+                {
+                    _logger.LogInformation(
+                        "UpdateRole: Employee {EmployeeId} already has role {RoleName}.",
+                        employeeId, newRoleName);
 
                     return ApiResponse<bool>.Ok(true, _localization["EmployeeRole_AlreadyAssigned", newRoleName]);
                 }
 
-                employeeRole.RoleId = newRole.Id;
+                // For simplicity, update the first role found
+                var employeeRoleToUpdate = employeeRolesList.First();
 
-                _employeeRoleRepository.Update(employeeRole);
+                employeeRoleToUpdate.RoleId = newRole.Id;
+
+                _employeeRoleRepository.Update(employeeRoleToUpdate);
                 await _employeeRoleRepository.SaveChangesAsync();
 
-                _logger.LogInformation($"UpdateRole: Employee {employeeId} role updated to {newRoleName}");
+                _logger.LogInformation(
+                    "UpdateRole: Employee {EmployeeId} role updated to {RoleName}.",
+                    employeeId, newRoleName);
 
                 return ApiResponse<bool>.Ok(true, _localization["EmployeeRole_Updated", newRoleName]);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,$"UpdateRole: Error while updating role for Employee {employeeId} to {newRoleName}");
+                _logger.LogError(ex,
+                    "UpdateRole: Error while updating role for Employee {EmployeeId} to {RoleName}",
+                    employeeId, newRoleName);
 
-                return ApiResponse<bool>.Fail( _localization["Generic_UnexpectedError"]);
+                return ApiResponse<bool>.Fail(_localization["Generic_UnexpectedError"]);
             }
         }
+
+
     }
 }

@@ -18,7 +18,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
             _configuration = configuration;
         }
 
-        public (string Token, DateTime Expiration) GenerateToken(Employee employee, Tenant tenant, IReadOnlyList<string> roles)
+        public (string Token, DateTime Expiration) GenerateToken(Employee employee, TenantEntity tenant, IReadOnlyList<string> roles)
         {
             var jwtSection = _configuration.GetSection("JwtSettings");
             var key = jwtSection["Key"];

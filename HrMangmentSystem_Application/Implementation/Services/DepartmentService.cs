@@ -226,6 +226,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
             }
 
          }
+
+     
         public async Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto)
         {
             try
@@ -290,5 +292,187 @@ namespace HrMangmentSystem_Application.Implementation.Services
 
             }
         }
+
+
+        public async Task<ApiResponse<bool>> SetDepartmentManagerAsync(int departmentId, Guid managerEmployeeId)
+        {
+            try
+            {
+                var department = await _departmentRepository.GetByIdAsync(departmentId);
+                if (department is null)
+                {
+                    _logger.LogWarning("Set Department Manager : Department {DepartmentId} not found.", departmentId);
+                    return ApiResponse<bool>.Fail(_localizer["Department_NotFound", departmentId]);
+                }
+
+                var manager = await _employeeRepository.GetByIdAsync(managerEmployeeId);
+                if (manager is null)
+                {
+                    _logger.LogWarning("Set Department Manager : Manager {ManagerId} not found.", managerEmployeeId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_ManagerNotFound", managerEmployeeId]);
+                }
+
+                var currentTenantId = _currentUser.TenantId;
+
+              
+                if (department.TenantId != currentTenantId || manager.TenantId != currentTenantId)
+                {
+                    _logger.LogWarning(
+                        "Set Department Manager : Cross-tenant operation blocked. DepartmentTenant={DepartmentTenant}, ManagerTenant={ManagerTenant}, CurrentTenant={CurrentTenant}",
+                        department.TenantId, manager.TenantId, currentTenantId);
+
+                    return ApiResponse<bool>.Fail(_localizer["Tenant_CrossTenantNotAllowed"]);
+                }
+
+                
+                if (manager.DepartmentId != department.Id)
+                {
+                    _logger.LogWarning(
+                        "Set Department Manager : Manager {ManagerId} does not belong to Department {DepartmentId}.",
+                        managerEmployeeId, departmentId);
+
+                    return ApiResponse<bool>.Fail(_localizer["Department_ManagerDepartmentMismatch"]);
+                }
+
+           
+                if (department.DepartmentManagerId == managerEmployeeId)
+                {
+                    _logger.LogInformation(
+                        "Set Department Manager : Department {DepartmentId} already has manager {ManagerId}.",
+                        departmentId, managerEmployeeId);
+
+                    return ApiResponse<bool>.Ok(true, _localizer["Department_ManagerAlreadyAssigned"]);
+                }
+
+                department.DepartmentManagerId = managerEmployeeId;
+
+                _departmentRepository.Update(department);
+                await _departmentRepository.SaveChangesAsync();
+
+                _logger.LogInformation(
+                    "Set Department Manager : Department {DepartmentId} manager set to employee {ManagerId} in Tenant {TenantId}.",
+                    departmentId, managerEmployeeId, currentTenantId);
+
+                return ApiResponse<bool>.Ok(true, _localizer["Department_ManagerAssigned"]);
+            
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                          "Set Department Manager : Error occurred while setting manager {ManagerId} for Department {DepartmentId}.",
+                          managerEmployeeId, departmentId);
+                return ApiResponse<bool>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
+        }
+
+        public async Task<ApiResponse<bool>> SetParentDepartmentAsync(int departmentId, int? parentDepartmentId)
+        {
+            try
+            {
+                var department = await _departmentRepository.GetByIdAsync(departmentId);
+                if (department is null)
+                {
+                    _logger.LogWarning("Set Parent Department : Department {DepartmentId} not found.", departmentId);
+                    return ApiResponse<bool>.Fail(_localizer["Department_NotFound", departmentId]);
+                }
+
+                var currentTenantId = _currentUser.TenantId;
+
+                Department? parentDept = null;
+
+                if (parentDepartmentId.HasValue)
+                {
+                    if (parentDepartmentId.Value == departmentId)
+                    {
+                        _logger.LogWarning("Set Parent Department : Department cannot be its own parent.");
+                        return ApiResponse<bool>.Fail(_localizer["Department_InvalidParent"]);
+                    }
+
+                    parentDept = await _departmentRepository.GetByIdAsync(parentDepartmentId.Value);
+                    if (parentDept is null)
+                    {
+                        _logger.LogWarning(
+                            "Set Parent Department : Parent Department {ParentId} not found.",
+                            parentDepartmentId.Value);
+
+                        return ApiResponse<bool>.Fail(_localizer["Department_ParentNotFound", parentDepartmentId.Value]);
+                    }
+
+                
+                    if (department.TenantId != currentTenantId || parentDept.TenantId != currentTenantId)
+                    {
+                        _logger.LogWarning(
+                            "Set Parent Department : Cross-tenant hierarchy blocked. DepartmentTenant={DepartmentTenant}, ParentTenant={ParentTenant}, CurrentTenant={CurrentTenant}",
+                            department.TenantId, parentDept.TenantId, currentTenantId);
+
+                        return ApiResponse<bool>.Fail(_localizer["Tenant_CrossTenantNotAllowed"]);
+                    }
+
+                   
+                    var visited = new HashSet<int> { departmentId };
+                    var current = parentDept;
+
+                    while (current != null && current.ParentDepartmentId != null)
+                    // Traverse up the hierarchy
+                    {
+                        int currentParentId = current.ParentDepartmentId.Value; // Get the parent ID
+
+                        if (currentParentId == departmentId)  // Cycle detected
+                        {
+                            _logger.LogWarning(
+                                "Set Parent Department : Cycle detected when setting parent {ParentId} for department {DepartmentId}.",
+                                parentDepartmentId.Value, departmentId);
+
+                            return ApiResponse<bool>.Fail(_localizer["Department_CyclicHierarchyNotAllowed"]);
+                        }
+
+                        if (!visited.Add(currentParentId)) // If already visited, cycle detected
+                        {
+                            _logger.LogWarning(
+                                "Set Parent Department : Cycle detected due to repeated parent id {ParentId} for department {DepartmentId}.",
+                                currentParentId, departmentId);
+
+                            return ApiResponse<bool>.Fail(_localizer["Department_CyclicHierarchyNotAllowed"]);
+                        }
+
+                        current = await _departmentRepository.GetByIdAsync(currentParentId);
+                    }
+                }
+                else
+                {
+                   
+                    if (department.TenantId != currentTenantId)
+                    {
+                        _logger.LogWarning(
+                            "Set Parent Department : Cross-tenant operation blocked for department {DepartmentId}. Tenant={TenantId}, CurrentTenant={CurrentTenant}",
+                            departmentId, department.TenantId, currentTenantId);
+
+                        return ApiResponse<bool>.Fail(_localizer["Tenant_CrossTenantNotAllowed"]);
+                    }
+                }
+
+                department.ParentDepartmentId = parentDepartmentId;
+
+                _departmentRepository.Update(department);
+                await _departmentRepository.SaveChangesAsync();
+
+                _logger.LogInformation(
+                    "Set Parent Department : Department {DepartmentId} parent set to {ParentId} in Tenant {TenantId}.",
+                    departmentId,
+                    parentDepartmentId?.ToString() ?? "NULL",
+                    currentTenantId);
+
+                return ApiResponse<bool>.Ok(true, _localizer["Department_ParentAssigned"]);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Set Parent Department : Error occurred while setting parent {ParentId} for Department {DepartmentId}.",
+                    parentDepartmentId, departmentId);
+
+                return ApiResponse<bool>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
+        }
+
     }
 }

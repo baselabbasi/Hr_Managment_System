@@ -6,6 +6,7 @@ using HrMangmentSystem_Application.Common.Security;
 using HrMangmentSystem_Application.Interfaces.Notifications;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Application.Interfaces.Services;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Dto.DTOs.Employee;
 using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
@@ -52,6 +53,8 @@ namespace HrMangmentSystem_Application.Implementation.Services
             _leaveBalanceService = leaveBalanceService;
             _emailSender = emailSender;
         }
+
+      
 
         public async Task<ApiResponse<EmployeeDto?>> CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
         {
@@ -130,21 +133,34 @@ namespace HrMangmentSystem_Application.Implementation.Services
                     var subject = "Welcome to HR Management System";
 
                     var body = $@"
-                        Hello {employee.FirstName},
+                        <html>
+                          <body style=""font-family: Arial, sans-serif; font-size: 14px; color: #333;"">
+                            <p>Hello {employee.FirstName},</p>
                         
-                        Welcome to the company!
+                            <p>
+                              Welcome to the company!<br />
+                              Your account has been created in the <strong>HR Management System</strong>.
+                            </p>
                         
-                        Your account has been created in the HR Management System.
-                        You can log in using the following credentials:
+                            <p>
+                              You can log in using the following credentials:
+                            </p>
                         
-                        Email: {employee.Email}
-                        Temporary Password: {tempPassword}
+                            <p>
+                              <strong>Email:</strong> <a href=""mailto:{employee.Email}"">{employee.Email}</a><br />
+                              <strong>Temporary Password:</strong> <code>{tempPassword}</code>
+                            </p>
                         
-                        Please make sure to log in and change your password as soon as possible.
+                            <p>
+                              Please make sure to log in and change your password as soon as possible.
+                            </p>
                         
-                        Best regards,
-                        HR Team
-                        ";
+                            <p>
+                              Best regards,<br />
+                              <strong>HR Team</strong>
+                            </p>
+                          </body>
+                        </html>";
                         
                     await _emailSender.SendEmailAsync(employee.Email, subject, body);
 
@@ -387,8 +403,98 @@ namespace HrMangmentSystem_Application.Implementation.Services
 
         }
 
+        public async Task<ApiResponse<bool>> AssignManagerAsync(Guid employeeId, Guid managerId)
+        {
+            try
+            {
+                if (employeeId == managerId)
+                {
+                    _logger.LogWarning("Assign Manager : Employee cannot be their own manager.");
+                    return ApiResponse<bool>.Fail(_localizer["Employee_ManagerCannotBeSelf"]);
+                }
 
-       
+                var employee = await _employeeRepository.GetByIdAsync(employeeId);
+                if (employee is null)
+                {
+                    _logger.LogWarning("Assign Manager : Employee {EmployeeId} not found.", employeeId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_NotFound", employeeId]);
+                }
+
+                var manager = await _employeeRepository.GetByIdAsync(managerId);
+                if (manager is null)
+                {
+                    _logger.LogWarning("Assign Manager : Manager {ManagerId} not found.", managerId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_ManagerNotFound", managerId]);
+                }
+
+               
+                var currentTenantId = _currentUser.TenantId;
+
+                if (employee.TenantId != currentTenantId || manager.TenantId != currentTenantId)
+                {
+                    _logger.LogWarning(
+                        "Assign Manager : Cross-tenant assignment blocked. EmployeeTenant={EmployeeTenant}, ManagerTenant={ManagerTenant}, CurrentTenant={CurrentTenant}",
+                        employee.TenantId, manager.TenantId, currentTenantId);
+
+                    return ApiResponse<bool>.Fail(_localizer["Tenant_CrossTenantNotAllowed"]);
+                }
+                if(employee.DepartmentId != manager.DepartmentId)
+                {
+                    _logger.LogWarning(
+                        "Assign Manager : Employee {EmployeeId} and Manager {ManagerId} belong to different departments.",
+                        employeeId, managerId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_ManagerDepartmentMismatch"]);
+                }
+                if (manager.ManagerId == employeeId)
+                {
+                    _logger.LogWarning(
+                        "Assign Manager : Circular management relationship detected between Employee {EmployeeId} and Manager {ManagerId}.",
+                        employeeId, managerId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_CircularManagementDetected"]);
+                }
+                if (employee.ManagerId == managerId)
+                {
+                    _logger.LogInformation(
+                        "Assign Manager : Employee {EmployeeId} is already assigned to Manager {ManagerId}.",
+                        employeeId, managerId);
+                    return ApiResponse<bool>.Ok(true, _localizer["Employee_ManagerAlreadyAssigned"]);
+                }
+                if (employee.Subordinates.Any(s => s.Id == managerId))
+                {
+                    _logger.LogWarning(
+                        "Assign Manager : Circular management relationship detected. Employee {EmployeeId} manages Manager {ManagerId}.",
+                        employeeId, managerId);
+                    return ApiResponse<bool>.Fail(_localizer["Employee_CircularManagementDetected"]);
+                }
+
+                employee.ManagerId = managerId;
+
+                _employeeRepository.Update(employee);
+                await _employeeRepository.SaveChangesAsync();
+
+                var roleResult =  await _employeeRoleService.AssignRoleToEmployeeAsync(managerId, RoleNames.Manager);
+                if (!roleResult.Success)
+                {
+                    _logger.LogWarning(
+                        "Assign Manager : Manager {ManagerId} assigned but failed to ensure Manager role. Reason: {Message}",
+                        managerId, roleResult.Message);
+                    
+                }
+                _logger.LogInformation(
+                    "Manager {ManagerId} assigned to Employee {EmployeeId} in Tenant {TenantId}.",
+                    managerId, employeeId, currentTenantId);
+
+                return ApiResponse<bool>.Ok(true, _localizer["Employee_ManagerAssigned"]);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Assign Manager : Error occurred while assigning manager {ManagerId} to employee {EmployeeId}.",managerId , employeeId);
+                return ApiResponse<bool>.Fail(_localizer["Generic_UnexpectedError"]);
+            }
+
+        }
+
+    
     }
 
  }

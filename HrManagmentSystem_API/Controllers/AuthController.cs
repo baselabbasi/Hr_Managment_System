@@ -1,8 +1,10 @@
 ﻿using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Auth;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace HrManagmentSystem_API.Controllers
@@ -20,7 +22,7 @@ namespace HrManagmentSystem_API.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-
+        [EnableRateLimiting("LoginPolicy")]
         public async Task<ActionResult<ApiResponse<LoginResponseDto>>> Login([FromBody] LoginRequestDto loginRequestDto)
         {
             var result = await _authenticationService.LoginAsync(loginRequestDto);
@@ -32,8 +34,7 @@ namespace HrManagmentSystem_API.Controllers
         }
 
         [HttpPost("change-password")]
-        [Authorize]
-
+        [Authorize(Roles = RoleNames.Employee + "," + RoleNames.HrAdmin + "," + RoleNames.Manager + "," + RoleNames.Recruiter)]
         public async Task<ActionResult<ApiResponse<bool>>> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {
             var employeeClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

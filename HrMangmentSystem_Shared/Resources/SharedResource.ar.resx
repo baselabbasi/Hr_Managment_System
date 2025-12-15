@@ -139,7 +139,7 @@
     <value>تم حذف القسم بنجاح.</value>
   </data>
   <data name="Department_ManagerAssigned" xml:space="preserve">
-    <value>لا يمكن حذف القسم لوجود مدير مرتبط به.</value>
+    <value>تم تعيين هذا الموظف مديرا للقسم </value>
   </data>
   <data name="Department_NotFound" xml:space="preserve">
     <value>لم يتم العثور على القسم.</value>
@@ -188,9 +188,6 @@
   </data>
   <data name="Employee_InvalidDateOfBirth" xml:space="preserve">
     <value>تاريخ الميلاد غير صالح.</value>
-  </data>
-  <data name="Employee_InvalidEmploymentDate" xml:space="preserve">
-    <value>تاريخ بدء العمل غير صالح.</value>
   </data>
   <data name="Employee_MustBeAdult" xml:space="preserve">
     <value>يجب أن يكون عمر الموظف 18 سنة على الأقل.</value>
@@ -374,5 +371,173 @@
   </data>
   <data name="JobApplication_StatusChanged" xml:space="preserve">
     <value>تم تغيير حالة طلب التوظيف {0} إلى '{1}'.</value>
+  </data>
+  <data name="LeaveAccrualJob_Finished" xml:space="preserve">
+    <value>انتهت عملية احتساب رصيد الإجازات بنجاح.</value>
+  </data>
+  <data name="LeaveAccrualJob_Started" xml:space="preserve">
+    <value>بدأت عملية احتساب رصيد الإجازات.</value>
+  </data>
+  <data name="Request_InvalidType" xml:space="preserve">
+    <value>نوع الطلب غير صالح.</value>
+  </data>
+  <data name="Request_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على الطلب.</value>
+  </data>
+  <data name="Auth_EmployeeNotLinked" xml:space="preserve">
+    <value>المستخدم الحالي غير مرتبط بأي موظف.</value>
+  </data>
+  <data name="EmployeeDataChange_NoChanges" xml:space="preserve">
+    <value>لم يتم العثور على أي تغييرات في بيانات الموظف.</value>
+  </data>
+  <data name="EmployeeDataChange_Created" xml:space="preserve">
+    <value>تم إنشاء طلب تعديل بيانات الموظف بنجاح.</value>
+  </data>
+  <data name="EmployeeDataChange_ListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة طلبات تعديل بيانات الموظف بنجاح.</value>
+  </data>
+  <data name="FinancialRequest_InvalidAmount" xml:space="preserve">
+    <value>يجب أن يكون المبلغ أكبر من صفر.</value>
+  </data>
+  <data name="FinancialRequest_InvalidDateRange" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البداية قبل أو مساوياً لتاريخ النهاية.</value>
+  </data>
+  <data name="FinancialRequest_Created" xml:space="preserve">
+    <value>تم إنشاء الطلب المالي بنجاح.</value>
+  </data>
+  <data name="FinancialRequest_ListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة الطلبات المالية بنجاح.</value>
+  </data>
+  <data name="LeaveAccrual_Completed" xml:space="preserve">
+    <value>تم إكمال عملية احتساب رصيد الإجازات بنجاح.</value>
+  </data>
+  <data name="LeaveAccrual_UnexpectedError" xml:space="preserve">
+    <value>حدث خطأ غير متوقع أثناء تنفيذ عملية احتساب رصيد الإجازات.</value>
+  </data>
+  <data name="LeaveBalance_MyLoaded" xml:space="preserve">
+    <value>تم تحميل رصيد الإجازات بنجاح.</value>
+  </data>
+  <data name="LeaveBalance_Insufficient" xml:space="preserve">
+    <value>رصيد الإجازات غير كافٍ لهذا الطلب.</value>
+  </data>
+  <data name="LeaveRequest_ListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة طلبات الإجازة بنجاح.</value>
+  </data>
+  <data name="LeaveRequest_Created" xml:space="preserve">
+    <value>تم إنشاء طلب الإجازة بنجاح.</value>
+  </data>
+  <data name="LeaveRequest_OverlappingDates" xml:space="preserve">
+    <value>لديك طلب إجازة آخر يتقاطع مع نفس الفترة الزمنية.</value>
+  </data>
+  <data name="LeaveRequest_InvalidTotalDays" xml:space="preserve">
+    <value>يجب أن يكون عدد أيام الإجازة أكبر من صفر.</value>
+  </data>
+  <data name="LeaveRequest_EndDateInPast" xml:space="preserve">
+    <value>لا يمكن أن يكون تاريخ النهاية في الماضي.</value>
+  </data>
+  <data name="LeaveRequest_InvalidDateRange" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البداية قبل أو مساوياً لتاريخ النهاية.</value>
+  </data>
+  <data name="LeaveRequest_CannotCancelPastLeave" xml:space="preserve">
+    <value> لا يمكن إلغاء إجازة انتهى تاريخها بالفعل.</value>
+  </data>
+  <data name="LeaveRequest_DetailsNotLoaded" xml:space="preserve">
+    <value>تعذّر تحميل تفاصيل طلب الإجازة.</value>
+  </data>
+  <data name="ResignationRequest_ListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة طلبات الاستقالة بنجاح.</value>
+  </data>
+  <data name="ResignationRequest_Created" xml:space="preserve">
+    <value>تم إنشاء طلب الاستقالة بنجاح.</value>
+  </data>
+  <data name="ResignationRequest_InvalidLastWorkingDate" xml:space="preserve">
+    <value>يجب أن يكون آخر يوم عمل مقترح في المستقبل.</value>
+  </data>
+  <data name="Request_StatusChanged" xml:space="preserve">
+    <value>تم تغيير حالة الطلب بنجاح.</value>
+  </data>
+  <data name="Request_StatusChange_InvalidTransition" xml:space="preserve">
+    <value>تغيير حالة غير مسموح من {0} إلى {1}.</value>
+  </data>
+  <data name="Request_HistoryLoaded" xml:space="preserve">
+    <value>تم تحميل سجل الطلب بنجاح.</value>
+  </data>
+  <data name="Request_ApprovalListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة الطلبات المطلوب اعتمادها بنجاح.</value>
+  </data>
+  <data name="Request_ListLoaded" xml:space="preserve">
+    <value>تم تحميل قائمة الطلبات بنجاح.</value>
+  </data>
+  <data name="Employee_CircularManagementDetected" xml:space="preserve">
+    <value>تم اكتشاف علاقة إشراف دائرية بين الموظف والمدير.</value>
+  </data>
+  <data name="Employee_ManagerDepartmentMismatch" xml:space="preserve">
+    <value>يجب أن يكون الموظف والمدير ضمن نفس القسم.</value>
+  </data>
+  <data name="Employee_InvalidEmploymentDate" xml:space="preserve">
+    <value>تاريخ بدء العمل غير صالح.</value>
+  </data>
+  <data name="Tenant_CrossTenantNotAllowed" xml:space="preserve">
+    <value>لا يُسمح بالعمليات بين التينانتات المختلفة.</value>
+  </data>
+  <data name="Employee_ManagerNotFound" xml:space="preserve">
+    <value>لم يتم العثور على المدير.</value>
+  </data>
+  <data name="Employee_ManagerCannotBeSelf" xml:space="preserve">
+    <value>لا يمكن للموظف أن يكون مديرًا لنفسه.</value>
+  </data>
+  <data name="Tenant_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على التينانت.</value>
+  </data>
+  <data name="Tenant_ListRetrieved" xml:space="preserve">
+    <value>تم جلب قائمة التينانتات بنجاح</value>
+  </data>
+  <data name="Tenant_Created" xml:space="preserve">
+    <value>تم انشاء التينانت بنجاح</value>
+  </data>
+  <data name="Tenant_NameExists" xml:space="preserve">
+    <value>يوجد تينانت آخر بنفس الاسم.</value>
+  </data>
+  <data name="Tenant_CodeExists" xml:space="preserve">
+    <value>يوجد تينانت آخر بنفس الكود.</value>
+  </data>
+  <data name="Tenant_NameCodeRequired" xml:space="preserve">
+    <value>اسم التينانت والكود حقول مطلوبة.</value>
+  </data>
+  <data name="Employee_ManagerAlreadyAssigned" xml:space="preserve">
+    <value>تم تعيين هذا المدير مسبقًا لهذا الموظف.</value>
+  </data>
+  <data name="Employee_ManagerAssigned" xml:space="preserve">
+    <value>تم تعيين المدير بنجاح.</value>
+  </data>
+  <data name="Department_ManagerAlreadyAssigned" xml:space="preserve">
+    <value>تم تعيين هذا المدير مسبقًا لهذا القسم.</value>
+  </data>
+  <data name="Department_ManagerDepartmentMismatch" xml:space="preserve">
+    <value>المدير المحدد لا ينتمي إلى هذا القسم.</value>
+  </data>
+  <data name="Tenant_StatusUpdated" xml:space="preserve">
+    <value>تم تحديث حالة التينانت بنجاح.</value>
+  </data>
+  <data name="Tenant_Updated" xml:space="preserve">
+    <value>تم تحديث بيانات التينانت بنجاح.</value>
+  </data>
+  <data name="Department_InvalidParent" xml:space="preserve">
+    <value>القسم الأب غير صالح.</value>
+  </data>
+  <data name="DocumentCv_NotFound" xml:space="preserve">
+    <value>لم يتم العثور على سجل السيرة الذاتية.</value>
+  </data>
+  <data name="DocumentCv_FileNotFound" xml:space="preserve">
+    <value>لم يتم العثور على ملف السيرة الذاتية على الخادم.</value>
+  </data>
+  <data name="CvRanking_Scored" xml:space="preserve">
+    <value>تم تقييم السيرة الذاتية بنجاح.</value>
+  </data>
+  <data name="Department_ParentAssigned" xml:space="preserve">
+    <value>تم تعيين القسم الأب بنجاح.</value>
+  </data>
+  <data name="Department_CyclicHierarchyNotAllowed" xml:space="preserve">
+    <value>لا يُسمح بهيكل أقسام دائري (حلقة بين الأقسام).</value>
   </data>
 </root>

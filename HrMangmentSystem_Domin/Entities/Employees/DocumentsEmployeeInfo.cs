@@ -26,3 +26,4 @@ namespace HrMangmentSystem_Domain.Entities.Employees
 
     }
 }
+ 

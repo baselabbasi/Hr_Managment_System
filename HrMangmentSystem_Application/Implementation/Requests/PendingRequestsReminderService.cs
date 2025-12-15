@@ -1,14 +1,11 @@
 ﻿using HrManagmentSystem_Shared.Enum.Request;
-using HrManagmentSystem_Shared.Resources;
 using HrMangmentSystem_Application.Interfaces.Notifications;
 using HrMangmentSystem_Application.Interfaces.Requests;
 using HrMangmentSystem_Domain.Constants;
-using HrMangmentSystem_Domain.Entities.Employees;
 using HrMangmentSystem_Domain.Entities.Requests;
 using HrMangmentSystem_Domain.Entities.Roles;
 using HrMangmentSystem_Infrastructure.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System.Text;
 
@@ -17,7 +14,6 @@ namespace HrMangmentSystem_Application.Implementation.Requests
     public class PendingRequestsReminderService : IPendingRequestsReminderService
     {
         private readonly IGenericRepository<GenericRequest, int> _genericRequestRepository;
-        private readonly IGenericRepository<Employee , Guid> _employeeRepository;
         private readonly IGenericRepository<EmployeeRole , int> _employeeRoleRepository;
         private readonly IGenericRepository<Role , int> _roleRepository;
         private readonly IEmailSender _emailSender;
@@ -26,14 +22,12 @@ namespace HrMangmentSystem_Application.Implementation.Requests
 
         public PendingRequestsReminderService(
             IGenericRepository<GenericRequest, int> genericRequestRepository,
-            IGenericRepository<Employee, Guid> employeeRepository,
             IGenericRepository<EmployeeRole, int> employeeRoleRepository,
             IGenericRepository<Role, int> roleRepository,
             IEmailSender emailSender,
             ILogger<PendingRequestsReminderService> logger)
         {
             _genericRequestRepository = genericRequestRepository;
-            _employeeRepository = employeeRepository;
             _employeeRoleRepository = employeeRoleRepository;
             _roleRepository = roleRepository;
             _emailSender = emailSender;
@@ -101,34 +95,28 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                             tenantId);
                         continue;
                     }
+                    var totalPendingRequests = tenantGroup.Count();
+                    var submittedRequests = tenantGroup.Count(r => r.RequestStatus == RequestStatus.Submitted);
+                    var inReviewRequests = tenantGroup.Count(r => r.RequestStatus == RequestStatus.InReview);
                     // Build email content
                     var sb = new StringBuilder();
 
                     sb.AppendLine("Hello,");
                     sb.AppendLine();
-                    sb.AppendLine("Here is a list of pending requests that require your review/approval for your company:");
+                    sb.AppendLine("This is an automated reminder from the HR Management System.");
                     sb.AppendLine();
-
-                    // List each pending request
-                    foreach (var req in tenantGroup)
-                    {
-                        var employeeName = req.RequestedByEmployee != null
-                            ? $"{req.RequestedByEmployee.FirstName} {req.RequestedByEmployee.LastName}"
-                            : "Unknown";
-
-                        sb.AppendLine(
-                           $"- Request Id: {req.Id}, " +
-                           $"Type: {req.RequestType}, " +
-                           $"Status: {req.RequestStatus}, " +
-                           $"Employee: {employeeName}, " +
-                           $"Created At: {req.RequestedAt:yyyy-MM-dd HH:mm}");
-                    }
-
+                    sb.AppendLine($"You currently have {totalPendingRequests} pending request(s) that require your review/approval for your company.");
+                    sb.AppendLine();
+                    sb.AppendLine("Summary:");
+                    sb.AppendLine($"- Submitted: {submittedRequests}");
+                    sb.AppendLine($"- In review: {inReviewRequests}");
+                    sb.AppendLine();
+                    sb.AppendLine("Please log in to the HR Management System to review and take the appropriate actions.");
                     sb.AppendLine();
                     sb.AppendLine("Best regards,");
                     sb.AppendLine("HR Management System");
 
-                    var subject = "Reminder: Pending requests require your approval";
+                    var subject = $"Reminder: {totalPendingRequests} pending request(s) require your approval";
 
                     foreach (var email in hrAdminEmails)
                     {

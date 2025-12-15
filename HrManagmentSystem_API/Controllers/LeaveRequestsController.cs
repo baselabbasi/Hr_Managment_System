@@ -1,6 +1,7 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Requests.EmployeeData;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
 using HrMangmentSystem_Dto.DTOs.Requests.Leave;
@@ -52,6 +53,7 @@ public class LeaveRequestsController : ControllerBase
     }
 
     [HttpPost("{requestId}/status")]
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager + "," + RoleNames.SystemAdmin)]
     public async Task<ActionResult<ApiResponse<bool>>> ChangeLeaveStatus(
       int requestId,
       [FromBody] ChangeRequestStatusDto dto)

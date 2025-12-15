@@ -7,7 +7,7 @@ namespace HrMangmentSystem_Application.Interfaces.Auth
     {
         (string Token, DateTime Expiration) GenerateToken(
             Employee employee,
-            Tenant tenant,
+            TenantEntity tenant,
             IReadOnlyList<string> roles);
     }
 }

@@ -61,6 +61,15 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current user is not linked to any employee.
+        /// </summary>
+        public static string Auth_EmployeeNotLinked {
+            get {
+                return ResourceManager.GetString("Auth_EmployeeNotLinked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email or password..
         /// </summary>
         public static string Auth_InvalidCredentials {
@@ -196,6 +205,15 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CV has been scored successfully.
+        /// </summary>
+        public static string CvRanking_Scored {
+            get {
+                return ResourceManager.GetString("CvRanking_Scored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DeletedByEmployeeId is required..
         /// </summary>
         public static string Delete_DeletedByRequired {
@@ -250,6 +268,15 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cyclic department hierarchy is not allowed.
+        /// </summary>
+        public static string Department_CyclicHierarchyNotAllowed {
+            get {
+                return ResourceManager.GetString("Department_CyclicHierarchyNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department deleted successfully..
         /// </summary>
         public static string Department_Deleted {
@@ -277,11 +304,29 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid parent department.
+        /// </summary>
+        public static string Department_InvalidParent {
+            get {
+                return ResourceManager.GetString("Department_InvalidParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Departments loaded successfully..
         /// </summary>
         public static string Department_ListLoaded {
             get {
                 return ResourceManager.GetString("Department_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This manager is already assigned to the department.
+        /// </summary>
+        public static string Department_ManagerAlreadyAssigned {
+            get {
+                return ResourceManager.GetString("Department_ManagerAlreadyAssigned", resourceCulture);
             }
         }
         
@@ -295,11 +340,29 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The selected manager does not belong to this department.
+        /// </summary>
+        public static string Department_ManagerDepartmentMismatch {
+            get {
+                return ResourceManager.GetString("Department_ManagerDepartmentMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department not found..
         /// </summary>
         public static string Department_NotFound {
             get {
                 return ResourceManager.GetString("Department_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent department has been set successfully.
+        /// </summary>
+        public static string Department_ParentAssigned {
+            get {
+                return ResourceManager.GetString("Department_ParentAssigned", resourceCulture);
             }
         }
         
@@ -340,6 +403,24 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CV file could not be found on the server.
+        /// </summary>
+        public static string DocumentCv_FileNotFound {
+            get {
+                return ResourceManager.GetString("DocumentCv_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CV record was not found.
+        /// </summary>
+        public static string DocumentCv_NotFound {
+            get {
+                return ResourceManager.GetString("DocumentCv_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only PDF files are allowed.
         /// </summary>
         public static string DocumentCv_OnlyPdfAllowed {
@@ -363,6 +444,15 @@ namespace HrMangmentSystem_Shared.Resources {
         public static string Employee_BasicFieldsRequired {
             get {
                 return ResourceManager.GetString("Employee_BasicFieldsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circular management relationship detected.
+        /// </summary>
+        public static string Employee_CircularManagementDetected {
+            get {
+                return ResourceManager.GetString("Employee_CircularManagementDetected", resourceCulture);
             }
         }
         
@@ -448,6 +538,51 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This manager is already assigned to the employee.
+        /// </summary>
+        public static string Employee_ManagerAlreadyAssigned {
+            get {
+                return ResourceManager.GetString("Employee_ManagerAlreadyAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager has been assigned successfully.
+        /// </summary>
+        public static string Employee_ManagerAssigned {
+            get {
+                return ResourceManager.GetString("Employee_ManagerAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee cannot be their own manager.
+        /// </summary>
+        public static string Employee_ManagerCannotBeSelf {
+            get {
+                return ResourceManager.GetString("Employee_ManagerCannotBeSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee and manager must belong to the same department.
+        /// </summary>
+        public static string Employee_ManagerDepartmentMismatch {
+            get {
+                return ResourceManager.GetString("Employee_ManagerDepartmentMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager was not found.
+        /// </summary>
+        public static string Employee_ManagerNotFound {
+            get {
+                return ResourceManager.GetString("Employee_ManagerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee must be at least 18 years old..
         /// </summary>
         public static string Employee_MustBeAdult {
@@ -484,6 +619,33 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee data change request created successfully.
+        /// </summary>
+        public static string EmployeeDataChange_Created {
+            get {
+                return ResourceManager.GetString("EmployeeDataChange_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee data change requests loaded successfully.
+        /// </summary>
+        public static string EmployeeDataChange_ListLoaded {
+            get {
+                return ResourceManager.GetString("EmployeeDataChange_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No changes were detected in the employee data.
+        /// </summary>
+        public static string EmployeeDataChange_NoChanges {
+            get {
+                return ResourceManager.GetString("EmployeeDataChange_NoChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee is already has role.
         /// </summary>
         public static string EmployeeRole_AlreadyAssigned {
@@ -516,6 +678,42 @@ namespace HrMangmentSystem_Shared.Resources {
         public static string EmployeeRole_Updated {
             get {
                 return ResourceManager.GetString("EmployeeRole_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Financial request created successfully.
+        /// </summary>
+        public static string FinancialRequest_Created {
+            get {
+                return ResourceManager.GetString("FinancialRequest_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount must be greater than zero.
+        /// </summary>
+        public static string FinancialRequest_InvalidAmount {
+            get {
+                return ResourceManager.GetString("FinancialRequest_InvalidAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From date must be before or equal to to date.
+        /// </summary>
+        public static string FinancialRequest_InvalidDateRange {
+            get {
+                return ResourceManager.GetString("FinancialRequest_InvalidDateRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Financial requests loaded successfully.
+        /// </summary>
+        public static string FinancialRequest_ListLoaded {
+            get {
+                return ResourceManager.GetString("FinancialRequest_ListLoaded", resourceCulture);
             }
         }
         
@@ -808,6 +1006,132 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leave accrual process completed successfully.
+        /// </summary>
+        public static string LeaveAccrual_Completed {
+            get {
+                return ResourceManager.GetString("LeaveAccrual_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occurred while running leave accrual.
+        /// </summary>
+        public static string LeaveAccrual_UnexpectedError {
+            get {
+                return ResourceManager.GetString("LeaveAccrual_UnexpectedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave accrual job finished successfully.
+        /// </summary>
+        public static string LeaveAccrualJob_Finished {
+            get {
+                return ResourceManager.GetString("LeaveAccrualJob_Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave accrual job started.
+        /// </summary>
+        public static string LeaveAccrualJob_Started {
+            get {
+                return ResourceManager.GetString("LeaveAccrualJob_Started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient leave balance for this request.
+        /// </summary>
+        public static string LeaveBalance_Insufficient {
+            get {
+                return ResourceManager.GetString("LeaveBalance_Insufficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave balance loaded successfully.
+        /// </summary>
+        public static string LeaveBalance_MyLoaded {
+            get {
+                return ResourceManager.GetString("LeaveBalance_MyLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot cancel a leave that has already ended.
+        /// </summary>
+        public static string LeaveRequest_CannotCancelPastLeave {
+            get {
+                return ResourceManager.GetString("LeaveRequest_CannotCancelPastLeave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave request created successfully.
+        /// </summary>
+        public static string LeaveRequest_Created {
+            get {
+                return ResourceManager.GetString("LeaveRequest_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave request details could not be loaded.
+        /// </summary>
+        public static string LeaveRequest_DetailsNotLoaded {
+            get {
+                return ResourceManager.GetString("LeaveRequest_DetailsNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date cannot be in the past.
+        /// </summary>
+        public static string LeaveRequest_EndDateInPast {
+            get {
+                return ResourceManager.GetString("LeaveRequest_EndDateInPast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date must be before or equal to end date.
+        /// </summary>
+        public static string LeaveRequest_InvalidDateRange {
+            get {
+                return ResourceManager.GetString("LeaveRequest_InvalidDateRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total leave days must be greater than zero.
+        /// </summary>
+        public static string LeaveRequest_InvalidTotalDays {
+            get {
+                return ResourceManager.GetString("LeaveRequest_InvalidTotalDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave requests loaded successfully.
+        /// </summary>
+        public static string LeaveRequest_ListLoaded {
+            get {
+                return ResourceManager.GetString("LeaveRequest_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have another leave request overlapping this date range.
+        /// </summary>
+        public static string LeaveRequest_OverlappingDates {
+            get {
+                return ResourceManager.GetString("LeaveRequest_OverlappingDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid page number..
         /// </summary>
         public static string Pagination_InvalidPageNumber {
@@ -826,11 +1150,182 @@ namespace HrMangmentSystem_Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approval requests loaded successfully.
+        /// </summary>
+        public static string Request_ApprovalListLoaded {
+            get {
+                return ResourceManager.GetString("Request_ApprovalListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request history loaded successfully.
+        /// </summary>
+        public static string Request_HistoryLoaded {
+            get {
+                return ResourceManager.GetString("Request_HistoryLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid request type.
+        /// </summary>
+        public static string Request_InvalidType {
+            get {
+                return ResourceManager.GetString("Request_InvalidType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requests loaded successfully.
+        /// </summary>
+        public static string Request_ListLoaded {
+            get {
+                return ResourceManager.GetString("Request_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request was not found.
+        /// </summary>
+        public static string Request_NotFound {
+            get {
+                return ResourceManager.GetString("Request_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid status transition from {0} to {1}.
+        /// </summary>
+        public static string Request_StatusChange_InvalidTransition {
+            get {
+                return ResourceManager.GetString("Request_StatusChange_InvalidTransition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request status changed successfully.
+        /// </summary>
+        public static string Request_StatusChanged {
+            get {
+                return ResourceManager.GetString("Request_StatusChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resignation request created successfully.
+        /// </summary>
+        public static string ResignationRequest_Created {
+            get {
+                return ResourceManager.GetString("ResignationRequest_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proposed last working date must be in the future.
+        /// </summary>
+        public static string ResignationRequest_InvalidLastWorkingDate {
+            get {
+                return ResourceManager.GetString("ResignationRequest_InvalidLastWorkingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resignation requests loaded successfully.
+        /// </summary>
+        public static string ResignationRequest_ListLoaded {
+            get {
+                return ResourceManager.GetString("ResignationRequest_ListLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role employee not found.
         /// </summary>
         public static string Role_NotFound {
             get {
                 return ResourceManager.GetString("Role_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A tenant with the same code already exists.
+        /// </summary>
+        public static string Tenant_CodeExists {
+            get {
+                return ResourceManager.GetString("Tenant_CodeExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant has been created successfully.
+        /// </summary>
+        public static string Tenant_Created {
+            get {
+                return ResourceManager.GetString("Tenant_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cross-tenant operation is not allowed.
+        /// </summary>
+        public static string Tenant_CrossTenantNotAllowed {
+            get {
+                return ResourceManager.GetString("Tenant_CrossTenantNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant list retrieved successfully.
+        /// </summary>
+        public static string Tenant_ListRetrieved {
+            get {
+                return ResourceManager.GetString("Tenant_ListRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant name and code are required.
+        /// </summary>
+        public static string Tenant_NameCodeRequired {
+            get {
+                return ResourceManager.GetString("Tenant_NameCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A tenant with the same name already exists.
+        /// </summary>
+        public static string Tenant_NameExists {
+            get {
+                return ResourceManager.GetString("Tenant_NameExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant was not found.
+        /// </summary>
+        public static string Tenant_NotFound {
+            get {
+                return ResourceManager.GetString("Tenant_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant has been updated successfully.
+        /// </summary>
+        public static string Tenant_StatusUpdated {
+            get {
+                return ResourceManager.GetString("Tenant_StatusUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant has been updated successfully.
+        /// </summary>
+        public static string Tenant_Updated {
+            get {
+                return ResourceManager.GetString("Tenant_Updated", resourceCulture);
             }
         }
     }

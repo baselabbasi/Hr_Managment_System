@@ -6,7 +6,7 @@ namespace HrMangmentSystem_Domain.Common
     public class TenantEntity<T> : BaseEntity<T> , ITenantEntity
     {
         public Guid TenantId { get; set; } 
-        public Tenant Tenant { get; set; } = null!;
+        public TenantEntity Tenant { get; set; } = null!;
 
     }
 }

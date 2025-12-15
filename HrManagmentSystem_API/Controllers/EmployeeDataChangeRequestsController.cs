@@ -1,6 +1,7 @@
 ﻿using HrMangmentSystem_Application.Common.PagedRequest;
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Requests.EmployeeData;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,7 @@ public class EmployeeDataChangeRequestsController : ControllerBase
        
         return Ok(result);
     }
-
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager +"," + RoleNames.SystemAdmin)]
     [HttpPost("{requestId}/status")]
     public async Task<ActionResult<ApiResponse<bool>>> ChangeStatus(
         int requestId,

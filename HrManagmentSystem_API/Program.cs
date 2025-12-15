@@ -1,9 +1,12 @@
-﻿using HrManagmentSystem_API.Extension_Method;
+﻿using Hangfire;
+using HrManagmentSystem_API.Extension_Method;
 using HrManagmentSystem_API.Middleware;
 using HrMangmentSystem_API.Extension_Method;
 using HrMangmentSystem_Application.Config;
 using HrMangmentSystem_Application.Extension_Method;
 using HrMangmentSystem_Infrastructure.Extension_Method;
+using HrMangmentSystem_Infrastructure.SeedingData;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +20,10 @@ builder.Services.AddLocaizationResource(builder.Configuration) ;
 builder.Services.AddLeaveAccrualQuartz(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration); 
 builder.Services.AddHangfireWithJobs(builder.Configuration);
-
+builder.Services.AddCustomHealthChecks(builder.Configuration); 
+builder.Services.AddOpenAi(builder.Configuration);
+builder.AddSerilogLogging();
+builder.Services.AddAppRateLimiting();
 builder.Services.Configure<LeaveAccrualOptions>(builder.Configuration.GetSection("LeaveAccrual"));
 builder.Services.Configure<FileStorageOptions>(builder.Configuration.GetSection("FileStorage"));
 builder.Services.Configure<LeaveBalanceOptions>(builder.Configuration.GetSection("LeaveBalance"));
@@ -43,6 +49,8 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseHangfireDashboard();
+app.UseSerilogRequestLogging();
 
 //await DataSeeding.SeedAsync(app.Services);
 
@@ -59,10 +67,9 @@ app.UseAddLocalization();
 app.UseMiddleware<CurrentTenantMiddleware>(); //after Authentication : because httpContext.User fill from JWT 
 app.UseHangfireRecurringJobs();
 app.UseHttpsRedirection();
-
-
+app.MapCustomHealthChecks(); 
+app.UseRateLimiter();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

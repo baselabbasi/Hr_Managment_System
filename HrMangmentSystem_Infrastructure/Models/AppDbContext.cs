@@ -42,7 +42,7 @@ namespace HrMangmentSystem_Infrastructure.Models
         public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances { get; set; }
         public DbSet<RequestHistory> RequestHistories { get; set; }
 
-        public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<TenantEntity> Tenants { get; set; }
 
         public override int SaveChanges()
         {
@@ -91,6 +91,12 @@ namespace HrMangmentSystem_Infrastructure.Models
                    entity.HasQueryFilter(e =>
                        !_currentTenant.IsSet ||
                          e.TenantId == _currentTenant.TenantId);
+
+                   entity.Property(e => e.Gender).HasConversion<string>();
+
+                   entity.Property(e => e.EmploymentStatusType).HasConversion<string>();
+
+
 
                });
 
@@ -149,6 +155,7 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(jp =>
                       !_currentTenant.IsSet ||
                     jp.TenantId == _currentTenant.TenantId);
+
             });
             modelBuilder.Entity<JobApplication>(entity =>
             {
@@ -177,6 +184,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(ja =>
                       !_currentTenant.IsSet ||
                     ja.TenantId == _currentTenant.TenantId);
+
+                entity.Property(ja => ja.Status).HasConversion<string>();
             });
 
             modelBuilder.Entity<DocumentCv>(entity =>
@@ -230,6 +239,10 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(gr =>
                       !_currentTenant.IsSet ||
                     gr.TenantId == _currentTenant.TenantId);
+
+                entity.Property(gr => gr.RequestType).HasConversion<string>();
+                entity.Property(gr => gr.RequestStatus).HasConversion<string>();
+
             });
             modelBuilder.Entity<LeaveRequest>(entity =>
             {
@@ -248,6 +261,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(lr =>
                       !_currentTenant.IsSet ||
                     lr.TenantId == _currentTenant.TenantId);
+
+                entity.Property(lr => lr.LeaveType).HasConversion<string>();
             });
             modelBuilder.Entity<EmployeeDataChange>(entity =>
             {
@@ -266,6 +281,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(edc =>
                       !_currentTenant.IsSet ||
                     edc.TenantId == _currentTenant.TenantId);
+
+               
             });
             modelBuilder.Entity<FinancialRequest>(entity =>
             {
@@ -289,6 +306,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                       !_currentTenant.IsSet ||
                     fr.TenantId == _currentTenant.TenantId);
 
+                entity.Property(fr => fr.FinancialType).HasConversion<string>();
+
             });
 
             modelBuilder.Entity<ResignationRequest>(entity =>
@@ -308,6 +327,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(rr =>
                       !_currentTenant.IsSet ||
                     rr.TenantId == _currentTenant.TenantId);
+
+              
             });
             modelBuilder.Entity<RequestHistory>(entity =>
             {
@@ -331,9 +352,13 @@ namespace HrMangmentSystem_Infrastructure.Models
                 entity.HasQueryFilter(h =>
                       !_currentTenant.IsSet ||
                     h.TenantId == _currentTenant.TenantId);
+
+                entity.Property(h => h.Action).HasConversion<string>();
+                entity.Property(h => h.OldStatus).HasConversion<string?>();
+                entity.Property(h => h.NewStatus).HasConversion<string?>();
             });
 
-            modelBuilder.Entity<Tenant>(entity =>
+            modelBuilder.Entity<TenantEntity>(entity =>
              {
                  entity.HasKey(t => t.Id);
                  entity.HasIndex(t => t.Code).IsUnique(true);

@@ -47,7 +47,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 var employee = await _employeeRepository.GetByIdAsync(employeeId);
                 if (employee is null)
                 {
-                    _logger.LogWarning($"ChangePassword: Employee {employeeId} not found");
+                    _logger.LogWarning("ChangePassword: Employee {employeeId} not found", employeeId);
                     return ApiResponse<bool>.Fail(_localizer["Employee_NotFound"]);
                 }
 
@@ -57,7 +57,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
 
                 if (!isValidCurrent)
                 {
-                    _logger.LogWarning($"ChangePassword: Invalid current password for employee {employeeId}");
+                    _logger.LogWarning("ChangePassword: Invalid current password for employee {employeeId}", employeeId);
                     return ApiResponse<bool>.Fail(_localizer["Auth_InvalidCurrentPassword"]);
                 }
 
@@ -65,7 +65,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 if (passwordErrors.Any())
                 {
                     var firstErrorKey = passwordErrors.First();
-                    _logger.LogWarning($"ChangePassword: Invalid new password for employee {employeeId} becuse {_localizer[firstErrorKey]}");
+                    _logger.LogWarning("ChangePassword: Invalid new password for employee {employeeId} becuse {error key}" , employeeId , _localizer[firstErrorKey]);
                     return ApiResponse<bool>.Fail(_localizer[firstErrorKey]);
                 }
                 if (changePasswordDto.NewPassword == changePasswordDto.CurrentPassword)
@@ -80,7 +80,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 _employeeRepository.Update(employee);
                 await _employeeRepository.SaveChangesAsync();
 
-                _logger.LogInformation($"ChangePassword: Password changed successfully for employee {employeeId}");
+                _logger.LogInformation("ChangePassword: Password changed successfully for employee {employeeId}" , employeeId);
 
                 return ApiResponse<bool>.Ok(true, _localizer["Auth_PasswordChanged"]);
 
@@ -109,7 +109,7 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 var tenant = await _tenantRepository.FindByCodeAsync(tenantCode);
                 if (tenant is null || !tenant.IsActive)
                 {
-                    _logger.LogWarning($"Login failed: Tenant with code {tenantCode} not found or inactive");
+                    _logger.LogWarning("Login failed: Tenant with code {tenantCode} not found or inactive" , tenantCode);
                     return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvalidCredentials"]);
                 }
                 var employees = await _employeeRepository.FindAsync(e =>
@@ -120,7 +120,8 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 var employee = employees.FirstOrDefault();
                 if (employee is null)
                 {
-                    _logger.LogWarning($"Login failed: Employee with email {loginRequestDto.Email} not found in Tenant {tenant.Id}");
+                    _logger.LogWarning("Login failed: Employee with email {loginRequestDto.Email} not found in Tenant {tenant.Id}" 
+                        , loginRequestDto.Email , tenant.Id);
                     return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvalidCredentials"]);
                 }
 
@@ -138,7 +139,8 @@ namespace HrMangmentSystem_Application.Implementation.Auth
 
                 if (!IsValidPassword)
                 {
-                    _logger.LogWarning($"Login failed: Invalid password for email {loginRequestDto.Email} in tenant {tenant.Id}");
+                    _logger.LogWarning("Login failed: Invalid password for email {loginRequestDto.Email} in tenant {tenant.Id}"
+                       ,loginRequestDto.Email , tenant.Id);
 
                     return ApiResponse<LoginResponseDto>.Fail(_localizer["Auth_InvalidCredentials"]);
                 }
@@ -158,13 +160,13 @@ namespace HrMangmentSystem_Application.Implementation.Auth
                 };
 
 
-                _logger.LogInformation($"Login succeeded for {employee.Email} in tenant {tenant.Id}");
+                _logger.LogInformation("Login succeeded for {employee.Email} in tenant {tenant.Id}" , employee.Email, tenant.Id);
 
                 return ApiResponse<LoginResponseDto>.Ok(responseDto, _localizer["Auth_LoginSuccess"]);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Unexpected error occurred during login for email {loginRequestDto.Email}");
+                _logger.LogError(ex, "Unexpected error occurred during login for email {loginRequestDto.Email}" , loginRequestDto.Email);
                 return ApiResponse<LoginResponseDto>.Fail(_localizer["Generic_UnexpectedError"]);
 
             }

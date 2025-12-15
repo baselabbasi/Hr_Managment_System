@@ -2,6 +2,7 @@
 using HrMangmentSystem_Application.Common.Responses;
 using HrMangmentSystem_Application.Implementation.Requests;
 using HrMangmentSystem_Application.Interfaces.Requests;
+using HrMangmentSystem_Domain.Constants;
 using HrMangmentSystem_Dto.DTOs.Requests.Financial;
 using HrMangmentSystem_Dto.DTOs.Requests.Generic;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +36,7 @@ public class FinancialRequestsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("my")]
+    [HttpGet("my-request")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetMyFinancialRequests(
         [FromQuery] PagedRequest request)
     {
@@ -44,6 +45,7 @@ public class FinancialRequestsController : ControllerBase
     }
 
     [HttpPost("{requestId}/status")]
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager + "," + RoleNames.SystemAdmin)]
     public async Task<ActionResult<ApiResponse<bool>>> ChangeFinancialStatus(
        int requestId,
        [FromBody] ChangeRequestStatusDto dto)
