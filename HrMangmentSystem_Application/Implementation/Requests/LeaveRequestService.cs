@@ -309,11 +309,7 @@ namespace HrMangmentSystem_Infrastructure.Implementation.Requests
                     _logger.LogWarning($"Get LeaveRequestDetails: Request {requestId} not found");
                     return ApiResponse<LeaveRequestDetailsDto?>.Fail(_localizer["Request_NotFound"]);
                 }
-                if (generic.RequestedByEmployeeId != employeeId && !_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning($"Get LeaveRequestDetails: Forbidden for employee {employeeId}");
-                    return ApiResponse<LeaveRequestDetailsDto?>.Fail(_localizer["Auth_Forbidden"]);
-                }
+
                 var requestDto = _mapper.Map<GenericRequestListItemDto>(generic);
                 var leaveDto = _mapper.Map<LeaveRequestDto>(generic.LeaveRequest);
 

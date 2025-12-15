@@ -81,7 +81,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.DocumentEmployeeInfo", b =>
@@ -147,7 +147,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("DocumentEmployeeInfo");
+                    b.ToTable("DocumentEmployeeInfo", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.Employee", b =>
@@ -248,7 +248,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.EmployeeLeaveBalance", b =>
@@ -302,7 +302,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("EmployeeId", "LeaveType")
                         .IsUnique();
 
-                    b.ToTable("EmployeeLeaveBalances");
+                    b.ToTable("EmployeeLeaveBalances", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.DocumentCv", b =>
@@ -361,7 +361,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("DocumentCvs");
+                    b.ToTable("DocumentCvs", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.JobApplication", b =>
@@ -428,7 +428,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("JobApplications");
+                    b.ToTable("JobApplications", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Recruitment.JobPosition", b =>
@@ -492,7 +492,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("JobPositions");
+                    b.ToTable("JobPositions", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.EmployeeDataChange", b =>
@@ -547,7 +547,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("EmployeeDataChanges");
+                    b.ToTable("EmployeeDataChanges", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.FinancialRequest", b =>
@@ -612,7 +612,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("FinancialRequests");
+                    b.ToTable("FinancialRequests", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.GenericRequest", b =>
@@ -676,7 +676,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("GenericRequests");
+                    b.ToTable("GenericRequests", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.LeaveRequest", b =>
@@ -737,7 +737,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.RequestHistory", b =>
@@ -793,7 +793,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("RequestHistories");
+                    b.ToTable("RequestHistories", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Requests.ResignationRequest", b =>
@@ -851,7 +851,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("ResignationRequests");
+                    b.ToTable("ResignationRequests", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Roles.EmployeeRole", b =>
@@ -892,7 +892,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("EmployeeId", "RoleId")
                         .IsUnique();
 
-                    b.ToTable("EmployeeRoles");
+                    b.ToTable("EmployeeRoles", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Roles.Role", b =>
@@ -929,7 +929,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Tenants.TenantEntity", b =>
@@ -978,7 +978,7 @@ namespace HrMangmentSystem_Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Tenants");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("HrMangmentSystem_Domain.Entities.Employees.Department", b =>

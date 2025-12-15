@@ -37,7 +37,7 @@ public class LeaveRequestsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("my")]
+    [HttpGet("my-request")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetMyLeaveRequests(
         [FromQuery] PagedRequest request)
     {

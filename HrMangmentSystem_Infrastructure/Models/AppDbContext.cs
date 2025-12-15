@@ -124,6 +124,8 @@ namespace HrMangmentSystem_Infrastructure.Models
                 {
                     entity.HasIndex(elb => new {elb.EmployeeId, elb.LeaveType}).IsUnique();
 
+                    entity.Property(e => e.BalanceDays)
+                            .HasPrecision(18, 2);
 
                     entity.HasOne(jp => jp.Tenant)
                           .WithMany()

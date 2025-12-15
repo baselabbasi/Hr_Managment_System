@@ -148,7 +148,7 @@ namespace HrManagmentSystem_API.Controllers
 
 
         [HttpPut("status")]
-        [Authorize(Roles =$"{RoleNames.HrAdmin},{RoleNames.Recruiter}")]
+        [Authorize(Roles =$"{RoleNames.HrAdmin},{RoleNames.Recruiter },{RoleNames.SystemAdmin}")]
         public async Task<ActionResult<ApiResponse<JobApplicationDto>>> ChangeStatus(
             [FromBody] ChangeJobApplicationStatusDto changeJobApplicationStatusDto)
         {

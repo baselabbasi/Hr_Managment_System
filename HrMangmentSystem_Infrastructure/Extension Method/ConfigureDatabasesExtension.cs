@@ -14,7 +14,8 @@ namespace HrMangmentSystem_Infrastructure.Extension_Method
 {
     public static class ConfigureDatabasesExtension
     {
-        public static IServiceCollection AddConfigureDatabases(this IServiceCollection services, IConfiguration configuration)
+        // This method configures the database contexts and repositories for dependency injection
+        public static IServiceCollection AddConfigureDatabases(this IServiceCollection services, IConfiguration configuration) 
         {
 
             // Configure database contexts here

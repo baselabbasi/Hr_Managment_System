@@ -162,12 +162,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                 }
 
 
-                if (!_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("GetRequestsForApproval: Forbidden for employee {EmployeeId}", employeeId);
-                    return ApiResponse<PagedResult<GenericRequestListItemDto>>.Fail(
-                        _localizer["Auth_Forbidden"]);
-                }
+             
 
                 if (request.PageNumber <= 0)
                     request.PageNumber = 1;
@@ -282,13 +277,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                 }
 
 
-                if (generic.RequestedByEmployeeId != employeeId &&
-                    !_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("GetRequestHeader: Forbidden for employee {EmployeeId}", employeeId);
-                    return ApiResponse<GenericRequestListItemDto?>.Fail(
-                        _localizer["Auth_Forbidden"]);
-                }
+            
 
                 var dto = _mapper.Map<GenericRequestListItemDto>(generic);
 
@@ -333,14 +322,6 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                         _localizer["Request_NotFound"]);
                 }
 
-                if (generic.RequestedByEmployeeId != employeeId &&
-                    !_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("GetRequestHistory: Forbidden for employee {EmployeeId}", employeeId);
-                    return ApiResponse<List<RequestHistoryDto>>.Fail(
-                        _localizer["Auth_Forbidden"]);
-                }
-
                 var orderedHistory = generic.History
                     .OrderBy(h => h.PerformedAt)
                     .ToList();
@@ -374,14 +355,10 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                     return ApiResponse<bool>.Fail(_localizer["Auth_EmployeeNotLinked"]);
                 }
 
-                if (!_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("ChangeStatus: Forbidden for employee {EmployeeId}", employeeId);
-                    return ApiResponse<bool>.Fail(_localizer["Auth_Forbidden"]);
-                }
+               
 
                 var request = await _genericRequestRepository
-                    .Query() // tracking
+                    .Query(asNoTracking :false ) // tracking
                     .Include(g => g.History)
                     .FirstOrDefaultAsync(g => g.Id == changeRequestStatusDto.RequestId);
 
@@ -420,7 +397,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                     PerformedByEmployeeId = employeeId,
                     PerformedAt = DateTime.Now
                 };
-
+                 _genericRequestRepository.Update(request);
                 await _requestHistoryRepository.AddAsync(history);
 
                 await _genericRequestRepository.SaveChangesAsync();

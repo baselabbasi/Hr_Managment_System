@@ -207,11 +207,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                     return ApiResponse<EmployeeDataChangeDetailsDto?>.Fail(_localizer["Request_NotFound"]);
                 }
 
-                if (generic.RequestedByEmployeeId != employeeId && !_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("Get EmployeeDataChangeRequestDetails: Forbidden for employee {employeeId}" , employeeId);
-                    return ApiResponse<EmployeeDataChangeDetailsDto?>.Fail(_localizer["Auth_Forbidden"]);
-                }
+                
                 var requestDto = _mapper.Map<GenericRequestListItemDto>(generic);
 
                 var dataChangeEntity = generic.EmployeeDataChange!;

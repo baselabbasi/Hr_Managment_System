@@ -5,7 +5,6 @@ using HrMangmentSystem_API.Extension_Method;
 using HrMangmentSystem_Application.Config;
 using HrMangmentSystem_Application.Extension_Method;
 using HrMangmentSystem_Infrastructure.Extension_Method;
-using HrMangmentSystem_Infrastructure.SeedingData;
 using Serilog;
 using System.Text.Json.Serialization;
 

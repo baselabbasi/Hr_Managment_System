@@ -36,7 +36,7 @@ public class ResignationRequestsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("my")]
+    [HttpGet("my-request")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetMyResignationRequests(
         [FromQuery] PagedRequest request)
     {

@@ -21,7 +21,7 @@ public class RequestsController : ControllerBase
 
 
     // Get requests created by current user (optionally filtered by type).
-    [HttpGet("my")]
+    [HttpGet("my-request")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetMyRequests(
         [FromQuery] PagedRequest request,
         [FromQuery] RequestType? type = null)
@@ -31,7 +31,7 @@ public class RequestsController : ControllerBase
     }
 
     // Get requests pending for approval (HR / approver).
-    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager)]
+    [Authorize(Roles = RoleNames.HrAdmin + "," + RoleNames.Manager +"," + RoleNames.SystemAdmin)]
     [HttpGet("for-approval")]
     public async Task<ActionResult<ApiResponse<PagedResult<GenericRequestListItemDto>>>> GetRequestsForApproval(
         [FromQuery] PagedRequest request,

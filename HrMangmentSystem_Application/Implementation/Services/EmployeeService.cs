@@ -369,7 +369,7 @@ namespace HrMangmentSystem_Application.Implementation.Services
                     return ApiResponse<EmployeeDto>.Fail(_localizer["Employee_NotFound"]);
                 }
                 if (updateEmployeeDto.DepartmentId.HasValue)
-                {
+                { 
                     var department = await _departmentRepository.GetByIdAsync(updateEmployeeDto.DepartmentId.Value);
                     if (department is null)
                     {

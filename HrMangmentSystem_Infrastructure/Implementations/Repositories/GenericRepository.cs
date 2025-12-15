@@ -34,13 +34,15 @@ namespace HrMangmentSystem_Infrastructure.Implementations.Repositories
         public virtual async Task DeleteAsync(TId id )
         {
             var db = await _dbSet
-                 .FirstOrDefaultAsync(e => e.Id!.Equals(id));
+                 .FirstOrDefaultAsync(e => e.Id!.Equals(id)); // ! (bang Operator) to tell compiler that Id is not null here.
 
             if (db == null)
                 return;
 
 
             _dbSet.Remove(db);
+
+            
         }
 
         public virtual Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)

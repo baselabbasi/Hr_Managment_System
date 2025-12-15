@@ -195,11 +195,7 @@ namespace HrMangmentSystem_Application.Implementation.Requests
                     return ApiResponse<FinancialRequestDetailsDto?>.Fail(_localizer["Request_NotFound"]);
                 }
 
-                if (generic.RequestedByEmployeeId != employeeId && !_currentUser.Roles.Contains(RoleNames.HrAdmin))
-                {
-                    _logger.LogWarning("Get FinancialRequestDetails: Forbidden for employee {EmployeeId}", employeeId);
-                    return ApiResponse<FinancialRequestDetailsDto?>.Fail(_localizer["Auth_Forbidden"]);
-                }
+            
 
                 var requestDto = _mapper.Map<GenericRequestListItemDto>(generic);
                 var financialDto = _mapper.Map<FinancialRequestDto>(generic.FinancialRequest);
