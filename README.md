@@ -113,6 +113,382 @@ This separation makes the solution:
 - ASP.NET Core rate limiting
 
 ---
+Core Features
+1. Multi-Tenant HR Platform
+
+Each record implements ITenantEntity and is automatically filtered by TenantId.
+
+CurrentTenantMiddleware sets the tenant for each request.
+
+SystemAdmin can manage tenants via TenantsController.
+
+2. Authentication & Authorization
+
+JWT-based authentication via AuthenticationExtensions.
+
+AuthController:
+
+Login / token generation
+
+Create employee account + send welcome email with temporary password
+
+Role-based access using constants from RoleName and RoleType.
+
+Examples:
+
+Only SystemAdmin can access /api/tenants.
+
+HrAdmin + Recruiter manage job positions.
+
+Employee creates leave / financial / data change / resignation requests.
+
+3. Employees & Departments
+
+EmployeesController
+
+CRUD operations on employees
+
+Assign / update manager
+
+Update employee role (EmployeeRoleService)
+
+DepartmentsController
+
+CRUD operations on departments
+
+Set department manager
+
+Set parent department with cycle prevention (no infinite hierarchy loops)
+
+Tenant-safe: no cross-tenant links between employees/departments
+
+4. Requests Module (Generic Workflow)
+
+All request types share a common GenericRequest entity with history and status:
+
+Leave requests
+
+Financial requests
+
+Resignation
+
+Employee data change
+
+RequestService centralizes status transitions and RequestHistory logging.
+
+5. Leave Management
+
+Leave request creation with:
+
+Date range validation
+
+Overlapping requests detection
+
+Leave balance check (LeaveBalanceService)
+
+On approval:
+
+Balance is consumed (TryConsumeLeaveAsync)
+
+On cancellation:
+
+Remaining days are refunded (if future or partially used)
+
+LeaveAccrualJob + LeaveAccrualService automatically increases yearly leave balances.
+
+6. Financial Requests
+
+Employees create financial requests (loan, salary advance…).
+
+Validation:
+
+Positive amount
+
+Comment / reason not empty
+
+Unit tests in FinancialRequestServiceTests cover:
+
+Invalid amount
+
+Missing employee
+
+Success path
+
+7. Employee Data Change Requests
+
+User sends list of field changes (phone, address, etc.) as JSON.
+
+Stored in EmployeeDataChange.RequestedDataJson.
+
+HR can review and apply approved changes later.
+
+Full audit history with RequestHistory.
+
+8. Resignation Requests
+
+Flow:
+
+Employee submits resignation request.
+
+HR / Manager decides status (approve/reject).
+
+Reason & last working day captured.
+
+Uses the same generic request engine.
+
+9. Recruitment & Job Applications
+
+JobPositionController
+
+Create / update / delete job positions
+
+Activate/deactivate jobs
+
+List all positions (with pagination & filtering)
+
+Public Apply Flow
+
+Anonymous candidate uploads CV via POST /api/jobposition/{jobPositionId}/cv/upload
+
+CV saved physically using FileStorageService
+
+DocumentCv metadata stored in DB
+
+JobApplicationService links job + CV + candidate data
+
+Multi-Tenancy
+
+TenantEntity base + ITenantEntity interface
+
+CurrentTenant service holds the current TenantId.
+
+AppDbContext uses global query filters:
+
+modelBuilder.Entity<Employee>()
+    .HasQueryFilter(e => !_currentTenant.IsSet || e.TenantId == _currentTenant.TenantId);
+
+
+TenantsController allows SystemAdmin to:
+
+Create tenants
+
+Update name & status (IsActive)
+
+List tenants
+
+Multi-tenancy rules are enforced in:
+
+EmployeeService.AssignManagerAsync
+
+DepartmentService.SetDepartmentManagerAsync
+
+DepartmentService.SetParentDepartmentAsync
+
+TenantService operations
+
+No cross-tenant manager or department relationships are allowed.
+
+AI CV Ranking
+
+Implemented in Application Layer via:
+
+OpenAiCvScoringClient (infrastructure-independent client)
+
+CvRankingService (business logic around JobApplication + MatchScore)
+
+Flow:
+
+Candidate uploads CV → DocumentCv stored with physical path.
+
+HR creates JobPosition and receives JobApplications.
+
+CvRankingService.CalculateMatchScoreAsync(jobApplicationId):
+
+Resolves job description (Title + Description + Requirements).
+
+Resolves CV physical path from FilePath.
+
+Calls OpenAiCvScoringClient.GetScoreAsync(jobText, pdfPath).
+
+Stores numeric MatchScore (0–100) on JobApplication.
+
+AiCvRankingController provides a manual ranking endpoint for testing:
+
+POST /api/aicvranking/rank/{jobApplicationId}
+
+
+OpenAI integration uses:
+
+Responses API (/v1/responses)
+
+JSON Schema strict formatting to guarantee { "score": number } output
+
+Robust JSON parsing with multiple fallbacks + regex
+
+Background Jobs & Scheduling
+
+Quartz.NET
+
+Registered via QuartzExtensions.cs.
+
+LeaveAccrualJob runs periodically using LeaveAccrualOptions.
+
+PendingRequestsReminderService
+
+Background service that scans for pending requests and can send reminders.
+
+HangfireExtensions
+
+Optional Hangfire server for visual dashboard / background processing (Future-ready).
+
+Health Checks & Observability
+
+AddCustomHealthChecks in HealthChecksExtensions.cs:
+
+SystemDataHealthCheck → verifies seeded tenants, roles, etc.
+
+SQL Server health check using SELECT 1;.
+
+Exposed via:
+
+GET /health
+
+
+Returns JSON status + detailed checks.
+
+Logging
+
+Serilog configured in SerilogExtensions.cs.
+
+Logs written to text files under HrManagmentSystem_API/Logs/.
+
+Error Handling & Validation
+
+All service methods return ApiResponse<T>:
+
+public class ApiResponse<T>
+{
+    public bool Success { get; set; }
+    public string? Message { get; set; }
+    public T? Data { get; set; }
+    public object? Errors { get; set; }
+    public string? TraceId { get; set; }
+}
+
+
+Controllers:
+
+Validate ModelState for DTOs.
+
+Return BadRequest with validation errors when invalid.
+
+Use NotFound for missing entities.
+
+Localization:
+
+All messages come from SharedResource (Arabic + English).
+
+Example keys:
+
+LeaveRequest_InvalidDateRange
+
+LeaveBalance_Insufficient
+
+Employee_ManagerCannotBeSelf
+
+Tenant_CrossTenantNotAllowed
+
+Getting Started
+
+Clone the Repository
+
+git clone https://github.com/baselabbasi/Hr_Managment_System.git
+cd Hr_Managment_System
+
+
+Update Connection String
+
+In HrManagmentSystem_API/appsettings.json:
+
+"ConnectionStrings": {
+  "DefaultConnection": "Server=.;Database=HrManagementDb;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+
+
+Configure OpenAI & SMTP (optional)
+
+"OpenAI": {
+  "Model": "gpt-4o-mini",
+  "BaseUrl": "https://api.openai.com/v1/responses",
+  "ApiKey": ""            // keep empty here
+},
+"Smtp": {
+  "Host": "smtp.yourhost.com",
+  "Port": 587,
+  "User": "no-reply@yourcompany.com",
+  "Password": "",
+  "FromName": "HR Management System"
+}
+
+
+Put real secrets in User Secrets or environment variables.
+
+Run EF Core Migrations
+
+From the Infrastructure project folder:
+
+dotnet ef database update --project HrMangmentSystem_Infrastructure --startup-project HrManagmentSystem_API
+
+
+Run the API
+
+cd HrManagmentSystem_API
+dotnet run
+
+
+Open Swagger
+
+Browse to:
+
+https://localhost:{PORT}/swagger
+
+Testing
+
+Unit tests live in Hr_ManagmentSystem_Test:
+
+FinancialRequestServiceTests tests:
+
+Invalid amount
+
+Missing employee
+
+Not enough balance
+
+Success case
+
+To run tests:
+
+dotnet test
+
+Future Enhancements
+
+Full UI (Angular/React/Blazor) for HR portal & employee self-service
+
+More unit & integration tests for all request types
+
+Notification templates & in-app notifications
+
+Audit logs UI
+
+SSO / external identity provider integration
+
+Export reports (Excel/PDF) for HR dashboards
+
+Webhooks for external payroll or ERP integration
+
+Note
+This README describes the back-end architecture and can be used directly as your GitHub README.md.
+You can still customize sections (like connection strings, ports, OpenAI model) to match your environment.
 
 ## Solution Structure
 
