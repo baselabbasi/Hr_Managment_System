@@ -104,7 +104,7 @@ This separation makes the solution:
 - Custom roles:  `SystemAdmin`, `HrAdmin`, `Manager`, `Employee`, `Recruiter`
 
 **AI & Integrations**
-- OpenAI Responses API for CV ranking (`gpt-4o-mini`)
+- OpenAI Responses API for CV ranking (`gpt-5-2`)
 - SMTP email sender
 - File storage for CV PDFs
 
