@@ -41,11 +41,46 @@ The **HR Management System** is a back-end API that centralizes HR operations fo
 - ✅ Health checks & rate limiting
 
 ---
+## Why this project
 
+This system was deliberately built to production standards — not as a tutorial exercise.
+
+Every design decision reflects real-world engineering constraints:
+- **Multi-tenancy** because real SaaS products serve multiple clients from one codebase
+- **Clean Architecture** because business logic should never depend on the framework
+- **Dual job scheduling** (Hangfire + Quartz.NET) because different job types need different schedulers
+- **Health checks + rate limiting** because production APIs need observability and protection from day one
+- **AI CV ranking** because modern HR systems use AI — this integrates it at the infrastructure layer, not as a bolt-on
+
+The goal was to build something I could show a senior engineer and have them say: "this is how I'd want a team to build it."
+---
 ## Architecture
 
 The project follows **Clean Architecture / Onion Architecture**:
+## Architecture overview
 
+```
+┌─────────────────────────────────────────────┐
+│                  API Layer                   │
+│      Controllers · Middleware · Health       │
+└──────────────────────┬──────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────┐
+│             Application Layer                │
+│    Services · Interfaces · DTOs · Mappers    │
+└──────────┬───────────────────────┬──────────┘
+           │                       │
+┌──────────▼──────────┐ ┌──────────▼──────────┐
+│   Domain Layer       │ │ Infrastructure Layer │
+│ Entities · Constants │ │ EF Core · Repos      │
+│ Base classes         │ │ Multi-tenancy        │
+└─────────────────────┘ └─────────────────────┘
+           │                       │
+┌──────────▼───────────────────────▼──────────┐
+│               Shared Layer                   │
+│         Enums · Localization resources       │
+└─────────────────────────────────────────────┘
+```
 ### **API Layer**
 - ASP.NET Core Web API controllers
 - Middleware, health checks, rate-limiting
